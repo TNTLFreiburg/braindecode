@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>braindecode.torch_ext package &mdash; Braindecode 0.1.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Braindecode 0.1.5 documentation" href="../index.html"/>
+        <link rel="prev" title="braindecode.models package" href="braindecode.models.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Braindecode
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="braindecode.datautil.html">braindecode.datautil package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.experiments.html">braindecode.experiments package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.models.html">braindecode.models package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">braindecode.torch_ext package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.constraints">braindecode.torch_ext.constraints module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.functions">braindecode.torch_ext.functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.init">braindecode.torch_ext.init module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.losses">braindecode.torch_ext.losses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.modules">braindecode.torch_ext.modules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.util">braindecode.torch_ext.util module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Braindecode</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>braindecode.torch_ext package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/braindecode.torch_ext.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="module-braindecode.torch_ext">
+<span id="braindecode-torch-ext-package"></span><h1>braindecode.torch_ext package<a class="headerlink" href="#module-braindecode.torch_ext" title="Permalink to this headline">¶</a></h1>
+<p>Torch extensions, for example new functions or modules.</p>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-braindecode.torch_ext.constraints">
+<span id="braindecode-torch-ext-constraints-module"></span><h2>braindecode.torch_ext.constraints module<a class="headerlink" href="#module-braindecode.torch_ext.constraints" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.torch_ext.constraints.MaxNormDefaultConstraint">
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.constraints.</code><code class="descname">MaxNormDefaultConstraint</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/constraints.py#L4-L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.constraints.MaxNormDefaultConstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Applies max L2 norm 2 to the weights until the final layer and L2 norm 0.5
+to the weights of the final layer as done in <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
+Glasstetter, M., Eggensperger, K., Tangermann, M., … &amp; Ball, T. (2017).
+Deep learning with convolutional neural networks for brain mapping and
+decoding of movement-related information from the human EEG.
+arXiv preprint arXiv:1703.05051.</td></tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.torch_ext.constraints.MaxNormDefaultConstraint.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/constraints.py#L19-L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.constraints.MaxNormDefaultConstraint.apply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.torch_ext.functions">
+<span id="braindecode-torch-ext-functions-module"></span><h2>braindecode.torch_ext.functions module<a class="headerlink" href="#module-braindecode.torch_ext.functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.torch_ext.functions.square">
+<code class="descclassname">braindecode.torch_ext.functions.</code><code class="descname">square</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/functions.py#L3-L4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.functions.square" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.torch_ext.functions.safe_log">
+<code class="descclassname">braindecode.torch_ext.functions.</code><code class="descname">safe_log</code><span class="sig-paren">(</span><em>x</em>, <em>eps=1e-06</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/functions.py#L7-L9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.functions.safe_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prevents <span class="math">\(log(0)\)</span> by using <span class="math">\(log(max(x, eps))\)</span>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.torch_ext.functions.identity">
+<code class="descclassname">braindecode.torch_ext.functions.</code><code class="descname">identity</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/functions.py#L12-L13"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.functions.identity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.torch_ext.init">
+<span id="braindecode-torch-ext-init-module"></span><h2>braindecode.torch_ext.init module<a class="headerlink" href="#module-braindecode.torch_ext.init" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.torch_ext.init.glorot_weight_zero_bias">
+<code class="descclassname">braindecode.torch_ext.init.</code><code class="descname">glorot_weight_zero_bias</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/init.py#L4-L23"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.init.glorot_weight_zero_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initalize parameters of all modules
+by initializing weights with glorot  uniform/xavier initialization,
+and setting biases to zero.
+Weights from batch norm layers are set to 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> (<em>Module</em>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.torch_ext.losses">
+<span id="braindecode-torch-ext-losses-module"></span><h2>braindecode.torch_ext.losses module<a class="headerlink" href="#module-braindecode.torch_ext.losses" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.torch_ext.losses.log_categorical_crossentropy">
+<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">log_categorical_crossentropy</code><span class="sig-paren">(</span><em>logpreds</em>, <em>targets</em>, <em>dims=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L4-L31"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.log_categorical_crossentropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns log categorical crossentropy for given log-predictions and targets.</p>
+<p>Computes <span class="math">\(-\mathrm{logpreds} \cdot \mathrm{targets}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>logpreds</strong> (<cite>torch.autograd.Variable</cite>) – Logarithm of softmax output.</li>
+<li><strong>targets</strong> (<cite>torch.autograd.Variable</cite>)</li>
+<li><strong>dims</strong> (<em>int or iterable of int, optional.</em>) – Compute sum across these dims</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>loss</strong> – <span class="math">\(-\mathrm{logpreds} \cdot \mathrm{targets}\)</span></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>torch.autograd.Variable</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.torch_ext.modules">
+<span id="braindecode-torch-ext-modules-module"></span><h2>braindecode.torch_ext.modules module<a class="headerlink" href="#module-braindecode.torch_ext.modules" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.torch_ext.modules.Expression">
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.modules.</code><code class="descname">Expression</code><span class="sig-paren">(</span><em>expression_fn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L4-L30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.Expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Compute given expression on forward pass.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expression_fn</strong> (<em>function</em>) – Should accept variable number of objects of type
+<cite>torch.autograd.Variable</cite> to compute its output.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.torch_ext.modules.Expression.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>*x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L18-L19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.Expression.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.torch_ext.util">
+<span id="braindecode-torch-ext-util-module"></span><h2>braindecode.torch_ext.util module<a class="headerlink" href="#module-braindecode.torch_ext.util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.torch_ext.util.np_to_var">
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>**var_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L15"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to transform numpy array to <cite>torch.autograd.Variable</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>var</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><cite>torch.autograd.Variable</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.torch_ext.util.var_to_np">
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L18-L23"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to transform <cite>torch.autograd.Variable</cite> to numpy
+array.</p>
+<p>Should work both for CPU and GPU.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.torch_ext.util.set_random_seeds">
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">set_random_seeds</code><span class="sig-paren">(</span><em>seed</em>, <em>cuda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L26-L42"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.set_random_seeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set seeds for python random module numpy.random and torch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>seed</strong> (<em>int</em>) – Random seed.</li>
+<li><strong>cuda</strong> (<em>bool</em>) – Whether to set cuda seed with torch.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="braindecode.models.html" class="btn btn-neutral" title="braindecode.models package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

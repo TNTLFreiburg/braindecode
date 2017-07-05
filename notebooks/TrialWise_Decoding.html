@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Trialwise Decoding &mdash; Braindecode 0.1.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Braindecode 0.1.5 documentation" href="../index.html"/>
+        <link rel="next" title="Cropped Decoding" href="Cropped_Decoding.html"/>
+        <link rel="prev" title="Welcome to Braindecode" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Braindecode
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Trialwise Decoding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Load-data">Load data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Convert-data-to-Braindecode-Format">Convert data to Braindecode Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-the-model">Create the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Training-loop">Training loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Dataset-References">Dataset References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Cropped_Decoding.html">Cropped Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Experiment_Class.html">Using the Experiment Class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.datautil.html">braindecode.datautil package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.experiments.html">braindecode.experiments package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.models.html">braindecode.models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Braindecode</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Trialwise Decoding</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/notebooks/TrialWise_Decoding.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Trialwise-Decoding">
+<h1>Trialwise Decoding<a class="headerlink" href="#Trialwise-Decoding" title="Permalink to this headline">¶</a></h1>
+<p>In this example, we will use a convolutional neural network on the
+<a class="reference external" href="https://www.physionet.org/physiobank/database/eegmmidb/">Physiobank EEG Motor Movement/Imagery
+Dataset</a> to
+decode two classes:</p>
+<ol class="arabic simple">
+<li>Executed and imagined opening and closing of both hands</li>
+<li>Executed and imagined opening and closing of both fists</li>
+</ol>
+<div class="admonition warning">
+We use only one subject (with 90 trials) in this tutorial for
+demonstration purposes. A more interesting decoding task with many more
+trials would be to do cross-subject decoding on the same dataset.</div>
+<div class="section" id="Load-data">
+<h2>Load data<a class="headerlink" href="#Load-data" title="Permalink to this headline">¶</a></h2>
+<p>You can load and preprocess your EEG dataset in any way, Braindecode
+only expects a 3darray (trials, channels, timesteps) of input signals
+<code class="docutils literal"><span class="pre">X</span></code> and a vector of labels <code class="docutils literal"><span class="pre">y</span></code> later (see below). In this tutorial,
+we will use the <a class="reference external" href="https://www.martinos.org/mne/stable/index.html">MNE</a>
+library to load an EEG motor imagery/motor execution dataset. For a
+tutorial from MNE using Common Spatial Patterns to decode this data, see
+<a class="reference external" href="http://martinos.org/mne/stable/auto_examples/decoding/plot_decoding_csp_eeg.html">here</a>.
+For another library useful for loading EEG data, take a look at <a class="reference external" href="https://pythonhosted.org/neo/io.html">Neo
+IO</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">mne</span>
+<span class="kn">from</span> <span class="nn">mne.io</span> <span class="k">import</span> <span class="n">concatenate_raws</span>
+
+<span class="c1"># 5,6,7,10,13,14 are codes for executed and imagined hands/feet</span>
+<span class="n">subject_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">event_codes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
+
+<span class="c1"># This will download the files if you don&#39;t have them yet,</span>
+<span class="c1"># and then return the paths to the files.</span>
+<span class="n">physionet_paths</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">subject_id</span><span class="p">,</span> <span class="n">event_codes</span><span class="p">)</span>
+
+<span class="c1"># Load each of the files</span>
+<span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;WARNING&#39;</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths</span><span class="p">]</span>
+
+<span class="c1"># Concatenate them</span>
+<span class="n">raw</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+<span class="c1"># Find the events in this dataset</span>
+<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+
+<span class="c1"># Use only EEG channels</span>
+<span class="n">eeg_channel_inds</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+
+<span class="c1"># Extract trials, only using EEG channels</span>
+<span class="n">epoched</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">eeg_channel_inds</span><span class="p">,</span>
+                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Removing orphaned offset at the beginning of the file.
+179 events found
+Events id: [1 2 3]
+90 matching events found
+Loading data for 90 events and 497 original time points ...
+0 bad epochs dropped
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Convert-data-to-Braindecode-Format">
+<h2>Convert data to Braindecode Format<a class="headerlink" href="#Convert-data-to-Braindecode-Format" title="Permalink to this headline">¶</a></h2>
+<p>Braindecode has a minimalistic <code class="docutils literal"><span class="pre">SignalAndTarget</span></code> class, with
+attributes <code class="docutils literal"><span class="pre">X</span></code> for the signal and <code class="docutils literal"><span class="pre">y</span></code> for the labels. <code class="docutils literal"><span class="pre">X</span></code> should
+have these dimensions: trials x channels x timesteps. <code class="docutils literal"><span class="pre">y</span></code> should have
+one label per trial.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Convert data from volt to millivolt</span>
+<span class="c1"># Pytorch expects float32 for input and int64 for labels.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+</pre></div>
+</div>
+</div>
+<p>We use the first 60 trials for training and the last 30 for testing.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.signal_target</span> <span class="k">import</span> <span class="n">SignalAndTarget</span>
+
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">60</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[:</span><span class="mi">60</span><span class="p">])</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">60</span><span class="p">:],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="mi">60</span><span class="p">:])</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Create-the-model">
+<h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Braindecode comes with some predefined convolutional neural network
+architectures for raw time-domain EEG. Here, we use the shallow ConvNet
+model from <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural networks for brain
+mapping and decoding of movement-related information from the human
+EEG</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.models.shallow_fbcsp</span> <span class="k">import</span> <span class="n">ShallowFBCSPNet</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">set_random_seeds</span>
+
+<span class="c1"># Set if you want to use GPU</span>
+<span class="c1"># You can also use torch.cuda.is_available() to determine if cuda is available on your machine.</span>
+<span class="n">cuda</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">set_random_seeds</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">20170629</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
+<span class="n">n_classes</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">in_chans</span> <span class="o">=</span> <span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># final_conv_length = auto ensures we only get a single output in the time dimension</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ShallowFBCSPNet</span><span class="p">(</span><span class="n">in_chans</span><span class="o">=</span><span class="n">in_chans</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
+                        <span class="n">input_time_length</span><span class="o">=</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                        <span class="n">final_conv_length</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">create_network</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>We use <a class="reference external" href="https://arxiv.org/abs/1412.6980">Adam</a> to optimize the
+parameters of our network.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">optim</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Training-loop">
+<h2>Training loop<a class="headerlink" href="#Training-loop" title="Permalink to this headline">¶</a></h2>
+<p>This is a conventional mini-batch stochastic gradient descent training
+loop:</p>
+<ol class="arabic simple">
+<li>Get randomly shuffled batches of trials</li>
+<li>Compute outputs, loss and gradients on the batches of trials</li>
+<li>Update your model</li>
+<li>After iterating through all batches of your dataset, report some
+statistics like mean accuracy and mean loss.</li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">np_to_var</span><span class="p">,</span> <span class="n">var_to_np</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">get_balanced_batches</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">RandomState</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">RandomState</span><span class="p">((</span><span class="mi">2017</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">30</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i_epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+    <span class="n">i_trials_in_batch</span> <span class="o">=</span> <span class="n">get_balanced_batches</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">),</span> <span class="n">rng</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">batch_size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="c1"># Set model to training mode</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i_trials</span> <span class="ow">in</span> <span class="n">i_trials_in_batch</span><span class="p">:</span>
+        <span class="c1"># Have to add empty fourth dimension to X</span>
+        <span class="n">batch_X</span> <span class="o">=</span> <span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i_trials</span><span class="p">][:,:,:,</span><span class="kc">None</span><span class="p">]</span>
+        <span class="n">batch_y</span> <span class="o">=</span> <span class="n">train_set</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i_trials</span><span class="p">]</span>
+        <span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="n">net_in</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">net_target</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="n">net_target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="c1"># Remove gradients of last backward pass from all parameters</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1"># Compute outputs of the network</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">net_in</span><span class="p">)</span>
+        <span class="c1"># Compute the loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
+        <span class="c1"># Do the backpropagation</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="c1"># Update parameters with the optimizer</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="c1"># Print some statistics each epoch</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_epoch</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">setname</span><span class="p">,</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="n">train_set</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)):</span>
+        <span class="c1"># Here, we will use the entire dataset at once, which is still possible</span>
+        <span class="c1"># for such smaller datasets. Otherwise we would have to use batches.</span>
+        <span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">[:,:,:,</span><span class="kc">None</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="n">net_in</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">net_target</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+            <span class="n">net_target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">net_in</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:6s}</span><span class="s2"> Loss: </span><span class="si">{:.5f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">setname</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">loss</span><span class="p">))))</span>
+        <span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">outputs</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">y</span>  <span class="o">==</span> <span class="n">predicted_labels</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:6s}</span><span class="s2"> Accuracy: </span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">setname</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch 0
+Train  Loss: 1.17761
+Train  Accuracy: 51.7%
+Test   Loss: 1.26024
+Test   Accuracy: 53.3%
+Epoch 1
+Train  Loss: 0.70688
+Train  Accuracy: 63.3%
+Test   Loss: 0.93679
+Test   Accuracy: 56.7%
+Epoch 2
+Train  Loss: 0.39426
+Train  Accuracy: 86.7%
+Test   Loss: 0.65984
+Test   Accuracy: 66.7%
+Epoch 3
+Train  Loss: 0.33593
+Train  Accuracy: 90.0%
+Test   Loss: 0.65626
+Test   Accuracy: 63.3%
+Epoch 4
+Train  Loss: 0.27905
+Train  Accuracy: 96.7%
+Test   Loss: 0.61044
+Test   Accuracy: 56.7%
+Epoch 5
+Train  Loss: 0.27319
+Train  Accuracy: 96.7%
+Test   Loss: 0.59499
+Test   Accuracy: 66.7%
+Epoch 6
+Train  Loss: 0.26624
+Train  Accuracy: 88.3%
+Test   Loss: 0.61360
+Test   Accuracy: 70.0%
+Epoch 7
+Train  Loss: 0.23338
+Train  Accuracy: 91.7%
+Test   Loss: 0.65626
+Test   Accuracy: 73.3%
+Epoch 8
+Train  Loss: 0.21903
+Train  Accuracy: 90.0%
+Test   Loss: 0.68761
+Test   Accuracy: 63.3%
+Epoch 9
+Train  Loss: 0.18902
+Train  Accuracy: 96.7%
+Test   Loss: 0.67173
+Test   Accuracy: 56.7%
+Epoch 10
+Train  Loss: 0.17774
+Train  Accuracy: 96.7%
+Test   Loss: 0.68129
+Test   Accuracy: 56.7%
+Epoch 11
+Train  Loss: 0.16396
+Train  Accuracy: 98.3%
+Test   Loss: 0.69189
+Test   Accuracy: 56.7%
+Epoch 12
+Train  Loss: 0.15179
+Train  Accuracy: 98.3%
+Test   Loss: 0.69640
+Test   Accuracy: 56.7%
+Epoch 13
+Train  Loss: 0.15035
+Train  Accuracy: 98.3%
+Test   Loss: 0.70514
+Test   Accuracy: 60.0%
+Epoch 14
+Train  Loss: 0.14255
+Train  Accuracy: 98.3%
+Test   Loss: 0.74239
+Test   Accuracy: 53.3%
+Epoch 15
+Train  Loss: 0.13597
+Train  Accuracy: 98.3%
+Test   Loss: 0.77918
+Test   Accuracy: 53.3%
+Epoch 16
+Train  Loss: 0.13680
+Train  Accuracy: 98.3%
+Test   Loss: 0.84160
+Test   Accuracy: 56.7%
+Epoch 17
+Train  Loss: 0.12190
+Train  Accuracy: 98.3%
+Test   Loss: 0.87804
+Test   Accuracy: 56.7%
+Epoch 18
+Train  Loss: 0.10604
+Train  Accuracy: 98.3%
+Test   Loss: 0.90947
+Test   Accuracy: 56.7%
+Epoch 19
+Train  Loss: 0.10445
+Train  Accuracy: 98.3%
+Test   Loss: 0.93720
+Test   Accuracy: 56.7%
+Epoch 20
+Train  Loss: 0.10496
+Train  Accuracy: 98.3%
+Test   Loss: 0.95505
+Test   Accuracy: 60.0%
+Epoch 21
+Train  Loss: 0.10946
+Train  Accuracy: 100.0%
+Test   Loss: 0.99564
+Test   Accuracy: 60.0%
+Epoch 22
+Train  Loss: 0.05721
+Train  Accuracy: 100.0%
+Test   Loss: 0.84824
+Test   Accuracy: 60.0%
+Epoch 23
+Train  Loss: 0.04463
+Train  Accuracy: 100.0%
+Test   Loss: 0.78783
+Test   Accuracy: 56.7%
+Epoch 24
+Train  Loss: 0.04180
+Train  Accuracy: 100.0%
+Test   Loss: 0.78526
+Test   Accuracy: 56.7%
+Epoch 25
+Train  Loss: 0.03730
+Train  Accuracy: 100.0%
+Test   Loss: 0.75642
+Test   Accuracy: 63.3%
+Epoch 26
+Train  Loss: 0.03549
+Train  Accuracy: 100.0%
+Test   Loss: 0.71706
+Test   Accuracy: 66.7%
+Epoch 27
+Train  Loss: 0.03415
+Train  Accuracy: 100.0%
+Test   Loss: 0.69795
+Test   Accuracy: 66.7%
+Epoch 28
+Train  Loss: 0.03204
+Train  Accuracy: 100.0%
+Test   Loss: 0.69324
+Test   Accuracy: 66.7%
+Epoch 29
+Train  Loss: 0.02804
+Train  Accuracy: 100.0%
+Test   Loss: 0.69240
+Test   Accuracy: 63.3%
+</pre></div></div>
+</div>
+<p>Eventually, we arrive at 63.3% accuracy, so 19 from 30 trials are
+correctly predicted. In the <a class="reference external" href="./Cropped_Decoding.html">Cropped Decoding
+Tutorial</a>, we can learn how to achieve
+higher accuracies using cropped training.</p>
+<div class="admonition note">
+If you want to try cross-subject decoding, changing the loading code to
+the following will perform cross-subject decoding on imagined left vs
+right hand closing, with 50 training and 5 test subjects (Warning, might
+be very slow):</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">physionet_paths</span> <span class="o">=</span> <span class="p">[</span> <span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">51</span><span class="p">)]</span>
+<span class="n">physionet_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths</span><span class="p">)</span>
+<span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths</span><span class="p">]</span>
+
+<span class="n">raw</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+
+<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+
+<span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
+<span class="c1"># Testing will be done with a running classifier</span>
+<span class="n">epoched</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">physionet_paths_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">56</span><span class="p">)]</span>
+<span class="n">physionet_paths_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths_test</span><span class="p">)</span>
+<span class="n">parts_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths_test</span><span class="p">]</span>
+<span class="n">raw_test</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts_test</span><span class="p">)</span>
+
+<span class="n">picks_test</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw_test</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+
+<span class="n">events_test</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw_test</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+
+<span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
+<span class="c1"># Testing will be done with a running classifier</span>
+<span class="n">epoched_test</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw_test</span><span class="p">,</span> <span class="n">events_test</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks_test</span><span class="p">,</span>
+                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">train_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">train_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+<span class="n">test_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_test</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">test_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_test</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">train_y</span><span class="p">)</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">test_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">test_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Dataset-References">
+<h2>Dataset References<a class="headerlink" href="#Dataset-References" title="Permalink to this headline">¶</a></h2>
+<p>This dataset was created and contributed to PhysioNet by the developers
+of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a>
+instrumentation system, which they used in making these recordings. The
+system is described in:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Schalk</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="p">,</span> <span class="n">McFarland</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">J</span><span class="o">.</span><span class="p">,</span> <span class="n">Hinterberger</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="p">,</span> <span class="n">Birbaumer</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="p">,</span> <span class="n">Wolpaw</span><span class="p">,</span> <span class="n">J</span><span class="o">.</span><span class="n">R</span><span class="o">.</span> <span class="p">(</span><span class="mi">2004</span><span class="p">)</span> <span class="n">BCI2000</span><span class="p">:</span> <span class="n">A</span> <span class="n">General</span><span class="o">-</span><span class="n">Purpose</span> <span class="n">Brain</span><span class="o">-</span><span class="n">Computer</span> <span class="n">Interface</span> <span class="p">(</span><span class="n">BCI</span><span class="p">)</span> <span class="n">System</span><span class="o">.</span> <span class="n">IEEE</span> <span class="n">TBME</span> <span class="mi">51</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span><span class="mi">1034</span><span class="o">-</span><span class="mf">1043.</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://physionet.org/physiobank/">PhysioBank</a> is a large and
+growing archive of well-characterized digital recordings of physiologic
+signals and related data for use by the biomedical research community
+and further described in:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Goldberger</span> <span class="n">AL</span><span class="p">,</span> <span class="n">Amaral</span> <span class="n">LAN</span><span class="p">,</span> <span class="n">Glass</span> <span class="n">L</span><span class="p">,</span> <span class="n">Hausdorff</span> <span class="n">JM</span><span class="p">,</span> <span class="n">Ivanov</span> <span class="n">PCh</span><span class="p">,</span> <span class="n">Mark</span> <span class="n">RG</span><span class="p">,</span> <span class="n">Mietus</span> <span class="n">JE</span><span class="p">,</span> <span class="n">Moody</span> <span class="n">GB</span><span class="p">,</span> <span class="n">Peng</span> <span class="n">C</span><span class="o">-</span><span class="n">K</span><span class="p">,</span> <span class="n">Stanley</span> <span class="n">HE</span><span class="o">.</span> <span class="p">(</span><span class="mi">2000</span><span class="p">)</span> <span class="n">PhysioBank</span><span class="p">,</span> <span class="n">PhysioToolkit</span><span class="p">,</span> <span class="ow">and</span> <span class="n">PhysioNet</span><span class="p">:</span> <span class="n">Components</span> <span class="n">of</span> <span class="n">a</span> <span class="n">New</span> <span class="n">Research</span> <span class="n">Resource</span> <span class="k">for</span> <span class="n">Complex</span> <span class="n">Physiologic</span> <span class="n">Signals</span><span class="o">.</span> <span class="n">Circulation</span> <span class="mi">101</span><span class="p">(</span><span class="mi">23</span><span class="p">):</span><span class="n">e215</span><span class="o">-</span><span class="n">e220</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Cropped_Decoding.html" class="btn btn-neutral float-right" title="Cropped Decoding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Welcome to Braindecode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

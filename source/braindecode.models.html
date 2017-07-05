@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>braindecode.models package &mdash; Braindecode 0.1.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Braindecode 0.1.5 documentation" href="../index.html"/>
+        <link rel="next" title="braindecode.torch_ext package" href="braindecode.torch_ext.html"/>
+        <link rel="prev" title="braindecode.mne_ext package" href="braindecode.mne_ext.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Braindecode
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="braindecode.datautil.html">braindecode.datautil package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.experiments.html">braindecode.experiments package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">braindecode.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.models.deep4">braindecode.models.deep4 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.models.eegnet">braindecode.models.eegnet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.models.shallow_fbcsp">braindecode.models.shallow_fbcsp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.models.util">braindecode.models.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Braindecode</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>braindecode.models package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/braindecode.models.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="module-braindecode.models">
+<span id="braindecode-models-package"></span><h1>braindecode.models package<a class="headerlink" href="#module-braindecode.models" title="Permalink to this headline">¶</a></h1>
+<p>Some predefined network architectures for EEG decoding.</p>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-braindecode.models.deep4">
+<span id="braindecode-models-deep4-module"></span><h2>braindecode.models.deep4 module<a class="headerlink" href="#module-braindecode.models.deep4" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.models.deep4.Deep4Net">
+<em class="property">class </em><code class="descclassname">braindecode.models.deep4.</code><code class="descname">Deep4Net</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length</em>, <em>final_conv_length</em>, <em>n_filters_time=25</em>, <em>n_filters_spat=25</em>, <em>filter_time_length=10</em>, <em>pool_time_length=3</em>, <em>pool_time_stride=3</em>, <em>num_filters_2=50</em>, <em>filter_length_2=10</em>, <em>num_filters_3=100</em>, <em>filter_length_3=10</em>, <em>num_filters_4=200</em>, <em>filter_length_4=10</em>, <em>first_nonlin=&lt;function elu&gt;</em>, <em>first_pool_mode=’max’</em>, <em>first_pool_nonlin=&lt;function identity&gt;</em>, <em>later_nonlin=&lt;function elu&gt;</em>, <em>later_pool_mode=’max’</em>, <em>later_pool_nonlin=&lt;function identity&gt;</em>, <em>drop_prob=0.5</em>, <em>double_time_convs=False</em>, <em>split_first_layer=True</em>, <em>batch_norm=True</em>, <em>batch_norm_alpha=0.1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/deep4.py#L10-L171"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.deep4.Deep4Net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Deep ConvNet model from <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
+Glasstetter, M., Eggensperger, K., Tangermann, M., … &amp; Ball, T. (2017).
+Deep learning with convolutional neural networks for brain mapping and
+decoding of movement-related information from the human EEG.
+arXiv preprint arXiv:1703.05051.</td></tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.models.deep4.Deep4Net.create_network">
+<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/deep4.py#L55-L171"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.deep4.Deep4Net.create_network" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.models.eegnet">
+<span id="braindecode-models-eegnet-module"></span><h2>braindecode.models.eegnet module<a class="headerlink" href="#module-braindecode.models.eegnet" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.models.eegnet.EEGNet">
+<em class="property">class </em><code class="descclassname">braindecode.models.eegnet.</code><code class="descname">EEGNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>final_conv_length=’auto’</em>, <em>input_time_length=None</em>, <em>pool_mode=’max’</em>, <em>second_kernel_size=(2</em>, <em>32)</em>, <em>third_kernel_size=(8</em>, <em>4)</em>, <em>drop_prob=0.25</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L11-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>EEGNet model from <a class="reference internal" href="#eegnet" id="id3">[EEGNet]</a>.</p>
+<p class="rubric">Notes</p>
+<p>This implementation is not guaranteed to be correct, has not been checked
+by original authors, only reimplemented from the paper description.</p>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="eegnet" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[EEGNet]</a></td><td>Lawhern, V. J., Solon, A. J., Waytowich, N. R., Gordon,
+S. M., Hung, C. P., &amp; Lance, B. J. (2016).
+EEGNet: A Compact Convolutional Network for EEG-based
+Brain-Computer Interfaces.
+arXiv preprint arXiv:1611.08024.</td></tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.models.eegnet.EEGNet.create_network">
+<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L44-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet.create_network" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.models.shallow_fbcsp">
+<span id="braindecode-models-shallow-fbcsp-module"></span><h2>braindecode.models.shallow_fbcsp module<a class="headerlink" href="#module-braindecode.models.shallow_fbcsp" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.models.shallow_fbcsp.ShallowFBCSPNet">
+<em class="property">class </em><code class="descclassname">braindecode.models.shallow_fbcsp.</code><code class="descname">ShallowFBCSPNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length=None</em>, <em>n_filters_time=40</em>, <em>filter_time_length=25</em>, <em>n_filters_spat=40</em>, <em>pool_time_length=75</em>, <em>pool_time_stride=15</em>, <em>final_conv_length=30</em>, <em>conv_nonlin=&lt;function square&gt;</em>, <em>pool_mode=’mean’</em>, <em>pool_nonlin=&lt;function safe_log&gt;</em>, <em>split_first_layer=True</em>, <em>batch_norm=True</em>, <em>batch_norm_alpha=0.1</em>, <em>drop_prob=0.5</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/shallow_fbcsp.py#L10-L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.shallow_fbcsp.ShallowFBCSPNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Shallow ConvNet model from <a class="footnote-reference" href="#id5" id="id4">[2]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
+Glasstetter, M., Eggensperger, K., Tangermann, M., … &amp; Ball, T. (2017).
+Deep learning with convolutional neural networks for brain mapping and
+decoding of movement-related information from the human EEG.
+arXiv preprint arXiv:1703.05051.</td></tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.models.shallow_fbcsp.ShallowFBCSPNet.create_network">
+<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/shallow_fbcsp.py#L44-L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.shallow_fbcsp.ShallowFBCSPNet.create_network" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.models.util">
+<span id="braindecode-models-util-module"></span><h2>braindecode.models.util module<a class="headerlink" href="#module-braindecode.models.util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.models.util.to_dense_prediction_model">
+<code class="descclassname">braindecode.models.util.</code><code class="descname">to_dense_prediction_model</code><span class="sig-paren">(</span><em>model</em>, <em>axis=(2</em>, <em>3)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/util.py#L4-L39"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.util.to_dense_prediction_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a sequential model with strides to a model that outputs
+dense predictions by removing the strides and instead inserting dilations.
+Modifies model in-place.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong></li>
+<li><strong>axis</strong> (<em>int or (int,int)</em>) – Axis to transform (in terms of intermediate output axes)
+can either be 2, 3, or (2,3).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="braindecode.torch_ext.html" class="btn btn-neutral float-right" title="braindecode.torch_ext package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="braindecode.mne_ext.html" class="btn btn-neutral" title="braindecode.mne_ext package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

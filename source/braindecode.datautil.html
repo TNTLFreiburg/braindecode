@@ -1,0 +1,866 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>braindecode.datautil package &mdash; Braindecode 0.1.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Braindecode 0.1.5 documentation" href="../index.html"/>
+        <link rel="next" title="braindecode.experiments package" href="braindecode.experiments.html"/>
+        <link rel="prev" title="Using the Experiment Class" href="../notebooks/Experiment_Class.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Braindecode
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">braindecode.datautil package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.datautil.iterators">braindecode.datautil.iterators module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.datautil.signal_target">braindecode.datautil.signal_target module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.datautil.signalproc">braindecode.datautil.signalproc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.datautil.splitters">braindecode.datautil.splitters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.datautil.trial_segment">braindecode.datautil.trial_segment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.datautil.util">braindecode.datautil.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.experiments.html">braindecode.experiments package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.models.html">braindecode.models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Braindecode</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>braindecode.datautil package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/braindecode.datautil.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="module-braindecode.datautil">
+<span id="braindecode-datautil-package"></span><h1>braindecode.datautil package<a class="headerlink" href="#module-braindecode.datautil" title="Permalink to this headline">¶</a></h1>
+<p>Utilities for data manipulation.</p>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-braindecode.datautil.iterators">
+<span id="braindecode-datautil-iterators-module"></span><h2>braindecode.datautil.iterators module<a class="headerlink" href="#module-braindecode.datautil.iterators" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.datautil.iterators.get_balanced_batches">
+<code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">get_balanced_batches</code><span class="sig-paren">(</span><em>n_trials</em>, <em>rng</em>, <em>shuffle</em>, <em>n_batches=None</em>, <em>batch_size=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L5-L54"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.get_balanced_batches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create indices for batches balanced in size
+(batches will have maximum size difference of 1).
+Supply either batch size or number of batches. Resulting batches
+will not have the given batch size but rather the next largest batch size
+that allows to split the set into balanced batches (maximum size difference 1).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n_trials</strong> (<em>int</em>) – Size of set.</li>
+<li><strong>rng</strong> (<em>RandomState</em>)</li>
+<li><strong>shuffle</strong> (<em>bool</em>) – Whether to shuffle indices before splitting set.</li>
+<li><strong>n_batches</strong> (<em>int, optional</em>)</li>
+<li><strong>batch_size</strong> (<em>int, optional</em>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="braindecode.datautil.iterators.BalancedBatchSizeIterator">
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">BalancedBatchSizeIterator</code><span class="sig-paren">(</span><em>batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L57-L88"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Create batches of balanced size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>batch_size</strong> (<em>int</em>) – Resulting batches will not necessarily have the given batch size
+but rather the next largest batch size that allows to split the set into
+balanced batches (maximum size difference 1).</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.datautil.iterators.BalancedBatchSizeIterator.get_batches">
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L72-L85"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.datautil.iterators.BalancedBatchSizeIterator.reset_rng">
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L87-L88"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="braindecode.datautil.iterators.ClassBalancedBatchSizeIterator">
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">ClassBalancedBatchSizeIterator</code><span class="sig-paren">(</span><em>batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L91-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Create batches of balanced size, that are also balanced per class, i.e.
+each class should be sampled roughly with the same frequency during
+training.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>batch_size</strong> (<em>int</em>) – Resulting batches will not necessarily have the given batch size
+but rather the next largest batch size that allows to split the set into
+balanced batches (maximum size difference 1).</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.get_batches">
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L109-L138"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.reset_rng">
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L140-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="braindecode.datautil.iterators.CropsFromTrialsIterator">
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">CropsFromTrialsIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>input_time_length</em>, <em>n_preds_per_input</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L144-L222"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Iterator sampling crops out the trials so that each sample
+(after receptive size of the ConvNet) in each trial is predicted.</p>
+<p>Predicting the given input batches can lead to some samples
+being predicted multiple times, if the receptive field size
+(input_time_length - n_preds_per_input + 1) is not a divisor
+of the trial length.  <code class="xref py py-func docutils literal"><span class="pre">compute_preds_per_trial_for_set()</span></code>
+can help with removing the overlapped predictions again for evaluation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>batch_size</strong> (<em>int</em>)</li>
+<li><strong>input_time_length</strong> (<em>int</em>) – Input time length of the ConvNet, determines size of batches in
+3rd dimension.</li>
+<li><strong>n_preds_per_input</strong> (<em>int</em>) – Number of predictions ConvNet makes per one input. Can be computed
+by making a forward pass with the given input time length, the
+output length in 3rd dimension is n_preds_per_input.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="braindecode.experiments.html#braindecode.experiments.monitors.compute_preds_per_trial_for_set" title="braindecode.experiments.monitors.compute_preds_per_trial_for_set"><code class="xref py py-class docutils literal"><span class="pre">braindecode.experiments.monitors.compute_preds_per_trial_for_set</span></code></a></dt>
+<dd>Assigns predictions to trials, removes overlaps.</dd>
+</dl>
+</div>
+<dl class="method">
+<dt id="braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng">
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L176-L177"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches">
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L179-L202"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.datautil.signal_target">
+<span id="braindecode-datautil-signal-target-module"></span><h2>braindecode.datautil.signal_target module<a class="headerlink" href="#module-braindecode.datautil.signal_target" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.datautil.signal_target.SignalAndTarget">
+<em class="property">class </em><code class="descclassname">braindecode.datautil.signal_target.</code><code class="descname">SignalAndTarget</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signal_target.py#L1-L15"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signal_target.SignalAndTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Simple data container class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>X</strong> (<em>3darray or list of 2darrays</em>) – The input signal per trial.</li>
+<li><strong>y</strong> (<em>1darray or list</em>) – Labels for each trial.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.signal_target.apply_to_X_y">
+<code class="descclassname">braindecode.datautil.signal_target.</code><code class="descname">apply_to_X_y</code><span class="sig-paren">(</span><em>fn</em>, <em>*sets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signal_target.py#L18-L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signal_target.apply_to_X_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a function to all <cite>X</cite> and <cite>y</cite> attributes of all given sets.</p>
+<p>Applies function to list of X arrays and to list of y arrays separately.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fn</strong> (<em>function</em>) – Function to apply</li>
+<li><strong>sets</strong> (<a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a> objects)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result_set</strong> – Dataset with X and y as the result of the
+application of the function.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.datautil.signalproc">
+<span id="braindecode-datautil-signalproc-module"></span><h2>braindecode.datautil.signalproc module<a class="headerlink" href="#module-braindecode.datautil.signalproc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.datautil.signalproc.exponential_running_standardize">
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">exponential_running_standardize</code><span class="sig-paren">(</span><em>data</em>, <em>factor_new=0.001</em>, <em>init_block_size=None</em>, <em>eps=0.0001</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L10-L55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.exponential_running_standardize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform exponential running standardization.</p>
+<p>Compute the exponental running mean <span class="math">\(m_t\)</span> at time <cite>t</cite> as
+<span class="math">\(m_t=\mathrm{factornew} \cdot mean(x_t) + (1 - \mathrm{factornew}) \cdot m_{t-1}\)</span>.</p>
+<p>Then, compute exponential running variance <span class="math">\(v_t\)</span> at time <cite>t</cite> as
+<span class="math">\(m_t=\mathrm{factornew} \cdot (m_t - x_t)^2 + (1 - \mathrm{factornew}) \cdot v_{t-1}\)</span>.</p>
+<p>Finally, standardize the data point <span class="math">\(x_t\)</span> at time <cite>t</cite> as:
+<span class="math">\(x'_t=(x_t - m_t) / max(\sqrt{v_t}, eps)\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>2darray (time, channels)</em>)</li>
+<li><strong>factor_new</strong> (<em>float</em>)</li>
+<li><strong>init_block_size</strong> (<em>int</em>) – Standardize data before to this index with regular standardization.</li>
+<li><strong>eps</strong> (<em>float</em>) – Stabilizer for division by zero variance.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>standardized</strong> – Standardized data.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2darray (time, channels)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.signalproc.exponential_running_demean">
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">exponential_running_demean</code><span class="sig-paren">(</span><em>data</em>, <em>factor_new=0.001</em>, <em>init_block_size=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L58-L90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.exponential_running_demean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform exponential running demeanining.</p>
+<p>Compute the exponental running mean <span class="math">\(m_t\)</span> at time <cite>t</cite> as
+<span class="math">\(m_t=\mathrm{factornew} \cdot mean(x_t) + (1 - \mathrm{factornew}) \cdot m_{t-1}\)</span>.</p>
+<p>Deman the data point <span class="math">\(x_t\)</span> at time <cite>t</cite> as:
+<span class="math">\(x'_t=(x_t - m_t)\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>2darray (time, channels)</em>)</li>
+<li><strong>factor_new</strong> (<em>float</em>)</li>
+<li><strong>init_block_size</strong> (<em>int</em>) – Demean data before to this index with regular demeaning.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>demeaned</strong> – Demeaned data.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2darray (time, channels)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.signalproc.highpass_cnt">
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">highpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L93-L117"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.highpass_cnt" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Highpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>2d-array</em>) – Time x channels</li>
+<li><strong>low_cut_hz</strong> (<em>float</em>)</li>
+<li><strong>fs</strong> (<em>float</em>)</li>
+<li><strong>filt_order</strong> (<em>int</em>)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>highpassed_data</strong> – Data after applying highpass filter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2d-array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.signalproc.lowpass_cnt">
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">lowpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L120-L145"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.lowpass_cnt" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Lowpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>2d-array</em>) – Time x channels</li>
+<li><strong>high_cut_hz</strong> (<em>float</em>)</li>
+<li><strong>fs</strong> (<em>float</em>)</li>
+<li><strong>filt_order</strong> (<em>int</em>)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>lowpassed_data</strong> – Data after applying lowpass filter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2d-array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.signalproc.bandpass_cnt">
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">bandpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L148-L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.bandpass_cnt" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Bandpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>2d-array</em>) – Time x channels</li>
+<li><strong>low_cut_hz</strong> (<em>float</em>)</li>
+<li><strong>high_cut_hz</strong> (<em>float</em>)</li>
+<li><strong>fs</strong> (<em>float</em>)</li>
+<li><strong>filt_order</strong> (<em>int</em>)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>bandpassed_data</strong> – Data after applying bandpass filter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2d-array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.signalproc.filter_is_stable">
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">filter_is_stable</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L188-L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.filter_is_stable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if filter coefficients of IIR filter are stable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>a</strong> (<em>list or 1darray of number</em>) – Denominator filter coefficients a.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>is_stable</strong> – Filter is stable or not.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Filter is stable if absolute value of all  roots is smaller than 1,
+see <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>HYRY, “SciPy ‘lfilter’ returns only NaNs” StackOverflow,
+<a class="reference external" href="http://stackoverflow.com/a/8812737/1469195">http://stackoverflow.com/a/8812737/1469195</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.datautil.splitters">
+<span id="braindecode-datautil-splitters-module"></span><h2>braindecode.datautil.splitters module<a class="headerlink" href="#module-braindecode.datautil.splitters" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.datautil.splitters.concatenate_sets">
+<code class="descclassname">braindecode.datautil.splitters.</code><code class="descname">concatenate_sets</code><span class="sig-paren">(</span><em>sets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/splitters.py#L6-L21"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.splitters.concatenate_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate all sets together.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sets</strong> (list of <a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>concatenated_set</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.splitters.concatenate_two_sets">
+<code class="descclassname">braindecode.datautil.splitters.</code><code class="descname">concatenate_two_sets</code><span class="sig-paren">(</span><em>set_a</em>, <em>set_b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/splitters.py#L24-L45"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.splitters.concatenate_two_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate two sets together.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>set_a, set_b</strong> (<a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>concatenated_set</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.splitters.split_into_two_sets">
+<code class="descclassname">braindecode.datautil.splitters.</code><code class="descname">split_into_two_sets</code><span class="sig-paren">(</span><em>dataset</em>, <em>first_set_fraction=None</em>, <em>n_first_set=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/splitters.py#L48-L73"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.splitters.split_into_two_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split set into two sets either by fraction of first set or by number
+of trials in first set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a>)</li>
+<li><strong>first_set_fraction</strong> (<em>float, optional</em>) – Fraction of trials in first set.</li>
+<li><strong>n_first_set</strong> (<em>int, optional</em>) – Number of trials in first set</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>first_set, second_set</strong> – The two splitted sets.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.datautil.trial_segment">
+<span id="braindecode-datautil-trial-segment-module"></span><h2>braindecode.datautil.trial_segment module<a class="headerlink" href="#module-braindecode.datautil.trial_segment" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.datautil.trial_segment.create_signal_target_from_raw_mne">
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_from_raw_mne</code><span class="sig-paren">(</span><em>raw</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L15-L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_from_raw_mne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create SignalTarget set from given <cite>mne.io.RawArray</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>raw</strong> (<cite>mne.io.RawArray</cite>)</li>
+<li><strong>name_to_start_codes</strong> (<em>OrderedDict (str -&gt; int or list of int)</em>) – Ordered dictionary mapping class names to marker code or marker codes.
+y-labels will be assigned in increasing key order, i.e.
+first classname gets y-value 0, second classname y-value 1, etc.</li>
+<li><strong>epoch_ival_ms</strong> (<em>iterable of (int,int)</em>) – Epoching interval in milliseconds. In case only <cite>name_to_codes</cite> given,
+represents start offset and stop offset from start markers. In case
+<cite>name_to_stop_codes</cite> given, represents offset from start marker
+and offset from stop marker. E.g. [500, -500] would mean 500ms
+after the start marker until 500 ms before the stop marker.</li>
+<li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.
+Order does not matter, dictionary should contain each class in
+<cite>name_to_codes</cite> dictionary.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dataset</strong> – Dataset with <cite>X</cite> as the trial signals and <cite>y</cite> as the trial labels.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.trial_segment.create_signal_target">
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target</code><span class="sig-paren">(</span><em>data</em>, <em>events</em>, <em>fs</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L52-L93"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create SignalTarget set given continuous data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>2d-array of number</em>) – The continuous recorded data. Channels x times order.</li>
+<li><strong>events</strong> (<em>2d-array</em>) – Dimensions: Number of events, 2. For each event, should contain sample
+index and marker code.</li>
+<li><strong>fs</strong> (<em>number</em>) – Sampling rate.</li>
+<li><strong>name_to_start_codes</strong> (<em>OrderedDict (str -&gt; int or list of int)</em>) – Ordered dictionary mapping class names to marker code or marker codes.
+y-labels will be assigned in increasing key order, i.e.
+first classname gets y-value 0, second classname y-value 1, etc.</li>
+<li><strong>epoch_ival_ms</strong> (<em>iterable of (int,int)</em>) – Epoching interval in milliseconds. In case only <cite>name_to_codes</cite> given,
+represents start offset and stop offset from start markers. In case
+<cite>name_to_stop_codes</cite> given, represents offset from start marker
+and offset from stop marker. E.g. [500, -500] would mean 500ms
+after the start marker until 500 ms before the stop marker.</li>
+<li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.
+Order does not matter, dictionary should contain each class in
+<cite>name_to_codes</cite> dictionary.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dataset</strong> – Dataset with <cite>X</cite> as the trial signals and <cite>y</cite> as the trial labels.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.trial_segment.add_breaks">
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">add_breaks</code><span class="sig-paren">(</span><em>events</em>, <em>fs</em>, <em>break_start_code</em>, <em>break_stop_code</em>, <em>name_to_start_codes</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms=None</em>, <em>max_break_length_ms=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L202-L263"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.add_breaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add break events to given events.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> (<em>2d-array</em>) – Dimensions: Number of events, 2. For each event, should contain sample
+index and marker code.</li>
+<li><strong>fs</strong> (<em>number</em>) – Sampling rate.</li>
+<li><strong>break_start_code</strong> (<em>int</em>) – Marker code that will be used for break start markers.</li>
+<li><strong>break_stop_code</strong> (<em>int</em>) – Marker code that will be used for break stop markers.</li>
+<li><strong>name_to_start_codes</strong> (<em>OrderedDict (str -&gt; int or list of int)</em>) – Ordered dictionary mapping class names to start marker code or
+start marker codes.</li>
+<li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.</li>
+<li><strong>min_break_length_ms</strong> (<em>number, optional</em>) – Minimum length in milliseconds a break should have to be included.</li>
+<li><strong>max_break_length_ms</strong> (<em>number, optional</em>) – Maximum length in milliseconds a break can have to be included.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>events</strong> – Events with break start and stop markers.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">2d-array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.datautil.util">
+<span id="braindecode-datautil-util-module"></span><h2>braindecode.datautil.util module<a class="headerlink" href="#module-braindecode.datautil.util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.datautil.util.ms_to_samples">
+<code class="descclassname">braindecode.datautil.util.</code><code class="descname">ms_to_samples</code><span class="sig-paren">(</span><em>ms</em>, <em>fs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/util.py#L1-L18"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.util.ms_to_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute milliseconds to number of samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ms</strong> (<em>number</em>) – Milliseconds</li>
+<li><strong>fs</strong> (<em>number</em>) – Sampling rate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>n_samples</strong> – Number of samples</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datautil.util.samples_to_ms">
+<code class="descclassname">braindecode.datautil.util.</code><code class="descname">samples_to_ms</code><span class="sig-paren">(</span><em>n_samples</em>, <em>fs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/util.py#L21-L36"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.util.samples_to_ms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute milliseconds to number of samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n_samples</strong> (<em>number</em>) – Number of samples</li>
+<li><strong>fs</strong> (<em>number</em>) – Sampling rate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>milliseconds</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="braindecode.experiments.html" class="btn btn-neutral float-right" title="braindecode.experiments package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../notebooks/Experiment_Class.html" class="btn btn-neutral" title="Using the Experiment Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

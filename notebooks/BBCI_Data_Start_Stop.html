@@ -1,0 +1,1105 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Read and Decode BBCI Data with Start-Stop-Markers &mdash; Braindecode 0.1.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Braindecode 0.1.5 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Braindecode
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cropped_Decoding.html">Cropped Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Experiment_Class.html">Using the Experiment Class</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.datautil.html">braindecode.datautil package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.experiments.html">braindecode.experiments package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.models.html">braindecode.models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Braindecode</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Read and Decode BBCI Data with Start-Stop-Markers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/notebooks/BBCI_Data_Start_Stop.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Read-and-Decode-BBCI-Data-with-Start-Stop-Markers">
+<h1>Read and Decode BBCI Data with Start-Stop-Markers<a class="headerlink" href="#Read-and-Decode-BBCI-Data-with-Start-Stop-Markers" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial shows how to read and decode BBCI data with start and stop
+markers. The data loading part is more complicated and it is advised to
+read the other tutorials before.</p>
+<div class="section" id="Setup-logging-to-see-outputs">
+<h2>Setup logging to see outputs<a class="headerlink" href="#Setup-logging-to-see-outputs" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Load-and-preprocess-data">
+<h2>Load and preprocess data<a class="headerlink" href="#Load-and-preprocess-data" title="Permalink to this headline">¶</a></h2>
+<p>This is a bit more complicated than before since we have to add breaks
+etc. Here I now opt to add breaks do all preprocessings per run and only
+later combine them together.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.splitters</span> <span class="k">import</span> <span class="n">concatenate_sets</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.trial_segment</span> <span class="k">import</span> <span class="n">create_signal_target_from_raw_mne</span><span class="p">,</span> <span class="n">add_breaks</span>
+<span class="kn">from</span> <span class="nn">braindecode.datasets.bbci</span> <span class="k">import</span> <span class="n">load_bbci_sets_from_folder</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">braindecode.mne_ext.signalproc</span> <span class="k">import</span> <span class="n">resample_cnt</span><span class="p">,</span> <span class="n">mne_apply</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.signalproc</span> <span class="k">import</span> <span class="n">lowpass_cnt</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.signalproc</span> <span class="k">import</span> <span class="n">exponential_running_standardize</span>
+
+<span class="k">def</span> <span class="nf">create_cnts</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">runs</span><span class="p">,</span> <span class="n">name_to_start_code</span><span class="p">,</span> <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">break_start_offset_ms</span><span class="p">,</span>
+              <span class="n">break_stop_offset_ms</span><span class="p">,</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="p">):</span>
+    <span class="c1"># Load data</span>
+    <span class="n">cnts</span> <span class="o">=</span> <span class="n">load_bbci_sets_from_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">runs</span><span class="p">)</span>
+
+    <span class="c1"># Now do some preprocessings:</span>
+    <span class="c1"># Adding breaks, resampling to 250 Hz, lowpass below 38, eponential standardization</span>
+    <span class="n">break_start_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">break_stop_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+
+    <span class="n">new_cnts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">cnts</span><span class="p">:</span>
+        <span class="c1"># Only take some channels</span>
+        <span class="c1">#cnt = cnt.drop_channels([&#39;STI 014&#39;]) # This would remove stimulus channel</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">pick_channels</span><span class="p">([</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="s1">&#39;CPz&#39;</span> <span class="s1">&#39;C4&#39;</span><span class="p">])</span>
+        <span class="c1"># add breaks</span>
+        <span class="n">new_events</span> <span class="o">=</span> <span class="n">add_breaks</span><span class="p">(</span>
+            <span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">],</span> <span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">],</span>
+            <span class="n">break_start_code</span><span class="o">=</span><span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="o">=</span><span class="n">break_stop_code</span><span class="p">,</span>
+            <span class="n">name_to_start_codes</span><span class="o">=</span><span class="n">name_to_start_code</span><span class="p">,</span> <span class="n">name_to_stop_codes</span><span class="o">=</span><span class="n">name_to_stop_code</span><span class="p">,</span>
+            <span class="n">min_break_length_ms</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">max_break_length_ms</span><span class="o">=</span><span class="mi">9000</span><span class="p">)</span>
+        <span class="n">n_break_start_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">break_start_offset_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+        <span class="n">n_break_stop_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">break_stop_offset_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+        <span class="c1"># lets add some offset to break start and stop</span>
+        <span class="c1"># new_events[:,2] contains event codes, new_events[:,0] the sample indices</span>
+        <span class="c1"># new_events[:,1] is always 0 for my loading of BBCI data</span>
+        <span class="n">new_events</span><span class="p">[</span><span class="n">new_events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_break_start_offset</span>
+        <span class="c1"># 0.5 sec for break stop</span>
+        <span class="n">new_events</span><span class="p">[</span><span class="n">new_events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">break_stop_code</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span>  <span class="n">n_break_stop_offset</span>
+        <span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_events</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing....&quot;</span><span class="p">)</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">mne_apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">lowpass_cnt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span><span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">cnt</span><span class="p">)</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">resample_cnt</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+        <span class="c1"># mne apply will apply the function to the data (a 2d-numpy-array)</span>
+        <span class="c1"># have to transpose data back and forth, since</span>
+        <span class="c1"># exponential_running_standardize expects time x chans order</span>
+        <span class="c1"># while mne object has chans x time order</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">mne_apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">exponential_running_standardize</span><span class="p">(</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">init_block_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">factor_new</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+            <span class="n">cnt</span><span class="p">)</span>
+        <span class="n">new_cnts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cnt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_cnts</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="n">name_to_start_code</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;Right Hand&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Feet&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;Rotation&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">])])</span>
+
+<span class="n">name_to_stop_code</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;Right Hand&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">30</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;Feet&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">30</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;Rotation&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">30</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">30</span><span class="p">])])</span>
+
+<span class="n">break_start_offset_ms</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">break_stop_offset_ms</span> <span class="o">=</span> <span class="o">-</span><span class="mi">500</span>
+<span class="c1"># pick some numbers that were not used before/do not exist in markers</span>
+<span class="n">break_start_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">break_stop_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+<span class="n">train_runs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">train_cnts</span> <span class="o">=</span> <span class="n">create_cnts</span><span class="p">(</span><span class="s1">&#39;/home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/&#39;</span><span class="p">,</span>
+                         <span class="n">train_runs</span><span class="p">,</span>
+                         <span class="n">name_to_start_code</span><span class="p">,</span>
+                         <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">break_start_offset_ms</span><span class="p">,</span>
+                         <span class="n">break_stop_offset_ms</span><span class="p">,</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="p">)</span>
+
+<span class="n">name_to_code_with_breaks</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">name_to_start_code</span><span class="p">)</span>
+<span class="n">name_to_code_with_breaks</span><span class="p">[</span><span class="s1">&#39;Break&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">break_start_code</span>
+<span class="n">name_to_stop_code_with_breaks</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">name_to_stop_code</span><span class="p">)</span>
+<span class="n">name_to_stop_code_with_breaks</span><span class="p">[</span><span class="s1">&#39;Break&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">break_stop_code</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2017-07-05 13:10:11,847 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R01_1-1_250Hz.BBCI.mat
+Creating RawArray with float64 data, n_channels=64, n_times=151350
+    Range : 0 ... 151349 =      0.000 ...   605.396 secs
+Ready.
+2017-07-05 13:10:13,371 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R02_1-1_250Hz.BBCI.mat
+Creating RawArray with float64 data, n_channels=64, n_times=153500
+    Range : 0 ... 153499 =      0.000 ...   613.996 secs
+Ready.
+2017-07-05 13:10:14,465 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R03_1-1_250Hz.BBCI.mat
+Creating RawArray with float64 data, n_channels=64, n_times=180700
+    Range : 0 ... 180699 =      0.000 ...   722.796 secs
+Ready.
+2017-07-05 13:10:15,825 INFO : Preprocessing....
+2017-07-05 13:10:15,831 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-07-05 13:10:15,925 INFO : Preprocessing....
+2017-07-05 13:10:15,930 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-07-05 13:10:16,033 INFO : Preprocessing....
+2017-07-05 13:10:16,038 INFO : Just copying data, no resampling, since new sampling rate same.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">test_runs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">test_cnts</span> <span class="o">=</span> <span class="n">create_cnts</span><span class="p">(</span><span class="s1">&#39;/home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/&#39;</span><span class="p">,</span> <span class="n">test_runs</span><span class="p">,</span> <span class="n">name_to_start_code</span><span class="p">,</span>
+           <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">break_start_offset_ms</span><span class="p">,</span>
+              <span class="n">break_stop_offset_ms</span><span class="p">,</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2017-07-05 13:10:16,096 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R09_1-1_250Hz.BBCI.mat
+Creating RawArray with float64 data, n_channels=64, n_times=152050
+    Range : 0 ... 152049 =      0.000 ...   608.196 secs
+Ready.
+2017-07-05 13:10:17,176 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R10_1-1_250Hz.BBCI.mat
+Creating RawArray with float64 data, n_channels=64, n_times=151100
+    Range : 0 ... 151099 =      0.000 ...   604.396 secs
+Ready.
+2017-07-05 13:10:18,307 INFO : Preprocessing....
+2017-07-05 13:10:18,311 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-07-05 13:10:18,402 INFO : Preprocessing....
+2017-07-05 13:10:18,406 INFO : Just copying data, no resampling, since new sampling rate same.
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Create-the-model">
+<h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
+<p>We already create the model now, since we need to know the receptive
+field size for properly cutting out the data to predict. We need to cut
+out data starting at -receptive_field_size samples before the first
+sample we want to predict.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.models.shallow_fbcsp</span> <span class="k">import</span> <span class="n">ShallowFBCSPNet</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">set_random_seeds</span>
+<span class="kn">from</span> <span class="nn">braindecode.models.util</span> <span class="k">import</span> <span class="n">to_dense_prediction_model</span>
+
+<span class="c1"># Set if you want to use GPU</span>
+<span class="c1"># You can also use torch.cuda.is_available() to determine if cuda is available on your machine.</span>
+<span class="n">cuda</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">set_random_seeds</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">20170629</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
+
+<span class="c1"># This will determine how many crops are processed in parallel</span>
+<span class="n">input_time_length</span> <span class="o">=</span> <span class="mi">650</span>
+<span class="n">in_chans</span> <span class="o">=</span> <span class="n">train_cnts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># final_conv_length determines the size of the receptive field of the ConvNet</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ShallowFBCSPNet</span><span class="p">(</span><span class="n">in_chans</span><span class="o">=</span><span class="n">in_chans</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
+                        <span class="n">final_conv_length</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span><span class="o">.</span><span class="n">create_network</span><span class="p">()</span>
+<span class="n">to_dense_prediction_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">np_to_var</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># determine output size</span>
+<span class="n">test_input</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">in_chans</span><span class="p">,</span> <span class="n">input_time_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+    <span class="n">test_input</span> <span class="o">=</span> <span class="n">test_input</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
+<span class="n">n_preds_per_input</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2"> predictions per input/trial&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_preds_per_input</span><span class="p">))</span>
+<span class="n">n_receptive_field</span> <span class="o">=</span> <span class="n">input_time_length</span> <span class="o">-</span> <span class="n">n_preds_per_input</span>
+<span class="n">receptive_field_ms</span> <span class="o">=</span> <span class="n">n_receptive_field</span> <span class="o">*</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">train_cnts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Receptive field: </span><span class="si">{:d}</span><span class="s2">/</span><span class="si">{:.2f}</span><span class="s2"> (samples/ms)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_receptive_field</span><span class="p">,</span>
+                                                      <span class="n">receptive_field_ms</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+132 predictions per input/trial
+Receptive field: 518/2072.00 (samples/ms)
+</pre></div></div>
+</div>
+<div class="section" id="Create-SignalAndTarget-Sets">
+<h3>Create SignalAndTarget Sets<a class="headerlink" href="#Create-SignalAndTarget-Sets" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">train_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_signal_target_from_raw_mne</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_code_with_breaks</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">receptive_field_ms</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                                         <span class="n">name_to_stop_code_with_breaks</span><span class="p">)</span> <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">train_cnts</span><span class="p">]</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">concatenate_sets</span><span class="p">(</span><span class="n">train_sets</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2017-07-05 13:10:21,878 WARNING : No end marker for start marker code 1 at sample 150051 found.
+2017-07-05 13:10:21,879 INFO : Trial per class:
+Counter({&#39;Right Hand&#39;: 29, &#39;Words&#39;: 21, &#39;Feet&#39;: 19, &#39;Break&#39;: 18, &#39;Rotation&#39;: 4})
+2017-07-05 13:10:21,883 WARNING : No end marker for start marker code 4 at sample 152701 found.
+2017-07-05 13:10:21,884 INFO : Trial per class:
+Counter({&#39;Feet&#39;: 31, &#39;Words&#39;: 26, &#39;Break&#39;: 20, &#39;Right Hand&#39;: 18, &#39;Rotation&#39;: 6})
+2017-07-05 13:10:21,887 WARNING : No end marker for start marker code 1 at sample 179301 found.
+2017-07-05 13:10:21,888 INFO : Trial per class:
+Counter({&#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Break&#39;: 23, &#39;Right Hand&#39;: 22, &#39;Rotation&#39;: 7})
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">test_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_signal_target_from_raw_mne</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_code_with_breaks</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">receptive_field_ms</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                                         <span class="n">name_to_stop_code_with_breaks</span><span class="p">)</span> <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">test_cnts</span><span class="p">]</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">concatenate_sets</span><span class="p">(</span><span class="n">test_sets</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2017-07-05 13:10:21,909 WARNING : No end marker for start marker code 4 at sample 150601 found.
+2017-07-05 13:10:21,910 INFO : Trial per class:
+Counter({&#39;Feet&#39;: 24, &#39;Right Hand&#39;: 24, &#39;Words&#39;: 19, &#39;Break&#39;: 19, &#39;Rotation&#39;: 10})
+2017-07-05 13:10:21,914 WARNING : No end marker for start marker code 4 at sample 149601 found.
+2017-07-05 13:10:21,915 INFO : Trial per class:
+Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39;Break&#39;: 20, &#39;Rotation&#39;: 8})
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.splitters</span> <span class="k">import</span> <span class="n">split_into_two_sets</span>
+
+<span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span> <span class="o">=</span> <span class="n">split_into_two_sets</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">first_set_fraction</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Setup-optimizer-and-iterator">
+<h2>Setup optimizer and iterator<a class="headerlink" href="#Setup-optimizer-and-iterator" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">optim</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">CropsFromTrialsIterator</span>
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">CropsFromTrialsIterator</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span><span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
+                                  <span class="n">n_preds_per_input</span><span class="o">=</span><span class="n">n_preds_per_input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Setup-Monitors,-Loss-function,-Stop-Criteria">
+<h2>Setup Monitors, Loss function, Stop Criteria<a class="headerlink" href="#Setup-Monitors,-Loss-function,-Stop-Criteria" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.experiments.experiment</span> <span class="k">import</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">braindecode.experiments.monitors</span> <span class="k">import</span> <span class="n">RuntimeMonitor</span><span class="p">,</span> <span class="n">LossMonitor</span><span class="p">,</span> <span class="n">CroppedTrialMisclassMonitor</span><span class="p">,</span> <span class="n">MisclassMonitor</span>
+<span class="kn">from</span> <span class="nn">braindecode.experiments.stopcriteria</span> <span class="k">import</span> <span class="n">MaxEpochs</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.modules</span> <span class="k">import</span> <span class="n">Expression</span>
+
+
+<span class="n">loss_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">preds</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">targets</span><span class="p">)</span>
+
+<span class="n">model_constraint</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">monitors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LossMonitor</span><span class="p">(),</span> <span class="n">MisclassMonitor</span><span class="p">(</span><span class="n">col_suffix</span><span class="o">=</span><span class="s1">&#39;sample_misclass&#39;</span><span class="p">),</span>
+            <span class="n">CroppedTrialMisclassMonitor</span><span class="p">(</span><span class="n">input_time_length</span><span class="p">),</span> <span class="n">RuntimeMonitor</span><span class="p">(),]</span>
+<span class="n">stop_criterion</span> <span class="o">=</span> <span class="n">MaxEpochs</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">,</span> <span class="n">test_set</span><span class="p">,</span> <span class="n">iterator</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">model_constraint</span><span class="p">,</span>
+          <span class="n">monitors</span><span class="p">,</span> <span class="n">stop_criterion</span><span class="p">,</span> <span class="n">remember_best_column</span><span class="o">=</span><span class="s1">&#39;valid_misclass&#39;</span><span class="p">,</span>
+          <span class="n">run_after_early_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Run-experiment">
+<h2>Run experiment<a class="headerlink" href="#Run-experiment" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">exp</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2017-07-05 13:10:22,016 INFO : Run until first stop...
+2017-07-05 13:10:22,601 INFO : Epoch 0
+2017-07-05 13:10:22,602 INFO : train_loss                11.53333
+2017-07-05 13:10:22,602 INFO : valid_loss                12.37084
+2017-07-05 13:10:22,603 INFO : test_loss                 11.33717
+2017-07-05 13:10:22,604 INFO : train_sample_misclass     0.93548
+2017-07-05 13:10:22,604 INFO : valid_sample_misclass     0.98502
+2017-07-05 13:10:22,605 INFO : test_sample_misclass      0.91691
+2017-07-05 13:10:22,606 INFO : train_misclass            0.93976
+2017-07-05 13:10:22,606 INFO : valid_misclass            0.96774
+2017-07-05 13:10:22,607 INFO : test_misclass             0.90863
+2017-07-05 13:10:22,608 INFO : runtime                   0.00000
+2017-07-05 13:10:22,608 INFO :
+2017-07-05 13:10:22,610 INFO : New best valid_misclass: 0.967742
+2017-07-05 13:10:22,610 INFO :
+2017-07-05 13:10:23,656 INFO : Epoch 1
+2017-07-05 13:10:23,657 INFO : train_loss                1.50414
+2017-07-05 13:10:23,658 INFO : valid_loss                1.45471
+2017-07-05 13:10:23,659 INFO : test_loss                 1.55881
+2017-07-05 13:10:23,659 INFO : train_sample_misclass     0.64477
+2017-07-05 13:10:23,660 INFO : valid_sample_misclass     0.62696
+2017-07-05 13:10:23,661 INFO : test_sample_misclass      0.66721
+2017-07-05 13:10:23,661 INFO : train_misclass            0.58635
+2017-07-05 13:10:23,662 INFO : valid_misclass            0.59677
+2017-07-05 13:10:23,662 INFO : test_misclass             0.62437
+2017-07-05 13:10:23,663 INFO : runtime                   1.09606
+2017-07-05 13:10:23,664 INFO :
+2017-07-05 13:10:23,665 INFO : New best valid_misclass: 0.596774
+2017-07-05 13:10:23,666 INFO :
+2017-07-05 13:10:24,707 INFO : Epoch 2
+2017-07-05 13:10:24,708 INFO : train_loss                1.41926
+2017-07-05 13:10:24,709 INFO : valid_loss                1.48257
+2017-07-05 13:10:24,710 INFO : test_loss                 1.52955
+2017-07-05 13:10:24,710 INFO : train_sample_misclass     0.60706
+2017-07-05 13:10:24,711 INFO : valid_sample_misclass     0.62259
+2017-07-05 13:10:24,711 INFO : test_sample_misclass      0.64398
+2017-07-05 13:10:24,712 INFO : train_misclass            0.55823
+2017-07-05 13:10:24,713 INFO : valid_misclass            0.62903
+2017-07-05 13:10:24,713 INFO : test_misclass             0.64467
+2017-07-05 13:10:24,714 INFO : runtime                   1.05009
+2017-07-05 13:10:24,715 INFO :
+2017-07-05 13:10:25,753 INFO : Epoch 3
+2017-07-05 13:10:25,754 INFO : train_loss                1.42563
+2017-07-05 13:10:25,755 INFO : valid_loss                1.49839
+2017-07-05 13:10:25,756 INFO : test_loss                 1.61948
+2017-07-05 13:10:25,756 INFO : train_sample_misclass     0.61650
+2017-07-05 13:10:25,757 INFO : valid_sample_misclass     0.65266
+2017-07-05 13:10:25,758 INFO : test_sample_misclass      0.67657
+2017-07-05 13:10:25,758 INFO : train_misclass            0.60241
+2017-07-05 13:10:25,759 INFO : valid_misclass            0.72581
+2017-07-05 13:10:25,759 INFO : test_misclass             0.67513
+2017-07-05 13:10:25,760 INFO : runtime                   1.04545
+2017-07-05 13:10:25,761 INFO :
+2017-07-05 13:10:26,797 INFO : Epoch 4
+2017-07-05 13:10:26,798 INFO : train_loss                1.38610
+2017-07-05 13:10:26,799 INFO : valid_loss                1.48648
+2017-07-05 13:10:26,799 INFO : test_loss                 1.55085
+2017-07-05 13:10:26,800 INFO : train_sample_misclass     0.59853
+2017-07-05 13:10:26,800 INFO : valid_sample_misclass     0.64496
+2017-07-05 13:10:26,801 INFO : test_sample_misclass      0.65656
+2017-07-05 13:10:26,802 INFO : train_misclass            0.52610
+2017-07-05 13:10:26,802 INFO : valid_misclass            0.67742
+2017-07-05 13:10:26,803 INFO : test_misclass             0.62944
+2017-07-05 13:10:26,804 INFO : runtime                   1.04518
+2017-07-05 13:10:26,804 INFO :
+2017-07-05 13:10:27,841 INFO : Epoch 5
+2017-07-05 13:10:27,842 INFO : train_loss                1.41484
+2017-07-05 13:10:27,843 INFO : valid_loss                1.44856
+2017-07-05 13:10:27,844 INFO : test_loss                 1.55547
+2017-07-05 13:10:27,844 INFO : train_sample_misclass     0.60230
+2017-07-05 13:10:27,845 INFO : valid_sample_misclass     0.62832
+2017-07-05 13:10:27,845 INFO : test_sample_misclass      0.65074
+2017-07-05 13:10:27,846 INFO : train_misclass            0.51406
+2017-07-05 13:10:27,847 INFO : valid_misclass            0.58065
+2017-07-05 13:10:27,847 INFO : test_misclass             0.63452
+2017-07-05 13:10:27,848 INFO : runtime                   1.04737
+2017-07-05 13:10:27,849 INFO :
+2017-07-05 13:10:27,850 INFO : New best valid_misclass: 0.580645
+2017-07-05 13:10:27,851 INFO :
+2017-07-05 13:10:28,890 INFO : Epoch 6
+2017-07-05 13:10:28,891 INFO : train_loss                1.36760
+2017-07-05 13:10:28,892 INFO : valid_loss                1.41204
+2017-07-05 13:10:28,893 INFO : test_loss                 1.52590
+2017-07-05 13:10:28,893 INFO : train_sample_misclass     0.58988
+2017-07-05 13:10:28,894 INFO : valid_sample_misclass     0.63861
+2017-07-05 13:10:28,895 INFO : test_sample_misclass      0.64623
+2017-07-05 13:10:28,895 INFO : train_misclass            0.49799
+2017-07-05 13:10:28,896 INFO : valid_misclass            0.61290
+2017-07-05 13:10:28,896 INFO : test_misclass             0.60406
+2017-07-05 13:10:28,897 INFO : runtime                   1.04936
+2017-07-05 13:10:28,898 INFO :
+2017-07-05 13:10:29,933 INFO : Epoch 7
+2017-07-05 13:10:29,934 INFO : train_loss                1.37728
+2017-07-05 13:10:29,934 INFO : valid_loss                1.43272
+2017-07-05 13:10:29,935 INFO : test_loss                 1.50316
+2017-07-05 13:10:29,936 INFO : train_sample_misclass     0.57462
+2017-07-05 13:10:29,936 INFO : valid_sample_misclass     0.62801
+2017-07-05 13:10:29,937 INFO : test_sample_misclass      0.63327
+2017-07-05 13:10:29,938 INFO : train_misclass            0.51807
+2017-07-05 13:10:29,938 INFO : valid_misclass            0.70968
+2017-07-05 13:10:29,939 INFO : test_misclass             0.63452
+2017-07-05 13:10:29,939 INFO : runtime                   1.04274
+2017-07-05 13:10:29,940 INFO :
+2017-07-05 13:10:30,979 INFO : Epoch 8
+2017-07-05 13:10:30,980 INFO : train_loss                1.37169
+2017-07-05 13:10:30,981 INFO : valid_loss                1.42813
+2017-07-05 13:10:30,982 INFO : test_loss                 1.53069
+2017-07-05 13:10:30,982 INFO : train_sample_misclass     0.58574
+2017-07-05 13:10:30,983 INFO : valid_sample_misclass     0.65559
+2017-07-05 13:10:30,983 INFO : test_sample_misclass      0.67227
+2017-07-05 13:10:30,984 INFO : train_misclass            0.55823
+2017-07-05 13:10:30,985 INFO : valid_misclass            0.67742
+2017-07-05 13:10:30,985 INFO : test_misclass             0.65990
+2017-07-05 13:10:30,986 INFO : runtime                   1.04512
+2017-07-05 13:10:30,987 INFO :
+2017-07-05 13:10:32,024 INFO : Epoch 9
+2017-07-05 13:10:32,025 INFO : train_loss                1.36508
+2017-07-05 13:10:32,026 INFO : valid_loss                1.43018
+2017-07-05 13:10:32,026 INFO : test_loss                 1.53601
+2017-07-05 13:10:32,027 INFO : train_sample_misclass     0.58852
+2017-07-05 13:10:32,028 INFO : valid_sample_misclass     0.65428
+2017-07-05 13:10:32,028 INFO : test_sample_misclass      0.66769
+2017-07-05 13:10:32,029 INFO : train_misclass            0.57028
+2017-07-05 13:10:32,029 INFO : valid_misclass            0.67742
+2017-07-05 13:10:32,030 INFO : test_misclass             0.65482
+2017-07-05 13:10:32,031 INFO : runtime                   1.04509
+2017-07-05 13:10:32,031 INFO :
+2017-07-05 13:10:33,074 INFO : Epoch 10
+2017-07-05 13:10:33,074 INFO : train_loss                1.34019
+2017-07-05 13:10:33,075 INFO : valid_loss                1.47361
+2017-07-05 13:10:33,076 INFO : test_loss                 1.52654
+2017-07-05 13:10:33,076 INFO : train_sample_misclass     0.57780
+2017-07-05 13:10:33,077 INFO : valid_sample_misclass     0.64126
+2017-07-05 13:10:33,078 INFO : test_sample_misclass      0.65008
+2017-07-05 13:10:33,078 INFO : train_misclass            0.48594
+2017-07-05 13:10:33,079 INFO : valid_misclass            0.56452
+2017-07-05 13:10:33,079 INFO : test_misclass             0.60406
+2017-07-05 13:10:33,080 INFO : runtime                   1.04898
+2017-07-05 13:10:33,081 INFO :
+2017-07-05 13:10:33,082 INFO : New best valid_misclass: 0.564516
+2017-07-05 13:10:33,083 INFO :
+2017-07-05 13:10:34,122 INFO : Epoch 11
+2017-07-05 13:10:34,123 INFO : train_loss                1.37248
+2017-07-05 13:10:34,123 INFO : valid_loss                1.39706
+2017-07-05 13:10:34,124 INFO : test_loss                 1.57353
+2017-07-05 13:10:34,124 INFO : train_sample_misclass     0.58344
+2017-07-05 13:10:34,125 INFO : valid_sample_misclass     0.64056
+2017-07-05 13:10:34,126 INFO : test_sample_misclass      0.67993
+2017-07-05 13:10:34,126 INFO : train_misclass            0.51406
+2017-07-05 13:10:34,127 INFO : valid_misclass            0.64516
+2017-07-05 13:10:34,128 INFO : test_misclass             0.65482
+2017-07-05 13:10:34,128 INFO : runtime                   1.04916
+2017-07-05 13:10:34,129 INFO :
+2017-07-05 13:10:35,166 INFO : Epoch 12
+2017-07-05 13:10:35,167 INFO : train_loss                1.38699
+2017-07-05 13:10:35,168 INFO : valid_loss                1.48617
+2017-07-05 13:10:35,168 INFO : test_loss                 1.57766
+2017-07-05 13:10:35,169 INFO : train_sample_misclass     0.60407
+2017-07-05 13:10:35,170 INFO : valid_sample_misclass     0.62667
+2017-07-05 13:10:35,170 INFO : test_sample_misclass      0.66531
+2017-07-05 13:10:35,171 INFO : train_misclass            0.56627
+2017-07-05 13:10:35,172 INFO : valid_misclass            0.61290
+2017-07-05 13:10:35,172 INFO : test_misclass             0.66497
+2017-07-05 13:10:35,173 INFO : runtime                   1.04371
+2017-07-05 13:10:35,173 INFO :
+2017-07-05 13:10:36,210 INFO : Epoch 13
+2017-07-05 13:10:36,211 INFO : train_loss                1.34750
+2017-07-05 13:10:36,211 INFO : valid_loss                1.47149
+2017-07-05 13:10:36,212 INFO : test_loss                 1.57028
+2017-07-05 13:10:36,213 INFO : train_sample_misclass     0.56923
+2017-07-05 13:10:36,213 INFO : valid_sample_misclass     0.63300
+2017-07-05 13:10:36,214 INFO : test_sample_misclass      0.65084
+2017-07-05 13:10:36,215 INFO : train_misclass            0.50602
+2017-07-05 13:10:36,215 INFO : valid_misclass            0.56452
+2017-07-05 13:10:36,216 INFO : test_misclass             0.59391
+2017-07-05 13:10:36,216 INFO : runtime                   1.04310
+2017-07-05 13:10:36,217 INFO :
+2017-07-05 13:10:36,219 INFO : New best valid_misclass: 0.564516
+2017-07-05 13:10:36,219 INFO :
+2017-07-05 13:10:37,261 INFO : Epoch 14
+2017-07-05 13:10:37,262 INFO : train_loss                1.35358
+2017-07-05 13:10:37,263 INFO : valid_loss                1.46056
+2017-07-05 13:10:37,263 INFO : test_loss                 1.54272
+2017-07-05 13:10:37,264 INFO : train_sample_misclass     0.58878
+2017-07-05 13:10:37,265 INFO : valid_sample_misclass     0.63554
+2017-07-05 13:10:37,265 INFO : test_sample_misclass      0.65247
+2017-07-05 13:10:37,266 INFO : train_misclass            0.48996
+2017-07-05 13:10:37,266 INFO : valid_misclass            0.59677
+2017-07-05 13:10:37,267 INFO : test_misclass             0.61421
+2017-07-05 13:10:37,268 INFO : runtime                   1.05266
+2017-07-05 13:10:37,268 INFO :
+2017-07-05 13:10:38,311 INFO : Epoch 15
+2017-07-05 13:10:38,312 INFO : train_loss                1.32901
+2017-07-05 13:10:38,313 INFO : valid_loss                1.38894
+2017-07-05 13:10:38,313 INFO : test_loss                 1.51226
+2017-07-05 13:10:38,314 INFO : train_sample_misclass     0.56179
+2017-07-05 13:10:38,315 INFO : valid_sample_misclass     0.62443
+2017-07-05 13:10:38,315 INFO : test_sample_misclass      0.64149
+2017-07-05 13:10:38,316 INFO : train_misclass            0.45783
+2017-07-05 13:10:38,316 INFO : valid_misclass            0.56452
+2017-07-05 13:10:38,317 INFO : test_misclass             0.60914
+2017-07-05 13:10:38,318 INFO : runtime                   1.04960
+2017-07-05 13:10:38,318 INFO :
+2017-07-05 13:10:38,320 INFO : New best valid_misclass: 0.564516
+2017-07-05 13:10:38,320 INFO :
+2017-07-05 13:10:39,367 INFO : Epoch 16
+2017-07-05 13:10:39,368 INFO : train_loss                1.35494
+2017-07-05 13:10:39,368 INFO : valid_loss                1.46781
+2017-07-05 13:10:39,369 INFO : test_loss                 1.55805
+2017-07-05 13:10:39,370 INFO : train_sample_misclass     0.58213
+2017-07-05 13:10:39,370 INFO : valid_sample_misclass     0.61860
+2017-07-05 13:10:39,371 INFO : test_sample_misclass      0.64870
+2017-07-05 13:10:39,371 INFO : train_misclass            0.55020
+2017-07-05 13:10:39,372 INFO : valid_misclass            0.61290
+2017-07-05 13:10:39,373 INFO : test_misclass             0.65990
+2017-07-05 13:10:39,373 INFO : runtime                   1.05210
+2017-07-05 13:10:39,374 INFO :
+2017-07-05 13:10:40,413 INFO : Epoch 17
+2017-07-05 13:10:40,414 INFO : train_loss                1.33417
+2017-07-05 13:10:40,415 INFO : valid_loss                1.43405
+2017-07-05 13:10:40,415 INFO : test_loss                 1.50453
+2017-07-05 13:10:40,416 INFO : train_sample_misclass     0.57871
+2017-07-05 13:10:40,417 INFO : valid_sample_misclass     0.63641
+2017-07-05 13:10:40,417 INFO : test_sample_misclass      0.64038
+2017-07-05 13:10:40,418 INFO : train_misclass            0.51004
+2017-07-05 13:10:40,418 INFO : valid_misclass            0.56452
+2017-07-05 13:10:40,419 INFO : test_misclass             0.63452
+2017-07-05 13:10:40,420 INFO : runtime                   1.04953
+2017-07-05 13:10:40,420 INFO :
+2017-07-05 13:10:40,422 INFO : New best valid_misclass: 0.564516
+2017-07-05 13:10:40,423 INFO :
+2017-07-05 13:10:41,462 INFO : Epoch 18
+2017-07-05 13:10:41,463 INFO : train_loss                1.37133
+2017-07-05 13:10:41,464 INFO : valid_loss                1.48794
+2017-07-05 13:10:41,465 INFO : test_loss                 1.61320
+2017-07-05 13:10:41,465 INFO : train_sample_misclass     0.59854
+2017-07-05 13:10:41,466 INFO : valid_sample_misclass     0.63155
+2017-07-05 13:10:41,466 INFO : test_sample_misclass      0.66630
+2017-07-05 13:10:41,467 INFO : train_misclass            0.53414
+2017-07-05 13:10:41,468 INFO : valid_misclass            0.54839
+2017-07-05 13:10:41,468 INFO : test_misclass             0.63959
+2017-07-05 13:10:41,469 INFO : runtime                   1.04950
+2017-07-05 13:10:41,470 INFO :
+2017-07-05 13:10:41,471 INFO : New best valid_misclass: 0.548387
+2017-07-05 13:10:41,472 INFO :
+2017-07-05 13:10:42,514 INFO : Epoch 19
+2017-07-05 13:10:42,515 INFO : train_loss                1.38336
+2017-07-05 13:10:42,516 INFO : valid_loss                1.45849
+2017-07-05 13:10:42,516 INFO : test_loss                 1.53109
+2017-07-05 13:10:42,517 INFO : train_sample_misclass     0.58641
+2017-07-05 13:10:42,517 INFO : valid_sample_misclass     0.62703
+2017-07-05 13:10:42,518 INFO : test_sample_misclass      0.64048
+2017-07-05 13:10:42,519 INFO : train_misclass            0.50201
+2017-07-05 13:10:42,519 INFO : valid_misclass            0.69355
+2017-07-05 13:10:42,520 INFO : test_misclass             0.59391
+2017-07-05 13:10:42,521 INFO : runtime                   1.05205
+2017-07-05 13:10:42,521 INFO :
+2017-07-05 13:10:43,566 INFO : Epoch 20
+2017-07-05 13:10:43,567 INFO : train_loss                1.33203
+2017-07-05 13:10:43,568 INFO : valid_loss                1.36307
+2017-07-05 13:10:43,569 INFO : test_loss                 1.50656
+2017-07-05 13:10:43,569 INFO : train_sample_misclass     0.56715
+2017-07-05 13:10:43,570 INFO : valid_sample_misclass     0.60826
+2017-07-05 13:10:43,570 INFO : test_sample_misclass      0.63761
+2017-07-05 13:10:43,571 INFO : train_misclass            0.47390
+2017-07-05 13:10:43,572 INFO : valid_misclass            0.61290
+2017-07-05 13:10:43,572 INFO : test_misclass             0.58883
+2017-07-05 13:10:43,573 INFO : runtime                   1.05095
+2017-07-05 13:10:43,574 INFO :
+2017-07-05 13:10:43,574 INFO : Setup for second stop...
+2017-07-05 13:10:43,577 INFO : Train loss to reach 1.37133
+2017-07-05 13:10:43,578 INFO : Run until second stop...
+2017-07-05 13:10:44,198 INFO : Epoch 19
+2017-07-05 13:10:44,199 INFO : train_loss                1.39385
+2017-07-05 13:10:44,199 INFO : valid_loss                1.48794
+2017-07-05 13:10:44,200 INFO : test_loss                 1.61320
+2017-07-05 13:10:44,200 INFO : train_sample_misclass     0.60491
+2017-07-05 13:10:44,201 INFO : valid_sample_misclass     0.63155
+2017-07-05 13:10:44,202 INFO : test_sample_misclass      0.66630
+2017-07-05 13:10:44,202 INFO : train_misclass            0.53698
+2017-07-05 13:10:44,203 INFO : valid_misclass            0.54839
+2017-07-05 13:10:44,204 INFO : test_misclass             0.63959
+2017-07-05 13:10:44,204 INFO : runtime                   0.55378
+2017-07-05 13:10:44,205 INFO :
+2017-07-05 13:10:45,423 INFO : Epoch 20
+2017-07-05 13:10:45,424 INFO : train_loss                1.35231
+2017-07-05 13:10:45,425 INFO : valid_loss                1.33071
+2017-07-05 13:10:45,426 INFO : test_loss                 1.58230
+2017-07-05 13:10:45,426 INFO : train_sample_misclass     0.57709
+2017-07-05 13:10:45,427 INFO : valid_sample_misclass     0.62023
+2017-07-05 13:10:45,428 INFO : test_sample_misclass      0.69375
+2017-07-05 13:10:45,428 INFO : train_misclass            0.48553
+2017-07-05 13:10:45,429 INFO : valid_misclass            0.54839
+2017-07-05 13:10:45,430 INFO : test_misclass             0.69036
+2017-07-05 13:10:45,430 INFO : runtime                   1.23906
+2017-07-05 13:10:45,431 INFO :
+</pre></div></div>
+</div>
+<p>We arrive only at 31% accuracy. With only 3 sensors and 3 training runs,
+cannot expect too much great performance :)</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.5',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
