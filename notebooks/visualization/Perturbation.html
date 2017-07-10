@@ -98,10 +98,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#Load-data">Load data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Create-the-model,-optimizer,-iterator">Create the model, optimizer, iterator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Training-loop">Training loop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Compute-amplitude-perturbation---prediction-change-correlation">Compute amplitude perturbation - prediction change correlation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Plot-correlations">Plot correlations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Plot-with-mne">Plot with mne</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Plot-with-Braindecode">Plot with Braindecode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Compute-correlation:-amplitude-perturbation---prediction-change">Compute correlation: amplitude perturbation - prediction change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Plot-correlations">Plot correlations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Plot-with-MNE">Plot with MNE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plot-with-Braindecode">Plot with Braindecode</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#Dataset-References">Dataset References</a></li>
 </ul>
 </li>
@@ -371,8 +373,8 @@ div.nboutput div.output_area.stderr {
 </style>
 <div class="section" id="Amplitude-Perturbation-Visualization">
 <h1>Amplitude Perturbation Visualization<a class="headerlink" href="#Amplitude-Perturbation-Visualization" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial, we show how to use perturbations of the amplitudes of
-the signals to learn something about the trained convolutional networks.
+<p>In this tutorial, we show how to use perturbations of the input
+amplitudes to learn something about the trained convolutional networks.
 For more background, see <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural
 networks for EEG decoding and
 visualization</a>, Section A.5.2.</p>
@@ -707,8 +709,8 @@ Test   Accuracy: 71.8%
 </pre></div></div>
 </div>
 </div>
-<div class="section" id="Compute-amplitude-perturbation---prediction-change-correlation">
-<h2>Compute amplitude perturbation - prediction change correlation<a class="headerlink" href="#Compute-amplitude-perturbation---prediction-change-correlation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Compute-correlation:-amplitude-perturbation---prediction-change">
+<h2>Compute correlation: amplitude perturbation - prediction change<a class="headerlink" href="#Compute-correlation:-amplitude-perturbation---prediction-change" title="Permalink to this headline">¶</a></h2>
 <p>First collect all batches and concatenate them into one array of
 examples:</p>
 <div class="nbinput nblast docutils container">
@@ -735,7 +737,8 @@ function and returns the predictions as numpy arrays.</p>
 </pre></div>
 </div>
 </div>
-<p>Setup logging and compute the correlations!</p>
+<p>Setup logging and compute the correlations between amplitude
+perturbations and prediction changes.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
@@ -895,9 +898,8 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Plot-with-mne">
-<h2>Plot with mne<a class="headerlink" href="#Plot-with-mne" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Plot-with-MNE">
+<h3>Plot with MNE<a class="headerlink" href="#Plot-with-MNE" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [11]:
@@ -937,7 +939,7 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 </div>
 </div>
 <div class="section" id="Plot-with-Braindecode">
-<h2>Plot with Braindecode<a class="headerlink" href="#Plot-with-Braindecode" title="Permalink to this headline">¶</a></h2>
+<h3>Plot with Braindecode<a class="headerlink" href="#Plot-with-Braindecode" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [13]:
@@ -970,6 +972,7 @@ of alpha activity for the left hand in the data, see <a class="reference externa
 convolutional neural networks for EEG decoding and
 visualization</a> Result 12 for some
 notes on interpretability.</p>
+</div>
 </div>
 <div class="section" id="Dataset-References">
 <h2>Dataset References<a class="headerlink" href="#Dataset-References" title="Permalink to this headline">¶</a></h2>
