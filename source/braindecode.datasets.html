@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.datasets package &mdash; Braindecode 0.1.5 documentation</title>
+  <title>braindecode.datasets package &mdash; Braindecode 0.1.6 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.1.5 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.1.6 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.5
+                0.1.6
               </div>
             
           
@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="braindecode.datautil.html">braindecode.datautil package</a></li>
@@ -328,6 +329,53 @@ if necessary.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-braindecode.datasets.sensor_positions">
+<span id="braindecode-datasets-sensor-positions-module"></span><h2>braindecode.datasets.sensor_positions module<a class="headerlink" href="#module-braindecode.datasets.sensor_positions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.datasets.sensor_positions.get_channelpos">
+<code class="descclassname">braindecode.datasets.sensor_positions.</code><code class="descname">get_channelpos</code><span class="sig-paren">(</span><em>channame</em>, <em>chan_pos_list</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/sensor_positions.py#L142-L154"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.sensor_positions.get_channelpos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.datasets.sensor_positions.get_channelpos_from_angle">
+<code class="descclassname">braindecode.datasets.sensor_positions.</code><code class="descname">get_channelpos_from_angle</code><span class="sig-paren">(</span><em>channame</em>, <em>chan_pos_list=(‘angle’</em>, <em>(‘Fpz’</em>, <em>(0.0</em>, <em>4.0))</em>, <em>(‘Fp1’</em>, <em>(-3.5</em>, <em>3.5))</em>, <em>(‘Fp2’</em>, <em>(3.5</em>, <em>3.5))</em>, <em>(‘AFp3h’</em>, <em>(-1.0</em>, <em>3.5))</em>, <em>(‘AFp4h’</em>, <em>(1.0</em>, <em>3.5))</em>, <em>(‘AF7’</em>, <em>(-4.0</em>, <em>3.0))</em>, <em>(‘AF3’</em>, <em>(-2.0</em>, <em>3.0))</em>, <em>(‘AFz’</em>, <em>(0.0</em>, <em>3.0))</em>, <em>(‘AF4’</em>, <em>(2.0</em>, <em>3.0))</em>, <em>(‘AF8’</em>, <em>(4.0</em>, <em>3.0))</em>, <em>(‘AFF5h’</em>, <em>(-2.5</em>, <em>2.5))</em>, <em>(‘AFF1’</em>, <em>(-0.5</em>, <em>2.5))</em>, <em>(‘AFF2’</em>, <em>(0.5</em>, <em>2.5))</em>, <em>(‘AFF6h’</em>, <em>(2.5</em>, <em>2.5))</em>, <em>(‘F7’</em>, <em>(-4.0</em>, <em>2.0))</em>, <em>(‘F5’</em>, <em>(-3.0</em>, <em>2.0))</em>, <em>(‘F3’</em>, <em>(-2.0</em>, <em>2.0))</em>, <em>(‘F1’</em>, <em>(-1.0</em>, <em>2.0))</em>, <em>(‘Fz’</em>, <em>(0.0</em>, <em>2.0))</em>, <em>(‘F2’</em>, <em>(1.0</em>, <em>2.0))</em>, <em>(‘F4’</em>, <em>(2.0</em>, <em>2.0))</em>, <em>(‘F6’</em>, <em>(3.0</em>, <em>2.0))</em>, <em>(‘F8’</em>, <em>(4.0</em>, <em>2.0))</em>, <em>(‘FFT7h’</em>, <em>(-3.5</em>, <em>1.5))</em>, <em>(‘FFC5h’</em>, <em>(-2.5</em>, <em>1.5))</em>, <em>(‘FFC3h’</em>, <em>(-1.5</em>, <em>1.5))</em>, <em>(‘FFC1h’</em>, <em>(-0.5</em>, <em>1.5))</em>, <em>(‘FFC2h’</em>, <em>(0.5</em>, <em>1.5))</em>, <em>(‘FFC4h’</em>, <em>(1.5</em>, <em>1.5))</em>, <em>(‘FFC6h’</em>, <em>(2.5</em>, <em>1.5))</em>, <em>(‘FFT8h’</em>, <em>(3.5</em>, <em>1.5))</em>, <em>(‘FT9’</em>, <em>(-5.0</em>, <em>1.0))</em>, <em>(‘FT7’</em>, <em>(-4.0</em>, <em>1.0))</em>, <em>(‘FC5’</em>, <em>(-3.0</em>, <em>1.0))</em>, <em>(‘FC3’</em>, <em>(-2.0</em>, <em>1.0))</em>, <em>(‘FC1’</em>, <em>(-1.0</em>, <em>1.0))</em>, <em>(‘FCz’</em>, <em>(0.0</em>, <em>1.0))</em>, <em>(‘FC2’</em>, <em>(1.0</em>, <em>1.0))</em>, <em>(‘FC4’</em>, <em>(2.0</em>, <em>1.0))</em>, <em>(‘FC6’</em>, <em>(3.0</em>, <em>1.0))</em>, <em>(‘FT8’</em>, <em>(4.0</em>, <em>1.0))</em>, <em>(‘FT10’</em>, <em>(5.0</em>, <em>1.0))</em>, <em>(‘FTT9h’</em>, <em>(-4.5</em>, <em>0.5))</em>, <em>(‘FTT7h’</em>, <em>(-3.5</em>, <em>0.5))</em>, <em>(‘FCC5h’</em>, <em>(-2.5</em>, <em>0.5))</em>, <em>(‘FCC3h’</em>, <em>(-1.5</em>, <em>0.5))</em>, <em>(‘FCC1h’</em>, <em>(-0.5</em>, <em>0.5))</em>, <em>(‘FCC2h’</em>, <em>(0.5</em>, <em>0.5))</em>, <em>(‘FCC4h’</em>, <em>(1.5</em>, <em>0.5))</em>, <em>(‘FCC6h’</em>, <em>(2.5</em>, <em>0.5))</em>, <em>(‘FTT8h’</em>, <em>(3.5</em>, <em>0.5))</em>, <em>(‘FTT10h’</em>, <em>(4.5</em>, <em>0.5))</em>, <em>(‘M1’</em>, <em>(-5.0</em>, <em>0.0))</em>, <em>(‘T9’</em>, <em>(-4.5</em>, <em>0.0))</em>, <em>(‘T7’</em>, <em>(-4.0</em>, <em>0.0))</em>, <em>(‘C5’</em>, <em>(-3.0</em>, <em>0.0))</em>, <em>(‘C3’</em>, <em>(-2.0</em>, <em>0.0))</em>, <em>(‘C1’</em>, <em>(-1.0</em>, <em>0.0))</em>, <em>(‘Cz’</em>, <em>(0.0</em>, <em>0.0))</em>, <em>(‘C2’</em>, <em>(1.0</em>, <em>0.0))</em>, <em>(‘C4’</em>, <em>(2.0</em>, <em>0.0))</em>, <em>(‘C6’</em>, <em>(3.0</em>, <em>0.0))</em>, <em>(‘T8’</em>, <em>(4.0</em>, <em>0.0))</em>, <em>(‘T10’</em>, <em>(4.5</em>, <em>0.0))</em>, <em>(‘M2’</em>, <em>(5.0</em>, <em>0.0))</em>, <em>(‘TTP7h’</em>, <em>(-3.5</em>, <em>-0.5))</em>, <em>(‘CCP5h’</em>, <em>(-2.5</em>, <em>-0.5))</em>, <em>(‘CCP3h’</em>, <em>(-1.5</em>, <em>-0.5))</em>, <em>(‘CCP1h’</em>, <em>(-0.5</em>, <em>-0.5))</em>, <em>(‘CCP2h’</em>, <em>(0.5</em>, <em>-0.5))</em>, <em>(‘CCP4h’</em>, <em>(1.5</em>, <em>-0.5))</em>, <em>(‘CCP6h’</em>, <em>(2.5</em>, <em>-0.5))</em>, <em>(‘TTP8h’</em>, <em>(3.5</em>, <em>-0.5))</em>, <em>(‘TP7’</em>, <em>(-4.0</em>, <em>-1.0))</em>, <em>(‘CP5’</em>, <em>(-3.0</em>, <em>-1.0))</em>, <em>(‘CP3’</em>, <em>(-2.0</em>, <em>-1.0))</em>, <em>(‘CP1’</em>, <em>(-1.0</em>, <em>-1.0))</em>, <em>(‘CPz’</em>, <em>(0.0</em>, <em>-1.0))</em>, <em>(‘CP2’</em>, <em>(1.0</em>, <em>-1.0))</em>, <em>(‘CP4’</em>, <em>(2.0</em>, <em>-1.0))</em>, <em>(‘CP6’</em>, <em>(3.0</em>, <em>-1.0))</em>, <em>(‘TP8’</em>, <em>(4.0</em>, <em>-1.0))</em>, <em>(‘TPP9h’</em>, <em>(-4.5</em>, <em>-1.5))</em>, <em>(‘TPP7h’</em>, <em>(-3.5</em>, <em>-1.5))</em>, <em>(‘CPP5h’</em>, <em>(-2.5</em>, <em>-1.5))</em>, <em>(‘CPP3h’</em>, <em>(-1.5</em>, <em>-1.5))</em>, <em>(‘CPP1h’</em>, <em>(-0.5</em>, <em>-1.5))</em>, <em>(‘CPP2h’</em>, <em>(0.5</em>, <em>-1.5))</em>, <em>(‘CPP4h’</em>, <em>(1.5</em>, <em>-1.5))</em>, <em>(‘CPP6h’</em>, <em>(2.5</em>, <em>-1.5))</em>, <em>(‘TPP8h’</em>, <em>(3.5</em>, <em>-1.5))</em>, <em>(‘TPP10h’</em>, <em>(4.5</em>, <em>-1.5))</em>, <em>(‘P9’</em>, <em>(-5.0</em>, <em>-2.0))</em>, <em>(‘P7’</em>, <em>(-4.0</em>, <em>-2.0))</em>, <em>(‘P5’</em>, <em>(-3.0</em>, <em>-2.0))</em>, <em>(‘P3’</em>, <em>(-2.0</em>, <em>-2.0))</em>, <em>(‘P1’</em>, <em>(-1.0</em>, <em>-2.0))</em>, <em>(‘Pz’</em>, <em>(0.0</em>, <em>-2.0))</em>, <em>(‘P2’</em>, <em>(1.0</em>, <em>-2.0))</em>, <em>(‘P4’</em>, <em>(2.0</em>, <em>-2.0))</em>, <em>(‘P6’</em>, <em>(3.0</em>, <em>-2.0))</em>, <em>(‘P8’</em>, <em>(4.0</em>, <em>-2.0))</em>, <em>(‘P10’</em>, <em>(5.0</em>, <em>-2.0))</em>, <em>(‘PPO9h’</em>, <em>(-4.5</em>, <em>-2.5))</em>, <em>(‘PPO5h’</em>, <em>(-3.0</em>, <em>-2.5))</em>, <em>(‘PPO1’</em>, <em>(-0.65</em>, <em>-2.5))</em>, <em>(‘PPO2’</em>, <em>(0.65</em>, <em>-2.5))</em>, <em>(‘PPO6h’</em>, <em>(3.0</em>, <em>-2.5))</em>, <em>(‘PPO10h’</em>, <em>(4.5</em>, <em>-2.5))</em>, <em>(‘PO9’</em>, <em>(-5.0</em>, <em>-3.0))</em>, <em>(‘PO7’</em>, <em>(-4.0</em>, <em>-3.0))</em>, <em>(‘PO5’</em>, <em>(-3.0</em>, <em>-3.0))</em>, <em>(‘PO3’</em>, <em>(-2.0</em>, <em>-3.0))</em>, <em>(‘PO1’</em>, <em>(-1.0</em>, <em>-3.0))</em>, <em>(‘POz’</em>, <em>(0.0</em>, <em>-3.0))</em>, <em>(‘PO2’</em>, <em>(1.0</em>, <em>-3.0))</em>, <em>(‘PO4’</em>, <em>(2.0</em>, <em>-3.0))</em>, <em>(‘PO6’</em>, <em>(3.0</em>, <em>-3.0))</em>, <em>(‘PO8’</em>, <em>(4.0</em>, <em>-3.0))</em>, <em>(‘PO10’</em>, <em>(5.0</em>, <em>-3.0))</em>, <em>(‘POO9h’</em>, <em>(-4.5</em>, <em>-3.25))</em>, <em>(‘POO3h’</em>, <em>(-2.0</em>, <em>-3.25))</em>, <em>(‘POO4h’</em>, <em>(2.0</em>, <em>-3.25))</em>, <em>(‘POO10h’</em>, <em>(4.5</em>, <em>-3.25))</em>, <em>(‘O1’</em>, <em>(-2.5</em>, <em>-3.75))</em>, <em>(‘Oz’</em>, <em>(0.0</em>, <em>-3.75))</em>, <em>(‘O2’</em>, <em>(2.5</em>, <em>-3.75))</em>, <em>(‘OI1h’</em>, <em>(1.5</em>, <em>-4.25))</em>, <em>(‘OI2h’</em>, <em>(-1.5</em>, <em>-4.25))</em>, <em>(‘I1’</em>, <em>(1.0</em>, <em>-4.5))</em>, <em>(‘Iz’</em>, <em>(0.0</em>, <em>-4.5))</em>, <em>(‘I2’</em>, <em>(-1.0</em>, <em>-4.5)))</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/sensor_positions.py#L157-L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.sensor_positions.get_channelpos_from_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the x/y position of a channel.</p>
+<p>This method calculates the stereographic projection of a channel
+from <code class="docutils literal"><span class="pre">CHANNEL_10_20</span></code>, suitable for a scalp plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>channame</strong> (<em>str</em>) – Name of the channel, the search is case insensitive.</li>
+<li><strong>chan_pos_list=CHANNEL_10_20_APPROX,</strong></li>
+<li><strong>interpolation=’bilinear’</strong></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>x, y</strong> – The projected point on the plane if the point is known,
+otherwise <code class="docutils literal"><span class="pre">None</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float or None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">get_channelpos_from_angle</span><span class="p">(</span><span class="s1">&#39;C2&#39;</span><span class="p">)</span>
+<span class="go">(0.1720792096741632, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># the channels are case insensitive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">get_channelpos_from_angle</span><span class="p">(</span><span class="s1">&#39;c2&#39;</span><span class="p">)</span>
+<span class="go">(0.1720792096741632, 0.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># lookup for an invalid channel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">get_channelpos_from_angle</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -365,7 +413,7 @@ if necessary.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.5',
+            VERSION:'0.1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
