@@ -35,7 +35,8 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.1.6 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.1.6 documentation" href="../index.html"/>
+        <link rel="prev" title="braindecode.torch_ext package" href="braindecode.torch_ext.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -94,12 +95,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="braindecode.datautil.html">braindecode.datautil package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="braindecode.experiments.html">braindecode.experiments package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="braindecode.models.html">braindecode.models package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">braindecode.visualization package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.visualization.perturbation">braindecode.visualization.perturbation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#braindecode-visualization-plot-module">braindecode.visualization.plot module</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -199,6 +206,7 @@
 </style>
 <div class="section" id="module-braindecode.visualization">
 <span id="braindecode-visualization-package"></span><h1>braindecode.visualization package<a class="headerlink" href="#module-braindecode.visualization" title="Permalink to this headline">¶</a></h1>
+<p>Functions for visualisations, especially of the ConvNets.</p>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -206,16 +214,35 @@
 <span id="braindecode-visualization-perturbation-module"></span><h2>braindecode.visualization.perturbation module<a class="headerlink" href="#module-braindecode.visualization.perturbation" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.gaussian_perturbation">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">gaussian_perturbation</code><span class="sig-paren">(</span><em>amps</em>, <em>rng</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L12-L14"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.gaussian_perturbation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">gaussian_perturbation</code><span class="sig-paren">(</span><em>amps</em>, <em>rng</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L12-L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.gaussian_perturbation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create gaussian noise tensor with same shape as amplitudes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amps</strong> (<em>ndarray</em>) – Amplitudes.</li>
+<li><strong>rng</strong> (<em>RandomState</em>) – Random generator.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>perturbation</strong> – Perturbations to add to the amplitudes.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.compute_amplitude_prediction_correlations">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">compute_amplitude_prediction_correlations</code><span class="sig-paren">(</span><em>pred_fn</em>, <em>examples</em>, <em>n_iterations</em>, <em>perturb_fn=&lt;function gaussian_perturbation&gt;</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L17-L88"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">compute_amplitude_prediction_correlations</code><span class="sig-paren">(</span><em>pred_fn</em>, <em>examples</em>, <em>n_iterations</em>, <em>perturb_fn=&lt;function gaussian_perturbation&gt;</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L32-L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perturb input amplitudes and compute correlation between amplitude
 perturbations and prediction changes when pushing perturbed input through
 the prediction function.</p>
-<p>For more details, see [EEGDeepLearning].</p>
+<p>For more details, see <a class="reference internal" href="#eegdeeplearning" id="id1">[EEGDeepLearning]</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -240,12 +267,18 @@ for all sensors and frequency bins.</p>
 </tr>
 </tbody>
 </table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="eegdeeplearning" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[EEGDeepLearning]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
+Glasstetter, M., Eggensperger, K., Tangermann, M., … &amp; Ball, T. (2017).
+Deep learning with convolutional neural networks for EEG decoding and
+visualization.
+arXiv preprint arXiv:1703.05051.</td></tr>
+</tbody>
+</table>
 </dd></dl>
-
-<dl class="function">
-<dt id="braindecode.visualization.perturbation.amplitude_phase_to_complex">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amplitude_phase_to_complex</code><span class="sig-paren">(</span><em>amplitude</em>, <em>phase</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L91-L92"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amplitude_phase_to_complex" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 <div class="section" id="braindecode-visualization-plot-module">
@@ -260,6 +293,13 @@ for all sensors and frequency bins.</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="braindecode.torch_ext.html" class="btn btn-neutral" title="braindecode.torch_ext package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
