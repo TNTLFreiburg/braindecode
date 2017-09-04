@@ -100,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../source/braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source/braindecode.models.html">braindecode.models package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source/braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.visualization.html">braindecode.visualization package</a></li>
 </ul>
 
             
@@ -483,24 +484,24 @@ later combine them together.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-07-05 13:10:11,847 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R01_1-1_250Hz.BBCI.mat
+2017-09-04 17:17:37,895 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R01_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=151350
     Range : 0 ... 151349 =      0.000 ...   605.396 secs
 Ready.
-2017-07-05 13:10:13,371 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R02_1-1_250Hz.BBCI.mat
+2017-09-04 17:17:38,880 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R02_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=153500
     Range : 0 ... 153499 =      0.000 ...   613.996 secs
 Ready.
-2017-07-05 13:10:14,465 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R03_1-1_250Hz.BBCI.mat
+2017-09-04 17:17:39,855 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R03_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=180700
     Range : 0 ... 180699 =      0.000 ...   722.796 secs
 Ready.
-2017-07-05 13:10:15,825 INFO : Preprocessing....
-2017-07-05 13:10:15,831 INFO : Just copying data, no resampling, since new sampling rate same.
-2017-07-05 13:10:15,925 INFO : Preprocessing....
-2017-07-05 13:10:15,930 INFO : Just copying data, no resampling, since new sampling rate same.
-2017-07-05 13:10:16,033 INFO : Preprocessing....
-2017-07-05 13:10:16,038 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-09-04 17:17:41,062 INFO : Preprocessing....
+2017-09-04 17:17:41,070 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-09-04 17:17:41,166 INFO : Preprocessing....
+2017-09-04 17:17:41,171 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-09-04 17:17:41,277 INFO : Preprocessing....
+2017-09-04 17:17:41,282 INFO : Just copying data, no resampling, since new sampling rate same.
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -521,18 +522,18 @@ Ready.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-07-05 13:10:16,096 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R09_1-1_250Hz.BBCI.mat
+2017-09-04 17:17:41,349 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R09_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=152050
     Range : 0 ... 152049 =      0.000 ...   608.196 secs
 Ready.
-2017-07-05 13:10:17,176 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R10_1-1_250Hz.BBCI.mat
+2017-09-04 17:17:42,321 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R10_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=151100
     Range : 0 ... 151099 =      0.000 ...   604.396 secs
 Ready.
-2017-07-05 13:10:18,307 INFO : Preprocessing....
-2017-07-05 13:10:18,311 INFO : Just copying data, no resampling, since new sampling rate same.
-2017-07-05 13:10:18,402 INFO : Preprocessing....
-2017-07-05 13:10:18,406 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-09-04 17:17:43,336 INFO : Preprocessing....
+2017-09-04 17:17:43,340 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-09-04 17:17:43,436 INFO : Preprocessing....
+2017-09-04 17:17:43,440 INFO : Just copying data, no resampling, since new sampling rate same.
 </pre></div></div>
 </div>
 </div>
@@ -612,14 +613,14 @@ Receptive field: 518/2072.00 (samples/ms)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-07-05 13:10:21,878 WARNING : No end marker for start marker code 1 at sample 150051 found.
-2017-07-05 13:10:21,879 INFO : Trial per class:
+2017-09-04 17:17:47,054 WARNING : No end marker for start marker code 1 at sample 150051 found.
+2017-09-04 17:17:47,054 INFO : Trial per class:
 Counter({&#39;Right Hand&#39;: 29, &#39;Words&#39;: 21, &#39;Feet&#39;: 19, &#39;Break&#39;: 18, &#39;Rotation&#39;: 4})
-2017-07-05 13:10:21,883 WARNING : No end marker for start marker code 4 at sample 152701 found.
-2017-07-05 13:10:21,884 INFO : Trial per class:
+2017-09-04 17:17:47,059 WARNING : No end marker for start marker code 4 at sample 152701 found.
+2017-09-04 17:17:47,060 INFO : Trial per class:
 Counter({&#39;Feet&#39;: 31, &#39;Words&#39;: 26, &#39;Break&#39;: 20, &#39;Right Hand&#39;: 18, &#39;Rotation&#39;: 6})
-2017-07-05 13:10:21,887 WARNING : No end marker for start marker code 1 at sample 179301 found.
-2017-07-05 13:10:21,888 INFO : Trial per class:
+2017-09-04 17:17:47,064 WARNING : No end marker for start marker code 1 at sample 179301 found.
+2017-09-04 17:17:47,065 INFO : Trial per class:
 Counter({&#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Break&#39;: 23, &#39;Right Hand&#39;: 22, &#39;Rotation&#39;: 7})
 </pre></div></div>
 </div>
@@ -640,11 +641,11 @@ Counter({&#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Break&#39;: 23, &#39;Righ
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-07-05 13:10:21,909 WARNING : No end marker for start marker code 4 at sample 150601 found.
-2017-07-05 13:10:21,910 INFO : Trial per class:
+2017-09-04 17:17:47,090 WARNING : No end marker for start marker code 4 at sample 150601 found.
+2017-09-04 17:17:47,091 INFO : Trial per class:
 Counter({&#39;Feet&#39;: 24, &#39;Right Hand&#39;: 24, &#39;Words&#39;: 19, &#39;Break&#39;: 19, &#39;Rotation&#39;: 10})
-2017-07-05 13:10:21,914 WARNING : No end marker for start marker code 4 at sample 149601 found.
-2017-07-05 13:10:21,915 INFO : Trial per class:
+2017-09-04 17:17:47,095 WARNING : No end marker for start marker code 4 at sample 149601 found.
+2017-09-04 17:17:47,096 INFO : Trial per class:
 Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39;Break&#39;: 20, &#39;Rotation&#39;: 8})
 </pre></div></div>
 </div>
@@ -706,7 +707,7 @@ Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39
 <span class="kn">from</span> <span class="nn">braindecode.torch_ext.modules</span> <span class="k">import</span> <span class="n">Expression</span>
 
 
-<span class="n">loss_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">preds</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)[:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">targets</span><span class="p">)</span>
+<span class="n">loss_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">preds</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">targets</span><span class="p">)</span>
 
 <span class="n">model_constraint</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">monitors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LossMonitor</span><span class="p">(),</span> <span class="n">MisclassMonitor</span><span class="p">(</span><span class="n">col_suffix</span><span class="o">=</span><span class="s1">&#39;sample_misclass&#39;</span><span class="p">),</span>
@@ -736,302 +737,323 @@ Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-07-05 13:10:22,016 INFO : Run until first stop...
-2017-07-05 13:10:22,601 INFO : Epoch 0
-2017-07-05 13:10:22,602 INFO : train_loss                11.53333
-2017-07-05 13:10:22,602 INFO : valid_loss                12.37084
-2017-07-05 13:10:22,603 INFO : test_loss                 11.33717
-2017-07-05 13:10:22,604 INFO : train_sample_misclass     0.93548
-2017-07-05 13:10:22,604 INFO : valid_sample_misclass     0.98502
-2017-07-05 13:10:22,605 INFO : test_sample_misclass      0.91691
-2017-07-05 13:10:22,606 INFO : train_misclass            0.93976
-2017-07-05 13:10:22,606 INFO : valid_misclass            0.96774
-2017-07-05 13:10:22,607 INFO : test_misclass             0.90863
-2017-07-05 13:10:22,608 INFO : runtime                   0.00000
-2017-07-05 13:10:22,608 INFO :
-2017-07-05 13:10:22,610 INFO : New best valid_misclass: 0.967742
-2017-07-05 13:10:22,610 INFO :
-2017-07-05 13:10:23,656 INFO : Epoch 1
-2017-07-05 13:10:23,657 INFO : train_loss                1.50414
-2017-07-05 13:10:23,658 INFO : valid_loss                1.45471
-2017-07-05 13:10:23,659 INFO : test_loss                 1.55881
-2017-07-05 13:10:23,659 INFO : train_sample_misclass     0.64477
-2017-07-05 13:10:23,660 INFO : valid_sample_misclass     0.62696
-2017-07-05 13:10:23,661 INFO : test_sample_misclass      0.66721
-2017-07-05 13:10:23,661 INFO : train_misclass            0.58635
-2017-07-05 13:10:23,662 INFO : valid_misclass            0.59677
-2017-07-05 13:10:23,662 INFO : test_misclass             0.62437
-2017-07-05 13:10:23,663 INFO : runtime                   1.09606
-2017-07-05 13:10:23,664 INFO :
-2017-07-05 13:10:23,665 INFO : New best valid_misclass: 0.596774
-2017-07-05 13:10:23,666 INFO :
-2017-07-05 13:10:24,707 INFO : Epoch 2
-2017-07-05 13:10:24,708 INFO : train_loss                1.41926
-2017-07-05 13:10:24,709 INFO : valid_loss                1.48257
-2017-07-05 13:10:24,710 INFO : test_loss                 1.52955
-2017-07-05 13:10:24,710 INFO : train_sample_misclass     0.60706
-2017-07-05 13:10:24,711 INFO : valid_sample_misclass     0.62259
-2017-07-05 13:10:24,711 INFO : test_sample_misclass      0.64398
-2017-07-05 13:10:24,712 INFO : train_misclass            0.55823
-2017-07-05 13:10:24,713 INFO : valid_misclass            0.62903
-2017-07-05 13:10:24,713 INFO : test_misclass             0.64467
-2017-07-05 13:10:24,714 INFO : runtime                   1.05009
-2017-07-05 13:10:24,715 INFO :
-2017-07-05 13:10:25,753 INFO : Epoch 3
-2017-07-05 13:10:25,754 INFO : train_loss                1.42563
-2017-07-05 13:10:25,755 INFO : valid_loss                1.49839
-2017-07-05 13:10:25,756 INFO : test_loss                 1.61948
-2017-07-05 13:10:25,756 INFO : train_sample_misclass     0.61650
-2017-07-05 13:10:25,757 INFO : valid_sample_misclass     0.65266
-2017-07-05 13:10:25,758 INFO : test_sample_misclass      0.67657
-2017-07-05 13:10:25,758 INFO : train_misclass            0.60241
-2017-07-05 13:10:25,759 INFO : valid_misclass            0.72581
-2017-07-05 13:10:25,759 INFO : test_misclass             0.67513
-2017-07-05 13:10:25,760 INFO : runtime                   1.04545
-2017-07-05 13:10:25,761 INFO :
-2017-07-05 13:10:26,797 INFO : Epoch 4
-2017-07-05 13:10:26,798 INFO : train_loss                1.38610
-2017-07-05 13:10:26,799 INFO : valid_loss                1.48648
-2017-07-05 13:10:26,799 INFO : test_loss                 1.55085
-2017-07-05 13:10:26,800 INFO : train_sample_misclass     0.59853
-2017-07-05 13:10:26,800 INFO : valid_sample_misclass     0.64496
-2017-07-05 13:10:26,801 INFO : test_sample_misclass      0.65656
-2017-07-05 13:10:26,802 INFO : train_misclass            0.52610
-2017-07-05 13:10:26,802 INFO : valid_misclass            0.67742
-2017-07-05 13:10:26,803 INFO : test_misclass             0.62944
-2017-07-05 13:10:26,804 INFO : runtime                   1.04518
-2017-07-05 13:10:26,804 INFO :
-2017-07-05 13:10:27,841 INFO : Epoch 5
-2017-07-05 13:10:27,842 INFO : train_loss                1.41484
-2017-07-05 13:10:27,843 INFO : valid_loss                1.44856
-2017-07-05 13:10:27,844 INFO : test_loss                 1.55547
-2017-07-05 13:10:27,844 INFO : train_sample_misclass     0.60230
-2017-07-05 13:10:27,845 INFO : valid_sample_misclass     0.62832
-2017-07-05 13:10:27,845 INFO : test_sample_misclass      0.65074
-2017-07-05 13:10:27,846 INFO : train_misclass            0.51406
-2017-07-05 13:10:27,847 INFO : valid_misclass            0.58065
-2017-07-05 13:10:27,847 INFO : test_misclass             0.63452
-2017-07-05 13:10:27,848 INFO : runtime                   1.04737
-2017-07-05 13:10:27,849 INFO :
-2017-07-05 13:10:27,850 INFO : New best valid_misclass: 0.580645
-2017-07-05 13:10:27,851 INFO :
-2017-07-05 13:10:28,890 INFO : Epoch 6
-2017-07-05 13:10:28,891 INFO : train_loss                1.36760
-2017-07-05 13:10:28,892 INFO : valid_loss                1.41204
-2017-07-05 13:10:28,893 INFO : test_loss                 1.52590
-2017-07-05 13:10:28,893 INFO : train_sample_misclass     0.58988
-2017-07-05 13:10:28,894 INFO : valid_sample_misclass     0.63861
-2017-07-05 13:10:28,895 INFO : test_sample_misclass      0.64623
-2017-07-05 13:10:28,895 INFO : train_misclass            0.49799
-2017-07-05 13:10:28,896 INFO : valid_misclass            0.61290
-2017-07-05 13:10:28,896 INFO : test_misclass             0.60406
-2017-07-05 13:10:28,897 INFO : runtime                   1.04936
-2017-07-05 13:10:28,898 INFO :
-2017-07-05 13:10:29,933 INFO : Epoch 7
-2017-07-05 13:10:29,934 INFO : train_loss                1.37728
-2017-07-05 13:10:29,934 INFO : valid_loss                1.43272
-2017-07-05 13:10:29,935 INFO : test_loss                 1.50316
-2017-07-05 13:10:29,936 INFO : train_sample_misclass     0.57462
-2017-07-05 13:10:29,936 INFO : valid_sample_misclass     0.62801
-2017-07-05 13:10:29,937 INFO : test_sample_misclass      0.63327
-2017-07-05 13:10:29,938 INFO : train_misclass            0.51807
-2017-07-05 13:10:29,938 INFO : valid_misclass            0.70968
-2017-07-05 13:10:29,939 INFO : test_misclass             0.63452
-2017-07-05 13:10:29,939 INFO : runtime                   1.04274
-2017-07-05 13:10:29,940 INFO :
-2017-07-05 13:10:30,979 INFO : Epoch 8
-2017-07-05 13:10:30,980 INFO : train_loss                1.37169
-2017-07-05 13:10:30,981 INFO : valid_loss                1.42813
-2017-07-05 13:10:30,982 INFO : test_loss                 1.53069
-2017-07-05 13:10:30,982 INFO : train_sample_misclass     0.58574
-2017-07-05 13:10:30,983 INFO : valid_sample_misclass     0.65559
-2017-07-05 13:10:30,983 INFO : test_sample_misclass      0.67227
-2017-07-05 13:10:30,984 INFO : train_misclass            0.55823
-2017-07-05 13:10:30,985 INFO : valid_misclass            0.67742
-2017-07-05 13:10:30,985 INFO : test_misclass             0.65990
-2017-07-05 13:10:30,986 INFO : runtime                   1.04512
-2017-07-05 13:10:30,987 INFO :
-2017-07-05 13:10:32,024 INFO : Epoch 9
-2017-07-05 13:10:32,025 INFO : train_loss                1.36508
-2017-07-05 13:10:32,026 INFO : valid_loss                1.43018
-2017-07-05 13:10:32,026 INFO : test_loss                 1.53601
-2017-07-05 13:10:32,027 INFO : train_sample_misclass     0.58852
-2017-07-05 13:10:32,028 INFO : valid_sample_misclass     0.65428
-2017-07-05 13:10:32,028 INFO : test_sample_misclass      0.66769
-2017-07-05 13:10:32,029 INFO : train_misclass            0.57028
-2017-07-05 13:10:32,029 INFO : valid_misclass            0.67742
-2017-07-05 13:10:32,030 INFO : test_misclass             0.65482
-2017-07-05 13:10:32,031 INFO : runtime                   1.04509
-2017-07-05 13:10:32,031 INFO :
-2017-07-05 13:10:33,074 INFO : Epoch 10
-2017-07-05 13:10:33,074 INFO : train_loss                1.34019
-2017-07-05 13:10:33,075 INFO : valid_loss                1.47361
-2017-07-05 13:10:33,076 INFO : test_loss                 1.52654
-2017-07-05 13:10:33,076 INFO : train_sample_misclass     0.57780
-2017-07-05 13:10:33,077 INFO : valid_sample_misclass     0.64126
-2017-07-05 13:10:33,078 INFO : test_sample_misclass      0.65008
-2017-07-05 13:10:33,078 INFO : train_misclass            0.48594
-2017-07-05 13:10:33,079 INFO : valid_misclass            0.56452
-2017-07-05 13:10:33,079 INFO : test_misclass             0.60406
-2017-07-05 13:10:33,080 INFO : runtime                   1.04898
-2017-07-05 13:10:33,081 INFO :
-2017-07-05 13:10:33,082 INFO : New best valid_misclass: 0.564516
-2017-07-05 13:10:33,083 INFO :
-2017-07-05 13:10:34,122 INFO : Epoch 11
-2017-07-05 13:10:34,123 INFO : train_loss                1.37248
-2017-07-05 13:10:34,123 INFO : valid_loss                1.39706
-2017-07-05 13:10:34,124 INFO : test_loss                 1.57353
-2017-07-05 13:10:34,124 INFO : train_sample_misclass     0.58344
-2017-07-05 13:10:34,125 INFO : valid_sample_misclass     0.64056
-2017-07-05 13:10:34,126 INFO : test_sample_misclass      0.67993
-2017-07-05 13:10:34,126 INFO : train_misclass            0.51406
-2017-07-05 13:10:34,127 INFO : valid_misclass            0.64516
-2017-07-05 13:10:34,128 INFO : test_misclass             0.65482
-2017-07-05 13:10:34,128 INFO : runtime                   1.04916
-2017-07-05 13:10:34,129 INFO :
-2017-07-05 13:10:35,166 INFO : Epoch 12
-2017-07-05 13:10:35,167 INFO : train_loss                1.38699
-2017-07-05 13:10:35,168 INFO : valid_loss                1.48617
-2017-07-05 13:10:35,168 INFO : test_loss                 1.57766
-2017-07-05 13:10:35,169 INFO : train_sample_misclass     0.60407
-2017-07-05 13:10:35,170 INFO : valid_sample_misclass     0.62667
-2017-07-05 13:10:35,170 INFO : test_sample_misclass      0.66531
-2017-07-05 13:10:35,171 INFO : train_misclass            0.56627
-2017-07-05 13:10:35,172 INFO : valid_misclass            0.61290
-2017-07-05 13:10:35,172 INFO : test_misclass             0.66497
-2017-07-05 13:10:35,173 INFO : runtime                   1.04371
-2017-07-05 13:10:35,173 INFO :
-2017-07-05 13:10:36,210 INFO : Epoch 13
-2017-07-05 13:10:36,211 INFO : train_loss                1.34750
-2017-07-05 13:10:36,211 INFO : valid_loss                1.47149
-2017-07-05 13:10:36,212 INFO : test_loss                 1.57028
-2017-07-05 13:10:36,213 INFO : train_sample_misclass     0.56923
-2017-07-05 13:10:36,213 INFO : valid_sample_misclass     0.63300
-2017-07-05 13:10:36,214 INFO : test_sample_misclass      0.65084
-2017-07-05 13:10:36,215 INFO : train_misclass            0.50602
-2017-07-05 13:10:36,215 INFO : valid_misclass            0.56452
-2017-07-05 13:10:36,216 INFO : test_misclass             0.59391
-2017-07-05 13:10:36,216 INFO : runtime                   1.04310
-2017-07-05 13:10:36,217 INFO :
-2017-07-05 13:10:36,219 INFO : New best valid_misclass: 0.564516
-2017-07-05 13:10:36,219 INFO :
-2017-07-05 13:10:37,261 INFO : Epoch 14
-2017-07-05 13:10:37,262 INFO : train_loss                1.35358
-2017-07-05 13:10:37,263 INFO : valid_loss                1.46056
-2017-07-05 13:10:37,263 INFO : test_loss                 1.54272
-2017-07-05 13:10:37,264 INFO : train_sample_misclass     0.58878
-2017-07-05 13:10:37,265 INFO : valid_sample_misclass     0.63554
-2017-07-05 13:10:37,265 INFO : test_sample_misclass      0.65247
-2017-07-05 13:10:37,266 INFO : train_misclass            0.48996
-2017-07-05 13:10:37,266 INFO : valid_misclass            0.59677
-2017-07-05 13:10:37,267 INFO : test_misclass             0.61421
-2017-07-05 13:10:37,268 INFO : runtime                   1.05266
-2017-07-05 13:10:37,268 INFO :
-2017-07-05 13:10:38,311 INFO : Epoch 15
-2017-07-05 13:10:38,312 INFO : train_loss                1.32901
-2017-07-05 13:10:38,313 INFO : valid_loss                1.38894
-2017-07-05 13:10:38,313 INFO : test_loss                 1.51226
-2017-07-05 13:10:38,314 INFO : train_sample_misclass     0.56179
-2017-07-05 13:10:38,315 INFO : valid_sample_misclass     0.62443
-2017-07-05 13:10:38,315 INFO : test_sample_misclass      0.64149
-2017-07-05 13:10:38,316 INFO : train_misclass            0.45783
-2017-07-05 13:10:38,316 INFO : valid_misclass            0.56452
-2017-07-05 13:10:38,317 INFO : test_misclass             0.60914
-2017-07-05 13:10:38,318 INFO : runtime                   1.04960
-2017-07-05 13:10:38,318 INFO :
-2017-07-05 13:10:38,320 INFO : New best valid_misclass: 0.564516
-2017-07-05 13:10:38,320 INFO :
-2017-07-05 13:10:39,367 INFO : Epoch 16
-2017-07-05 13:10:39,368 INFO : train_loss                1.35494
-2017-07-05 13:10:39,368 INFO : valid_loss                1.46781
-2017-07-05 13:10:39,369 INFO : test_loss                 1.55805
-2017-07-05 13:10:39,370 INFO : train_sample_misclass     0.58213
-2017-07-05 13:10:39,370 INFO : valid_sample_misclass     0.61860
-2017-07-05 13:10:39,371 INFO : test_sample_misclass      0.64870
-2017-07-05 13:10:39,371 INFO : train_misclass            0.55020
-2017-07-05 13:10:39,372 INFO : valid_misclass            0.61290
-2017-07-05 13:10:39,373 INFO : test_misclass             0.65990
-2017-07-05 13:10:39,373 INFO : runtime                   1.05210
-2017-07-05 13:10:39,374 INFO :
-2017-07-05 13:10:40,413 INFO : Epoch 17
-2017-07-05 13:10:40,414 INFO : train_loss                1.33417
-2017-07-05 13:10:40,415 INFO : valid_loss                1.43405
-2017-07-05 13:10:40,415 INFO : test_loss                 1.50453
-2017-07-05 13:10:40,416 INFO : train_sample_misclass     0.57871
-2017-07-05 13:10:40,417 INFO : valid_sample_misclass     0.63641
-2017-07-05 13:10:40,417 INFO : test_sample_misclass      0.64038
-2017-07-05 13:10:40,418 INFO : train_misclass            0.51004
-2017-07-05 13:10:40,418 INFO : valid_misclass            0.56452
-2017-07-05 13:10:40,419 INFO : test_misclass             0.63452
-2017-07-05 13:10:40,420 INFO : runtime                   1.04953
-2017-07-05 13:10:40,420 INFO :
-2017-07-05 13:10:40,422 INFO : New best valid_misclass: 0.564516
-2017-07-05 13:10:40,423 INFO :
-2017-07-05 13:10:41,462 INFO : Epoch 18
-2017-07-05 13:10:41,463 INFO : train_loss                1.37133
-2017-07-05 13:10:41,464 INFO : valid_loss                1.48794
-2017-07-05 13:10:41,465 INFO : test_loss                 1.61320
-2017-07-05 13:10:41,465 INFO : train_sample_misclass     0.59854
-2017-07-05 13:10:41,466 INFO : valid_sample_misclass     0.63155
-2017-07-05 13:10:41,466 INFO : test_sample_misclass      0.66630
-2017-07-05 13:10:41,467 INFO : train_misclass            0.53414
-2017-07-05 13:10:41,468 INFO : valid_misclass            0.54839
-2017-07-05 13:10:41,468 INFO : test_misclass             0.63959
-2017-07-05 13:10:41,469 INFO : runtime                   1.04950
-2017-07-05 13:10:41,470 INFO :
-2017-07-05 13:10:41,471 INFO : New best valid_misclass: 0.548387
-2017-07-05 13:10:41,472 INFO :
-2017-07-05 13:10:42,514 INFO : Epoch 19
-2017-07-05 13:10:42,515 INFO : train_loss                1.38336
-2017-07-05 13:10:42,516 INFO : valid_loss                1.45849
-2017-07-05 13:10:42,516 INFO : test_loss                 1.53109
-2017-07-05 13:10:42,517 INFO : train_sample_misclass     0.58641
-2017-07-05 13:10:42,517 INFO : valid_sample_misclass     0.62703
-2017-07-05 13:10:42,518 INFO : test_sample_misclass      0.64048
-2017-07-05 13:10:42,519 INFO : train_misclass            0.50201
-2017-07-05 13:10:42,519 INFO : valid_misclass            0.69355
-2017-07-05 13:10:42,520 INFO : test_misclass             0.59391
-2017-07-05 13:10:42,521 INFO : runtime                   1.05205
-2017-07-05 13:10:42,521 INFO :
-2017-07-05 13:10:43,566 INFO : Epoch 20
-2017-07-05 13:10:43,567 INFO : train_loss                1.33203
-2017-07-05 13:10:43,568 INFO : valid_loss                1.36307
-2017-07-05 13:10:43,569 INFO : test_loss                 1.50656
-2017-07-05 13:10:43,569 INFO : train_sample_misclass     0.56715
-2017-07-05 13:10:43,570 INFO : valid_sample_misclass     0.60826
-2017-07-05 13:10:43,570 INFO : test_sample_misclass      0.63761
-2017-07-05 13:10:43,571 INFO : train_misclass            0.47390
-2017-07-05 13:10:43,572 INFO : valid_misclass            0.61290
-2017-07-05 13:10:43,572 INFO : test_misclass             0.58883
-2017-07-05 13:10:43,573 INFO : runtime                   1.05095
-2017-07-05 13:10:43,574 INFO :
-2017-07-05 13:10:43,574 INFO : Setup for second stop...
-2017-07-05 13:10:43,577 INFO : Train loss to reach 1.37133
-2017-07-05 13:10:43,578 INFO : Run until second stop...
-2017-07-05 13:10:44,198 INFO : Epoch 19
-2017-07-05 13:10:44,199 INFO : train_loss                1.39385
-2017-07-05 13:10:44,199 INFO : valid_loss                1.48794
-2017-07-05 13:10:44,200 INFO : test_loss                 1.61320
-2017-07-05 13:10:44,200 INFO : train_sample_misclass     0.60491
-2017-07-05 13:10:44,201 INFO : valid_sample_misclass     0.63155
-2017-07-05 13:10:44,202 INFO : test_sample_misclass      0.66630
-2017-07-05 13:10:44,202 INFO : train_misclass            0.53698
-2017-07-05 13:10:44,203 INFO : valid_misclass            0.54839
-2017-07-05 13:10:44,204 INFO : test_misclass             0.63959
-2017-07-05 13:10:44,204 INFO : runtime                   0.55378
-2017-07-05 13:10:44,205 INFO :
-2017-07-05 13:10:45,423 INFO : Epoch 20
-2017-07-05 13:10:45,424 INFO : train_loss                1.35231
-2017-07-05 13:10:45,425 INFO : valid_loss                1.33071
-2017-07-05 13:10:45,426 INFO : test_loss                 1.58230
-2017-07-05 13:10:45,426 INFO : train_sample_misclass     0.57709
-2017-07-05 13:10:45,427 INFO : valid_sample_misclass     0.62023
-2017-07-05 13:10:45,428 INFO : test_sample_misclass      0.69375
-2017-07-05 13:10:45,428 INFO : train_misclass            0.48553
-2017-07-05 13:10:45,429 INFO : valid_misclass            0.54839
-2017-07-05 13:10:45,430 INFO : test_misclass             0.69036
-2017-07-05 13:10:45,430 INFO : runtime                   1.23906
-2017-07-05 13:10:45,431 INFO :
+2017-09-04 17:17:47,219 INFO : Run until first stop...
+2017-09-04 17:17:47,865 INFO : Epoch 0
+2017-09-04 17:17:47,866 INFO : train_loss                11.53333
+2017-09-04 17:17:47,867 INFO : valid_loss                12.37084
+2017-09-04 17:17:47,868 INFO : test_loss                 11.33717
+2017-09-04 17:17:47,869 INFO : train_sample_misclass     0.93548
+2017-09-04 17:17:47,869 INFO : valid_sample_misclass     0.98502
+2017-09-04 17:17:47,870 INFO : test_sample_misclass      0.91691
+2017-09-04 17:17:47,871 INFO : train_misclass            0.93976
+2017-09-04 17:17:47,871 INFO : valid_misclass            0.96774
+2017-09-04 17:17:47,872 INFO : test_misclass             0.90863
+2017-09-04 17:17:47,873 INFO : runtime                   0.00000
+2017-09-04 17:17:47,874 INFO :
+2017-09-04 17:17:47,875 INFO : New best valid_misclass: 0.967742
+2017-09-04 17:17:47,876 INFO :
+2017-09-04 17:17:48,405 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:49,011 INFO : Epoch 1
+2017-09-04 17:17:49,012 INFO : train_loss                1.50393
+2017-09-04 17:17:49,013 INFO : valid_loss                1.45453
+2017-09-04 17:17:49,014 INFO : test_loss                 1.55869
+2017-09-04 17:17:49,014 INFO : train_sample_misclass     0.64498
+2017-09-04 17:17:49,015 INFO : valid_sample_misclass     0.62718
+2017-09-04 17:17:49,016 INFO : test_sample_misclass      0.66700
+2017-09-04 17:17:49,017 INFO : train_misclass            0.58233
+2017-09-04 17:17:49,017 INFO : valid_misclass            0.58065
+2017-09-04 17:17:49,018 INFO : test_misclass             0.62437
+2017-09-04 17:17:49,019 INFO : runtime                   1.18624
+2017-09-04 17:17:49,019 INFO :
+2017-09-04 17:17:49,021 INFO : New best valid_misclass: 0.580645
+2017-09-04 17:17:49,022 INFO :
+2017-09-04 17:17:49,545 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:50,151 INFO : Epoch 2
+2017-09-04 17:17:50,152 INFO : train_loss                1.41951
+2017-09-04 17:17:50,153 INFO : valid_loss                1.48343
+2017-09-04 17:17:50,154 INFO : test_loss                 1.53018
+2017-09-04 17:17:50,155 INFO : train_sample_misclass     0.60707
+2017-09-04 17:17:50,155 INFO : valid_sample_misclass     0.62290
+2017-09-04 17:17:50,156 INFO : test_sample_misclass      0.64429
+2017-09-04 17:17:50,157 INFO : train_misclass            0.56627
+2017-09-04 17:17:50,157 INFO : valid_misclass            0.62903
+2017-09-04 17:17:50,158 INFO : test_misclass             0.64975
+2017-09-04 17:17:50,159 INFO : runtime                   1.13945
+2017-09-04 17:17:50,160 INFO :
+2017-09-04 17:17:50,684 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:51,291 INFO : Epoch 3
+2017-09-04 17:17:51,292 INFO : train_loss                1.42581
+2017-09-04 17:17:51,293 INFO : valid_loss                1.49817
+2017-09-04 17:17:51,294 INFO : test_loss                 1.61901
+2017-09-04 17:17:51,294 INFO : train_sample_misclass     0.61668
+2017-09-04 17:17:51,295 INFO : valid_sample_misclass     0.65217
+2017-09-04 17:17:51,296 INFO : test_sample_misclass      0.67644
+2017-09-04 17:17:51,297 INFO : train_misclass            0.60241
+2017-09-04 17:17:51,297 INFO : valid_misclass            0.72581
+2017-09-04 17:17:51,298 INFO : test_misclass             0.67513
+2017-09-04 17:17:51,299 INFO : runtime                   1.13913
+2017-09-04 17:17:51,299 INFO :
+2017-09-04 17:17:51,823 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:52,429 INFO : Epoch 4
+2017-09-04 17:17:52,430 INFO : train_loss                1.38586
+2017-09-04 17:17:52,431 INFO : valid_loss                1.48687
+2017-09-04 17:17:52,432 INFO : test_loss                 1.55094
+2017-09-04 17:17:52,433 INFO : train_sample_misclass     0.59819
+2017-09-04 17:17:52,433 INFO : valid_sample_misclass     0.64463
+2017-09-04 17:17:52,434 INFO : test_sample_misclass      0.65671
+2017-09-04 17:17:52,435 INFO : train_misclass            0.52610
+2017-09-04 17:17:52,435 INFO : valid_misclass            0.67742
+2017-09-04 17:17:52,436 INFO : test_misclass             0.62944
+2017-09-04 17:17:52,437 INFO : runtime                   1.13857
+2017-09-04 17:17:52,438 INFO :
+2017-09-04 17:17:52,961 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:53,569 INFO : Epoch 5
+2017-09-04 17:17:53,570 INFO : train_loss                1.41485
+2017-09-04 17:17:53,570 INFO : valid_loss                1.44874
+2017-09-04 17:17:53,571 INFO : test_loss                 1.55589
+2017-09-04 17:17:53,572 INFO : train_sample_misclass     0.60224
+2017-09-04 17:17:53,573 INFO : valid_sample_misclass     0.62897
+2017-09-04 17:17:53,573 INFO : test_sample_misclass      0.65083
+2017-09-04 17:17:53,574 INFO : train_misclass            0.51406
+2017-09-04 17:17:53,575 INFO : valid_misclass            0.58065
+2017-09-04 17:17:53,575 INFO : test_misclass             0.63452
+2017-09-04 17:17:53,576 INFO : runtime                   1.13840
+2017-09-04 17:17:53,577 INFO :
+2017-09-04 17:17:53,579 INFO : New best valid_misclass: 0.580645
+2017-09-04 17:17:53,580 INFO :
+2017-09-04 17:17:54,102 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:54,708 INFO : Epoch 6
+2017-09-04 17:17:54,709 INFO : train_loss                1.36745
+2017-09-04 17:17:54,710 INFO : valid_loss                1.41226
+2017-09-04 17:17:54,711 INFO : test_loss                 1.52581
+2017-09-04 17:17:54,712 INFO : train_sample_misclass     0.58987
+2017-09-04 17:17:54,712 INFO : valid_sample_misclass     0.63906
+2017-09-04 17:17:54,713 INFO : test_sample_misclass      0.64640
+2017-09-04 17:17:54,714 INFO : train_misclass            0.49398
+2017-09-04 17:17:54,714 INFO : valid_misclass            0.61290
+2017-09-04 17:17:54,715 INFO : test_misclass             0.60406
+2017-09-04 17:17:54,716 INFO : runtime                   1.14130
+2017-09-04 17:17:54,717 INFO :
+2017-09-04 17:17:55,240 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:55,847 INFO : Epoch 7
+2017-09-04 17:17:55,848 INFO : train_loss                1.37782
+2017-09-04 17:17:55,849 INFO : valid_loss                1.43321
+2017-09-04 17:17:55,850 INFO : test_loss                 1.50327
+2017-09-04 17:17:55,851 INFO : train_sample_misclass     0.57490
+2017-09-04 17:17:55,852 INFO : valid_sample_misclass     0.62826
+2017-09-04 17:17:55,852 INFO : test_sample_misclass      0.63315
+2017-09-04 17:17:55,853 INFO : train_misclass            0.51406
+2017-09-04 17:17:55,854 INFO : valid_misclass            0.70968
+2017-09-04 17:17:55,854 INFO : test_misclass             0.63452
+2017-09-04 17:17:55,855 INFO : runtime                   1.13720
+2017-09-04 17:17:55,856 INFO :
+2017-09-04 17:17:56,380 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:56,989 INFO : Epoch 8
+2017-09-04 17:17:56,990 INFO : train_loss                1.37211
+2017-09-04 17:17:56,991 INFO : valid_loss                1.42880
+2017-09-04 17:17:56,992 INFO : test_loss                 1.53159
+2017-09-04 17:17:56,993 INFO : train_sample_misclass     0.58581
+2017-09-04 17:17:56,993 INFO : valid_sample_misclass     0.65533
+2017-09-04 17:17:56,994 INFO : test_sample_misclass      0.67241
+2017-09-04 17:17:56,995 INFO : train_misclass            0.56225
+2017-09-04 17:17:56,996 INFO : valid_misclass            0.67742
+2017-09-04 17:17:56,996 INFO : test_misclass             0.66497
+2017-09-04 17:17:56,997 INFO : runtime                   1.14047
+2017-09-04 17:17:56,998 INFO :
+2017-09-04 17:17:57,520 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:58,127 INFO : Epoch 9
+2017-09-04 17:17:58,128 INFO : train_loss                1.36910
+2017-09-04 17:17:58,128 INFO : valid_loss                1.43300
+2017-09-04 17:17:58,129 INFO : test_loss                 1.54117
+2017-09-04 17:17:58,130 INFO : train_sample_misclass     0.59271
+2017-09-04 17:17:58,131 INFO : valid_sample_misclass     0.65435
+2017-09-04 17:17:58,131 INFO : test_sample_misclass      0.67089
+2017-09-04 17:17:58,132 INFO : train_misclass            0.57831
+2017-09-04 17:17:58,133 INFO : valid_misclass            0.67742
+2017-09-04 17:17:58,134 INFO : test_misclass             0.66497
+2017-09-04 17:17:58,134 INFO : runtime                   1.14038
+2017-09-04 17:17:58,135 INFO :
+2017-09-04 17:17:58,659 INFO : Time only for training updates: 0.40s
+2017-09-04 17:17:59,268 INFO : Epoch 10
+2017-09-04 17:17:59,270 INFO : train_loss                1.34061
+2017-09-04 17:17:59,270 INFO : valid_loss                1.47586
+2017-09-04 17:17:59,271 INFO : test_loss                 1.52879
+2017-09-04 17:17:59,272 INFO : train_sample_misclass     0.57797
+2017-09-04 17:17:59,273 INFO : valid_sample_misclass     0.64290
+2017-09-04 17:17:59,273 INFO : test_sample_misclass      0.65074
+2017-09-04 17:17:59,274 INFO : train_misclass            0.48594
+2017-09-04 17:17:59,275 INFO : valid_misclass            0.56452
+2017-09-04 17:17:59,275 INFO : test_misclass             0.60406
+2017-09-04 17:17:59,276 INFO : runtime                   1.13859
+2017-09-04 17:17:59,277 INFO :
+2017-09-04 17:17:59,279 INFO : New best valid_misclass: 0.564516
+2017-09-04 17:17:59,279 INFO :
+2017-09-04 17:17:59,809 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:00,417 INFO : Epoch 11
+2017-09-04 17:18:00,418 INFO : train_loss                1.37122
+2017-09-04 17:18:00,418 INFO : valid_loss                1.39534
+2017-09-04 17:18:00,419 INFO : test_loss                 1.57000
+2017-09-04 17:18:00,420 INFO : train_sample_misclass     0.58240
+2017-09-04 17:18:00,420 INFO : valid_sample_misclass     0.64185
+2017-09-04 17:18:00,421 INFO : test_sample_misclass      0.67935
+2017-09-04 17:18:00,422 INFO : train_misclass            0.51004
+2017-09-04 17:18:00,423 INFO : valid_misclass            0.64516
+2017-09-04 17:18:00,423 INFO : test_misclass             0.64467
+2017-09-04 17:18:00,424 INFO : runtime                   1.15042
+2017-09-04 17:18:00,425 INFO :
+2017-09-04 17:18:00,955 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:01,563 INFO : Epoch 12
+2017-09-04 17:18:01,564 INFO : train_loss                1.38608
+2017-09-04 17:18:01,565 INFO : valid_loss                1.48440
+2017-09-04 17:18:01,565 INFO : test_loss                 1.57658
+2017-09-04 17:18:01,566 INFO : train_sample_misclass     0.60330
+2017-09-04 17:18:01,567 INFO : valid_sample_misclass     0.62552
+2017-09-04 17:18:01,568 INFO : test_sample_misclass      0.66465
+2017-09-04 17:18:01,568 INFO : train_misclass            0.56225
+2017-09-04 17:18:01,569 INFO : valid_misclass            0.61290
+2017-09-04 17:18:01,570 INFO : test_misclass             0.66497
+2017-09-04 17:18:01,570 INFO : runtime                   1.14569
+2017-09-04 17:18:01,571 INFO :
+2017-09-04 17:18:02,101 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:02,709 INFO : Epoch 13
+2017-09-04 17:18:02,710 INFO : train_loss                1.34758
+2017-09-04 17:18:02,711 INFO : valid_loss                1.47008
+2017-09-04 17:18:02,712 INFO : test_loss                 1.57330
+2017-09-04 17:18:02,713 INFO : train_sample_misclass     0.56943
+2017-09-04 17:18:02,713 INFO : valid_sample_misclass     0.63394
+2017-09-04 17:18:02,714 INFO : test_sample_misclass      0.65246
+2017-09-04 17:18:02,715 INFO : train_misclass            0.50201
+2017-09-04 17:18:02,715 INFO : valid_misclass            0.56452
+2017-09-04 17:18:02,716 INFO : test_misclass             0.58883
+2017-09-04 17:18:02,717 INFO : runtime                   1.14636
+2017-09-04 17:18:02,718 INFO :
+2017-09-04 17:18:02,719 INFO : New best valid_misclass: 0.564516
+2017-09-04 17:18:02,720 INFO :
+2017-09-04 17:18:03,248 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:03,857 INFO : Epoch 14
+2017-09-04 17:18:03,858 INFO : train_loss                1.35378
+2017-09-04 17:18:03,859 INFO : valid_loss                1.45730
+2017-09-04 17:18:03,860 INFO : test_loss                 1.53986
+2017-09-04 17:18:03,861 INFO : train_sample_misclass     0.58917
+2017-09-04 17:18:03,861 INFO : valid_sample_misclass     0.63594
+2017-09-04 17:18:03,862 INFO : test_sample_misclass      0.65305
+2017-09-04 17:18:03,863 INFO : train_misclass            0.48594
+2017-09-04 17:18:03,864 INFO : valid_misclass            0.59677
+2017-09-04 17:18:03,864 INFO : test_misclass             0.63452
+2017-09-04 17:18:03,865 INFO : runtime                   1.14647
+2017-09-04 17:18:03,866 INFO :
+2017-09-04 17:18:04,395 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:05,004 INFO : Epoch 15
+2017-09-04 17:18:05,005 INFO : train_loss                1.32959
+2017-09-04 17:18:05,006 INFO : valid_loss                1.39044
+2017-09-04 17:18:05,007 INFO : test_loss                 1.51507
+2017-09-04 17:18:05,007 INFO : train_sample_misclass     0.56187
+2017-09-04 17:18:05,008 INFO : valid_sample_misclass     0.62517
+2017-09-04 17:18:05,009 INFO : test_sample_misclass      0.64205
+2017-09-04 17:18:05,010 INFO : train_misclass            0.46586
+2017-09-04 17:18:05,010 INFO : valid_misclass            0.56452
+2017-09-04 17:18:05,011 INFO : test_misclass             0.61929
+2017-09-04 17:18:05,012 INFO : runtime                   1.14746
+2017-09-04 17:18:05,012 INFO :
+2017-09-04 17:18:05,014 INFO : New best valid_misclass: 0.564516
+2017-09-04 17:18:05,015 INFO :
+2017-09-04 17:18:05,545 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:06,153 INFO : Epoch 16
+2017-09-04 17:18:06,154 INFO : train_loss                1.35525
+2017-09-04 17:18:06,155 INFO : valid_loss                1.47013
+2017-09-04 17:18:06,156 INFO : test_loss                 1.55756
+2017-09-04 17:18:06,156 INFO : train_sample_misclass     0.58248
+2017-09-04 17:18:06,157 INFO : valid_sample_misclass     0.61846
+2017-09-04 17:18:06,158 INFO : test_sample_misclass      0.64876
+2017-09-04 17:18:06,159 INFO : train_misclass            0.54618
+2017-09-04 17:18:06,159 INFO : valid_misclass            0.61290
+2017-09-04 17:18:06,160 INFO : test_misclass             0.65482
+2017-09-04 17:18:06,161 INFO : runtime                   1.14928
+2017-09-04 17:18:06,162 INFO :
+2017-09-04 17:18:06,693 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:07,308 INFO : Epoch 17
+2017-09-04 17:18:07,309 INFO : train_loss                1.33435
+2017-09-04 17:18:07,310 INFO : valid_loss                1.43416
+2017-09-04 17:18:07,310 INFO : test_loss                 1.50396
+2017-09-04 17:18:07,311 INFO : train_sample_misclass     0.57857
+2017-09-04 17:18:07,312 INFO : valid_sample_misclass     0.63746
+2017-09-04 17:18:07,313 INFO : test_sample_misclass      0.64018
+2017-09-04 17:18:07,313 INFO : train_misclass            0.51807
+2017-09-04 17:18:07,314 INFO : valid_misclass            0.56452
+2017-09-04 17:18:07,315 INFO : test_misclass             0.63452
+2017-09-04 17:18:07,316 INFO : runtime                   1.14819
+2017-09-04 17:18:07,316 INFO :
+2017-09-04 17:18:07,318 INFO : New best valid_misclass: 0.564516
+2017-09-04 17:18:07,319 INFO :
+2017-09-04 17:18:07,845 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:08,455 INFO : Epoch 18
+2017-09-04 17:18:08,456 INFO : train_loss                1.37355
+2017-09-04 17:18:08,456 INFO : valid_loss                1.48895
+2017-09-04 17:18:08,457 INFO : test_loss                 1.61437
+2017-09-04 17:18:08,458 INFO : train_sample_misclass     0.60029
+2017-09-04 17:18:08,459 INFO : valid_sample_misclass     0.63202
+2017-09-04 17:18:08,459 INFO : test_sample_misclass      0.66740
+2017-09-04 17:18:08,460 INFO : train_misclass            0.53414
+2017-09-04 17:18:08,461 INFO : valid_misclass            0.54839
+2017-09-04 17:18:08,462 INFO : test_misclass             0.63959
+2017-09-04 17:18:08,462 INFO : runtime                   1.15258
+2017-09-04 17:18:08,463 INFO :
+2017-09-04 17:18:08,465 INFO : New best valid_misclass: 0.548387
+2017-09-04 17:18:08,465 INFO :
+2017-09-04 17:18:08,997 INFO : Time only for training updates: 0.40s
+2017-09-04 17:18:09,605 INFO : Epoch 19
+2017-09-04 17:18:09,606 INFO : train_loss                1.38204
+2017-09-04 17:18:09,607 INFO : valid_loss                1.45591
+2017-09-04 17:18:09,608 INFO : test_loss                 1.53040
+2017-09-04 17:18:09,608 INFO : train_sample_misclass     0.58602
+2017-09-04 17:18:09,609 INFO : valid_sample_misclass     0.62653
+2017-09-04 17:18:09,610 INFO : test_sample_misclass      0.64120
+2017-09-04 17:18:09,611 INFO : train_misclass            0.50602
+2017-09-04 17:18:09,611 INFO : valid_misclass            0.67742
+2017-09-04 17:18:09,612 INFO : test_misclass             0.59898
+2017-09-04 17:18:09,613 INFO : runtime                   1.15132
+2017-09-04 17:18:09,614 INFO :
+2017-09-04 17:18:10,146 INFO : Time only for training updates: 0.41s
+2017-09-04 17:18:10,754 INFO : Epoch 20
+2017-09-04 17:18:10,755 INFO : train_loss                1.33167
+2017-09-04 17:18:10,755 INFO : valid_loss                1.36411
+2017-09-04 17:18:10,756 INFO : test_loss                 1.50689
+2017-09-04 17:18:10,757 INFO : train_sample_misclass     0.56731
+2017-09-04 17:18:10,758 INFO : valid_sample_misclass     0.60955
+2017-09-04 17:18:10,758 INFO : test_sample_misclass      0.63849
+2017-09-04 17:18:10,759 INFO : train_misclass            0.47390
+2017-09-04 17:18:10,760 INFO : valid_misclass            0.62903
+2017-09-04 17:18:10,760 INFO : test_misclass             0.58883
+2017-09-04 17:18:10,761 INFO : runtime                   1.14884
+2017-09-04 17:18:10,762 INFO :
+2017-09-04 17:18:10,763 INFO : Setup for second stop...
+2017-09-04 17:18:10,765 INFO : Train loss to reach 1.37355
+2017-09-04 17:18:10,766 INFO : Run until second stop...
+2017-09-04 17:18:11,460 INFO : Epoch 19
+2017-09-04 17:18:11,461 INFO : train_loss                1.39583
+2017-09-04 17:18:11,462 INFO : valid_loss                1.48895
+2017-09-04 17:18:11,463 INFO : test_loss                 1.61437
+2017-09-04 17:18:11,464 INFO : train_sample_misclass     0.60642
+2017-09-04 17:18:11,464 INFO : valid_sample_misclass     0.63202
+2017-09-04 17:18:11,465 INFO : test_sample_misclass      0.66740
+2017-09-04 17:18:11,466 INFO : train_misclass            0.53698
+2017-09-04 17:18:11,467 INFO : valid_misclass            0.54839
+2017-09-04 17:18:11,467 INFO : test_misclass             0.63959
+2017-09-04 17:18:11,468 INFO : runtime                   0.62059
+2017-09-04 17:18:11,469 INFO :
+2017-09-04 17:18:12,117 INFO : Time only for training updates: 0.49s
+2017-09-04 17:18:12,797 INFO : Epoch 20
+2017-09-04 17:18:12,798 INFO : train_loss                1.35322
+2017-09-04 17:18:12,799 INFO : valid_loss                1.33134
+2017-09-04 17:18:12,799 INFO : test_loss                 1.58535
+2017-09-04 17:18:12,800 INFO : train_sample_misclass     0.57861
+2017-09-04 17:18:12,801 INFO : valid_sample_misclass     0.61952
+2017-09-04 17:18:12,802 INFO : test_sample_misclass      0.69420
+2017-09-04 17:18:12,802 INFO : train_misclass            0.47910
+2017-09-04 17:18:12,803 INFO : valid_misclass            0.56452
+2017-09-04 17:18:12,804 INFO : test_misclass             0.69543
+2017-09-04 17:18:12,805 INFO : runtime                   1.35119
+2017-09-04 17:18:12,805 INFO :
 </pre></div></div>
 </div>
 <p>We arrive only at 31% accuracy. With only 3 sensors and 3 training runs,

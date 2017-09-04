@@ -397,7 +397,7 @@ application of the function.</p>
 <span id="braindecode-datautil-signalproc-module"></span><h2>braindecode.datautil.signalproc module<a class="headerlink" href="#module-braindecode.datautil.signalproc" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.exponential_running_standardize">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">exponential_running_standardize</code><span class="sig-paren">(</span><em>data</em>, <em>factor_new=0.001</em>, <em>init_block_size=None</em>, <em>eps=0.0001</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L10-L55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.exponential_running_standardize" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">exponential_running_standardize</code><span class="sig-paren">(</span><em>data</em>, <em>factor_new=0.001</em>, <em>init_block_size=None</em>, <em>eps=0.0001</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L11-L56"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.exponential_running_standardize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform exponential running standardization.</p>
 <p>Compute the exponental running mean <span class="math">\(m_t\)</span> at time <cite>t</cite> as
 <span class="math">\(m_t=\mathrm{factornew} \cdot mean(x_t) + (1 - \mathrm{factornew}) \cdot m_{t-1}\)</span>.</p>
@@ -429,7 +429,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.exponential_running_demean">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">exponential_running_demean</code><span class="sig-paren">(</span><em>data</em>, <em>factor_new=0.001</em>, <em>init_block_size=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L58-L90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.exponential_running_demean" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">exponential_running_demean</code><span class="sig-paren">(</span><em>data</em>, <em>factor_new=0.001</em>, <em>init_block_size=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L59-L91"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.exponential_running_demean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform exponential running demeanining.</p>
 <p>Compute the exponental running mean <span class="math">\(m_t\)</span> at time <cite>t</cite> as
 <span class="math">\(m_t=\mathrm{factornew} \cdot mean(x_t) + (1 - \mathrm{factornew}) \cdot m_{t-1}\)</span>.</p>
@@ -458,7 +458,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.highpass_cnt">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">highpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L93-L117"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.highpass_cnt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">highpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L94-L118"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.highpass_cnt" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div>Highpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -485,7 +485,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.lowpass_cnt">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">lowpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L120-L145"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.lowpass_cnt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">lowpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L121-L146"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.lowpass_cnt" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div>Lowpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -512,7 +512,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.bandpass_cnt">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">bandpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L148-L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.bandpass_cnt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">bandpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L149-L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.bandpass_cnt" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div>Bandpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -540,7 +540,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.filter_is_stable">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">filter_is_stable</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L188-L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.filter_is_stable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">filter_is_stable</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L189-L216"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.filter_is_stable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if filter coefficients of IIR filter are stable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

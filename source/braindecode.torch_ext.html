@@ -348,7 +348,7 @@ Weights from batch norm layers are set to 1.</p>
 <span id="braindecode-torch-ext-util-module"></span><h2>braindecode.torch_ext.util module<a class="headerlink" href="#module-braindecode.torch_ext.util" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.torch_ext.util.np_to_var">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>dtype=None</em>, <em>**var_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>dtype=None</em>, <em>pin_memory=False</em>, <em>**var_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L33"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to transform numpy array to <cite>torch.autograd.Variable</cite>.</p>
 <p>Converts <cite>X</cite> to ndarray using asarray if necessary.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -375,7 +375,7 @@ Weights from batch norm layers are set to 1.</p>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.util.var_to_np">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L33-L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L36-L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to transform <cite>torch.autograd.Variable</cite> to numpy
 array.</p>
 <p>Should work both for CPU and GPU.</p>
@@ -383,7 +383,7 @@ array.</p>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.util.set_random_seeds">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">set_random_seeds</code><span class="sig-paren">(</span><em>seed</em>, <em>cuda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L41-L57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.set_random_seeds" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">set_random_seeds</code><span class="sig-paren">(</span><em>seed</em>, <em>cuda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L44-L60"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.set_random_seeds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set seeds for python random module numpy.random and torch.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

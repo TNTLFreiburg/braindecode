@@ -217,7 +217,7 @@
 <span id="braindecode-models-deep4-module"></span><h2>braindecode.models.deep4 module<a class="headerlink" href="#module-braindecode.models.deep4" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.models.deep4.Deep4Net">
-<em class="property">class </em><code class="descclassname">braindecode.models.deep4.</code><code class="descname">Deep4Net</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length</em>, <em>final_conv_length</em>, <em>n_filters_time=25</em>, <em>n_filters_spat=25</em>, <em>filter_time_length=10</em>, <em>pool_time_length=3</em>, <em>pool_time_stride=3</em>, <em>num_filters_2=50</em>, <em>filter_length_2=10</em>, <em>num_filters_3=100</em>, <em>filter_length_3=10</em>, <em>num_filters_4=200</em>, <em>filter_length_4=10</em>, <em>first_nonlin=&lt;function elu&gt;</em>, <em>first_pool_mode=’max’</em>, <em>first_pool_nonlin=&lt;function identity&gt;</em>, <em>later_nonlin=&lt;function elu&gt;</em>, <em>later_pool_mode=’max’</em>, <em>later_pool_nonlin=&lt;function identity&gt;</em>, <em>drop_prob=0.5</em>, <em>double_time_convs=False</em>, <em>split_first_layer=True</em>, <em>batch_norm=True</em>, <em>batch_norm_alpha=0.1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/deep4.py#L10-L171"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.deep4.Deep4Net" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.models.deep4.</code><code class="descname">Deep4Net</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length</em>, <em>final_conv_length</em>, <em>n_filters_time=25</em>, <em>n_filters_spat=25</em>, <em>filter_time_length=10</em>, <em>pool_time_length=3</em>, <em>pool_time_stride=3</em>, <em>n_filters_2=50</em>, <em>filter_length_2=10</em>, <em>n_filters_3=100</em>, <em>filter_length_3=10</em>, <em>n_filters_4=200</em>, <em>filter_length_4=10</em>, <em>first_nonlin=&lt;function elu&gt;</em>, <em>first_pool_mode=’max’</em>, <em>first_pool_nonlin=&lt;function identity&gt;</em>, <em>later_nonlin=&lt;function elu&gt;</em>, <em>later_pool_mode=’max’</em>, <em>later_pool_nonlin=&lt;function identity&gt;</em>, <em>drop_prob=0.5</em>, <em>double_time_convs=False</em>, <em>split_first_layer=True</em>, <em>batch_norm=True</em>, <em>batch_norm_alpha=0.1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/deep4.py#L10-L171"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.deep4.Deep4Net" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Deep ConvNet model from <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
 <p class="rubric">References</p>
@@ -243,7 +243,7 @@ arXiv preprint arXiv:1703.05051.</td></tr>
 <span id="braindecode-models-eegnet-module"></span><h2>braindecode.models.eegnet module<a class="headerlink" href="#module-braindecode.models.eegnet" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.models.eegnet.EEGNet">
-<em class="property">class </em><code class="descclassname">braindecode.models.eegnet.</code><code class="descname">EEGNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>final_conv_length=’auto’</em>, <em>input_time_length=None</em>, <em>pool_mode=’max’</em>, <em>second_kernel_size=(2</em>, <em>32)</em>, <em>third_kernel_size=(8</em>, <em>4)</em>, <em>drop_prob=0.25</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L11-L114"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.models.eegnet.</code><code class="descname">EEGNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>final_conv_length=’auto’</em>, <em>input_time_length=None</em>, <em>pool_mode=’max’</em>, <em>second_kernel_size=(2</em>, <em>32)</em>, <em>third_kernel_size=(8</em>, <em>4)</em>, <em>drop_prob=0.25</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L11-L115"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>EEGNet model from <a class="reference internal" href="#eegnet" id="id3">[EEGNet]</a>.</p>
 <p class="rubric">Notes</p>
@@ -262,7 +262,7 @@ arXiv preprint arXiv:1611.08024.</td></tr>
 </table>
 <dl class="method">
 <dt id="braindecode.models.eegnet.EEGNet.create_network">
-<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L44-L114"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet.create_network" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L44-L115"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet.create_network" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -298,7 +298,7 @@ arXiv preprint arXiv:1703.05051.</td></tr>
 <span id="braindecode-models-util-module"></span><h2>braindecode.models.util module<a class="headerlink" href="#module-braindecode.models.util" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.models.util.to_dense_prediction_model">
-<code class="descclassname">braindecode.models.util.</code><code class="descname">to_dense_prediction_model</code><span class="sig-paren">(</span><em>model</em>, <em>axis=(2</em>, <em>3)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/util.py#L4-L39"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.util.to_dense_prediction_model" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.models.util.</code><code class="descname">to_dense_prediction_model</code><span class="sig-paren">(</span><em>model</em>, <em>axis=(2</em>, <em>3)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/util.py#L4-L45"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.util.to_dense_prediction_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform a sequential model with strides to a model that outputs
 dense predictions by removing the strides and instead inserting dilations.
 Modifies model in-place.</p>
@@ -315,6 +315,10 @@ can either be 2, 3, or (2,3).</li>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Notes</p>
+<p>Does not yet work correctly for average pooling.
+Prior to version 0.1.7, there had been a bug that could move strides
+backwards one layer.</p>
 </dd></dl>
 
 </div>

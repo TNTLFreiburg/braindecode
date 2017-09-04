@@ -110,6 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../source/braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source/braindecode.models.html">braindecode.models package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source/braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/braindecode.visualization.html">braindecode.visualization package</a></li>
 </ul>
 
             
@@ -587,7 +588,7 @@ network.</p>
         <span class="c1"># Note that this will give identical gradients to computing</span>
         <span class="c1"># a per-prediction loss (at least for the combination of log softmax activation</span>
         <span class="c1"># and negative log likelihood loss which we are using here)</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)[:,:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
@@ -609,7 +610,7 @@ network.</p>
                 <span class="n">net_target</span> <span class="o">=</span> <span class="n">net_target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">net_in</span><span class="p">)</span>
             <span class="n">all_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">outputs</span><span class="p">))</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)[:,:,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
             <span class="n">all_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
@@ -688,7 +689,7 @@ Train  Accuracy: 95.0%
 Test   Loss: 0.48066
 Test   Accuracy: 83.3%
 Epoch 10
-Train  Loss: 0.21293
+Train  Loss: 0.21292
 Train  Accuracy: 96.7%
 Test   Loss: 0.47782
 Test   Accuracy: 83.3%
@@ -735,11 +736,11 @@ Test   Accuracy: 83.3%
 Epoch 19
 Train  Loss: 0.08093
 Train  Accuracy: 100.0%
-Test   Loss: 0.59627
+Test   Loss: 0.59626
 Test   Accuracy: 76.7%
 </pre></div></div>
 </div>
-<p>Eventually, we arrive at 76.6% accuracy, so 23 from 30 trials are
+<p>Eventually, we arrive at 76.7% accuracy, so 23 from 30 trials are
 correctly predicted, 4 more than for the trialwise decoding method.</p>
 </div>
 <div class="section" id="Dataset-References">
