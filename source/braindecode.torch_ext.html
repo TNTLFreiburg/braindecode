@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.torch_ext package &mdash; Braindecode 0.1.6 documentation</title>
+  <title>braindecode.torch_ext package &mdash; Braindecode 0.1.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.1.6 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.1.8 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.visualization package" href="braindecode.visualization.html"/>
         <link rel="prev" title="braindecode.models package" href="braindecode.models.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.6
+                0.1.8
               </div>
             
           
@@ -324,7 +324,7 @@ Weights from batch norm layers are set to 1.</p>
 <span id="braindecode-torch-ext-modules-module"></span><h2>braindecode.torch_ext.modules module<a class="headerlink" href="#module-braindecode.torch_ext.modules" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.torch_ext.modules.Expression">
-<em class="property">class </em><code class="descclassname">braindecode.torch_ext.modules.</code><code class="descname">Expression</code><span class="sig-paren">(</span><em>expression_fn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L4-L30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.Expression" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.modules.</code><code class="descname">Expression</code><span class="sig-paren">(</span><em>expression_fn</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L8-L34"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.Expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>Compute given expression on forward pass.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -338,7 +338,32 @@ Weights from batch norm layers are set to 1.</p>
 </table>
 <dl class="method">
 <dt id="braindecode.torch_ext.modules.Expression.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>*x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L18-L19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.Expression.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>*x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L22-L23"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.Expression.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="braindecode.torch_ext.modules.AvgPool2dWithConv">
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.modules.</code><code class="descname">AvgPool2dWithConv</code><span class="sig-paren">(</span><em>kernel_size</em>, <em>stride</em>, <em>dilation=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L37-L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.AvgPool2dWithConv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Compute average pooling using a convolution, to have the dilation parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>kernel_size</strong> (<em>(int,int)</em>) – Size of the pooling region.</li>
+<li><strong>stride</strong> (<em>(int,int)</em>) – Stride of the pooling operation.</li>
+<li><strong>dilation</strong> (<em>int or (int,int)</em>) – Dilation applied to the pooling filter.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="braindecode.torch_ext.modules.AvgPool2dWithConv.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/modules.py#L57-L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.modules.AvgPool2dWithConv.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -446,7 +471,7 @@ array.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.6',
+            VERSION:'0.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
