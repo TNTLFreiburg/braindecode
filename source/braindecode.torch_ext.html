@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.torch_ext package &mdash; Braindecode 0.2.0 documentation</title>
+  <title>braindecode.torch_ext package &mdash; Braindecode 0.2.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.2.0 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.2.1 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.visualization package" href="braindecode.visualization.html"/>
         <link rel="prev" title="braindecode.models package" href="braindecode.models.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.2.1
               </div>
             
           
@@ -312,7 +312,7 @@ targets should be one-hot-encoded.</p>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.losses.log_categorical_crossentropy">
-<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">log_categorical_crossentropy</code><span class="sig-paren">(</span><em>log_preds</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L36-L66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.log_categorical_crossentropy" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">log_categorical_crossentropy</code><span class="sig-paren">(</span><em>log_preds</em>, <em>targets</em>, <em>class_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L36-L73"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.log_categorical_crossentropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns log categorical crossentropy for given log-predictions and targets.</p>
 <p>Computes <span class="math">\(-\mathrm{logpreds} \cdot \mathrm{targets}\)</span> if you assume
 targets to be one-hot-encoded. Also works for targets that are not
@@ -325,6 +325,7 @@ of the expected class labels, i.e., [0,log_preds.size()[1]-1].</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>log_preds</strong> (torch.autograd.Variable`) – Logarithm of softmax output.</li>
 <li><strong>targets</strong> (<cite>torch.autograd.Variable</cite>)</li>
+<li><strong>class_weights</strong> (<em>list of int, optional</em>) – Weights given to loss of different classes</li>
 </ul>
 </td>
 </tr>
@@ -340,12 +341,12 @@ of the expected class labels, i.e., [0,log_preds.size()[1]-1].</p>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.losses.l2_loss">
-<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">l2_loss</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L69-L71"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.l2_loss" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">l2_loss</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L76-L78"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.l2_loss" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.losses.l1_loss">
-<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">l1_loss</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L74-L76"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.l1_loss" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.losses.</code><code class="descname">l1_loss</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/losses.py#L81-L83"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.losses.l1_loss" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -500,7 +501,7 @@ array.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.2.0',
+            VERSION:'0.2.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
