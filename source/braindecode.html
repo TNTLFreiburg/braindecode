@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode package &mdash; Braindecode 0.1.9 documentation</title>
+  <title>braindecode package &mdash; Braindecode 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.1.9 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.2.0 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.9
+                0.2.0
               </div>
             
           
@@ -306,25 +306,27 @@ a and b.</p>
 
 <dl class="function">
 <dt id="braindecode.util.wrap_reshape_apply_fn">
-<code class="descclassname">braindecode.util.</code><code class="descname">wrap_reshape_apply_fn</code><span class="sig-paren">(</span><em>stat_fn</em>, <em>a</em>, <em>b</em>, <em>axis_a</em>, <em>axis_b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L58-L98"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.wrap_reshape_apply_fn" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">wrap_reshape_apply_fn</code><span class="sig-paren">(</span><em>stat_fn</em>, <em>a</em>, <em>b</em>, <em>axis_a</em>, <em>axis_b</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L58-L99"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.wrap_reshape_apply_fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reshape two nd-arrays into 2d-arrays, apply function and reshape
-result back.
-:Parameters: * <strong>stat_fn</strong> (<em>function</em>) – Function to apply to 2d-arrays</p>
-<blockquote>
-<div><ul class="simple">
+result back.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stat_fn</strong> (<em>function</em>) – Function to apply to 2d-arrays</li>
 <li><strong>a</strong> (<em>nd-array: nd-array</em>)</li>
 <li><strong>b</strong> (<em>nd-array</em>)</li>
 <li><strong>axis_a</strong> (<em>int or list of int</em>) – sample axis</li>
 <li><strong>axis_b</strong> (<em>int or list of int</em>) – sample axis</li>
 </ul>
-</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>result</strong> – The result reshaped to remaining_dims_a + remaining_dims_b</td>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">nd-array</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> – The result reshaped to remaining_dims_a + remaining_dims_b</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">nd-array</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -332,7 +334,7 @@ result back.
 
 <dl class="class">
 <dt id="braindecode.util.FuncAndArgs">
-<em class="property">class </em><code class="descclassname">braindecode.util.</code><code class="descname">FuncAndArgs</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L101-L129"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.FuncAndArgs" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.util.</code><code class="descname">FuncAndArgs</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L102-L130"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.FuncAndArgs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Container for a function and its arguments.
 Useful in case you want to pass a function and its arguments
@@ -349,35 +351,35 @@ the ()-call operator:</p>
 </div>
 <dl class="method">
 <dt id="braindecode.util.FuncAndArgs.apply">
-<code class="descname">apply</code><span class="sig-paren">(</span><em>*other_args</em>, <em>**other_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L122-L126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.FuncAndArgs.apply" title="Permalink to this definition">¶</a></dt>
+<code class="descname">apply</code><span class="sig-paren">(</span><em>*other_args</em>, <em>**other_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L123-L127"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.FuncAndArgs.apply" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.add_message_to_exception">
-<code class="descclassname">braindecode.util.</code><code class="descname">add_message_to_exception</code><span class="sig-paren">(</span><em>exc</em>, <em>additional_message</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L131-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.add_message_to_exception" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">add_message_to_exception</code><span class="sig-paren">(</span><em>exc</em>, <em>additional_message</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L132-L142"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.add_message_to_exception" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.dict_compare">
-<code class="descclassname">braindecode.util.</code><code class="descname">dict_compare</code><span class="sig-paren">(</span><em>d1</em>, <em>d2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L143-L152"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.dict_compare" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">dict_compare</code><span class="sig-paren">(</span><em>d1</em>, <em>d2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L144-L153"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.dict_compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>From <a class="reference external" href="http://stackoverflow.com/a/18860653/1469195">http://stackoverflow.com/a/18860653/1469195</a></p>
 </dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.dict_equal">
-<code class="descclassname">braindecode.util.</code><code class="descname">dict_equal</code><span class="sig-paren">(</span><em>d1</em>, <em>d2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L154-L160"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.dict_equal" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">dict_equal</code><span class="sig-paren">(</span><em>d1</em>, <em>d2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L155-L161"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.dict_equal" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.dict_is_subset">
-<code class="descclassname">braindecode.util.</code><code class="descname">dict_is_subset</code><span class="sig-paren">(</span><em>d1</em>, <em>d2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L162-L164"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.dict_is_subset" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">dict_is_subset</code><span class="sig-paren">(</span><em>d1</em>, <em>d2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L163-L165"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.dict_is_subset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.merge_dicts">
-<code class="descclassname">braindecode.util.</code><code class="descname">merge_dicts</code><span class="sig-paren">(</span><em>*dict_args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L166-L175"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.merge_dicts" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">merge_dicts</code><span class="sig-paren">(</span><em>*dict_args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L167-L176"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.merge_dicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given any number of dicts, shallow copy and merge into a new dict,
 precedence goes to key value pairs in latter dicts.
 <a class="reference external" href="http://stackoverflow.com/a/26853961">http://stackoverflow.com/a/26853961</a></p>
@@ -385,24 +387,27 @@ precedence goes to key value pairs in latter dicts.
 
 <dl class="function">
 <dt id="braindecode.util.touch_file">
-<code class="descclassname">braindecode.util.</code><code class="descname">touch_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L177-L183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.touch_file" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">touch_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L178-L184"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.touch_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.to_tuple">
-<code class="descclassname">braindecode.util.</code><code class="descname">to_tuple</code><span class="sig-paren">(</span><em>sequence_or_element</em>, <em>length=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L186-L194"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.to_tuple" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">to_tuple</code><span class="sig-paren">(</span><em>sequence_or_element</em>, <em>length=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L187-L195"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.to_tuple" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.mkdir_p">
-<code class="descclassname">braindecode.util.</code><code class="descname">mkdir_p</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L197-L204"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.mkdir_p" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">mkdir_p</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L198-L205"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.mkdir_p" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.util.select_inverse_inds">
-<code class="descclassname">braindecode.util.</code><code class="descname">select_inverse_inds</code><span class="sig-paren">(</span><em>arr</em>, <em>inds</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L206-L209"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.select_inverse_inds" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.util.</code><code class="descname">select_inverse_inds</code><span class="sig-paren">(</span><em>arr</em>, <em>inds</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/util.py#L207-L210"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.util.select_inverse_inds" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</div>
+<div class="section" id="module-braindecode.version">
+<span id="braindecode-version-module"></span><h2>braindecode.version module<a class="headerlink" href="#module-braindecode.version" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -441,7 +446,7 @@ precedence goes to key value pairs in latter dicts.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.9',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
