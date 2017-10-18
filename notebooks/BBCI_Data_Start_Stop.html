@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read and Decode BBCI Data with Start-Stop-Markers &mdash; Braindecode 0.2.1 documentation</title>
+  <title>Read and Decode BBCI Data with Start-Stop-Markers &mdash; Braindecode 0.3.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.2.1 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.3.0 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -392,7 +392,8 @@ later combine them together.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.splitters</span> <span class="k">import</span> <span class="n">concatenate_sets</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.splitters</span> <span class="k">import</span> <span class="n">concatenate_sets</span>
 <span class="kn">from</span> <span class="nn">braindecode.datautil.trial_segment</span> <span class="k">import</span> <span class="n">create_signal_target_from_raw_mne</span><span class="p">,</span> <span class="n">add_breaks</span>
 <span class="kn">from</span> <span class="nn">braindecode.datasets.bbci</span> <span class="k">import</span> <span class="n">load_bbci_sets_from_folder</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
@@ -400,36 +401,18 @@ later combine them together.</p>
 <span class="kn">from</span> <span class="nn">braindecode.datautil.signalproc</span> <span class="k">import</span> <span class="n">lowpass_cnt</span>
 <span class="kn">from</span> <span class="nn">braindecode.datautil.signalproc</span> <span class="k">import</span> <span class="n">exponential_running_standardize</span>
 
-<span class="k">def</span> <span class="nf">create_cnts</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">runs</span><span class="p">,</span> <span class="n">name_to_start_code</span><span class="p">,</span> <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">break_start_offset_ms</span><span class="p">,</span>
-              <span class="n">break_stop_offset_ms</span><span class="p">,</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">create_cnts</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">runs</span><span class="p">,):</span>
     <span class="c1"># Load data</span>
     <span class="n">cnts</span> <span class="o">=</span> <span class="n">load_bbci_sets_from_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">runs</span><span class="p">)</span>
 
     <span class="c1"># Now do some preprocessings:</span>
-    <span class="c1"># Adding breaks, resampling to 250 Hz, lowpass below 38, eponential standardization</span>
-    <span class="n">break_start_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">break_stop_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+    <span class="c1"># Resampling to 250 Hz, lowpass below 38, eponential standardization</span>
 
     <span class="n">new_cnts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">cnts</span><span class="p">:</span>
         <span class="c1"># Only take some channels</span>
         <span class="c1">#cnt = cnt.drop_channels([&#39;STI 014&#39;]) # This would remove stimulus channel</span>
-        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">pick_channels</span><span class="p">([</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="s1">&#39;CPz&#39;</span> <span class="s1">&#39;C4&#39;</span><span class="p">])</span>
-        <span class="c1"># add breaks</span>
-        <span class="n">new_events</span> <span class="o">=</span> <span class="n">add_breaks</span><span class="p">(</span>
-            <span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">],</span> <span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">],</span>
-            <span class="n">break_start_code</span><span class="o">=</span><span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="o">=</span><span class="n">break_stop_code</span><span class="p">,</span>
-            <span class="n">name_to_start_codes</span><span class="o">=</span><span class="n">name_to_start_code</span><span class="p">,</span> <span class="n">name_to_stop_codes</span><span class="o">=</span><span class="n">name_to_stop_code</span><span class="p">,</span>
-            <span class="n">min_break_length_ms</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">max_break_length_ms</span><span class="o">=</span><span class="mi">9000</span><span class="p">)</span>
-        <span class="n">n_break_start_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">break_start_offset_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
-        <span class="n">n_break_stop_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">break_stop_offset_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
-        <span class="c1"># lets add some offset to break start and stop</span>
-        <span class="c1"># new_events[:,2] contains event codes, new_events[:,0] the sample indices</span>
-        <span class="c1"># new_events[:,1] is always 0 for my loading of BBCI data</span>
-        <span class="n">new_events</span><span class="p">[</span><span class="n">new_events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n_break_start_offset</span>
-        <span class="c1"># 0.5 sec for break stop</span>
-        <span class="n">new_events</span><span class="p">[</span><span class="n">new_events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">break_stop_code</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span>  <span class="n">n_break_stop_offset</span>
-        <span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_events</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">pick_channels</span><span class="p">([</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="s1">&#39;CPz&#39;</span><span class="p">,</span> <span class="s1">&#39;C4&#39;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing....&quot;</span><span class="p">)</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="n">mne_apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">lowpass_cnt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span><span class="n">cnt</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">cnt</span><span class="p">)</span>
         <span class="n">cnt</span> <span class="o">=</span> <span class="n">resample_cnt</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
@@ -452,6 +435,11 @@ later combine them together.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+
+<span class="n">train_runs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">train_cnts</span> <span class="o">=</span> <span class="n">create_cnts</span><span class="p">(</span><span class="s1">&#39;/home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/&#39;</span><span class="p">,</span>
+                         <span class="n">train_runs</span><span class="p">,)</span>
+
 <span class="n">name_to_start_code</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;Right Hand&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Feet&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
             <span class="p">(</span><span class="s1">&#39;Rotation&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">])])</span>
 
@@ -460,22 +448,6 @@ later combine them together.</p>
         <span class="p">(</span><span class="s1">&#39;Rotation&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">30</span><span class="p">]),</span>
         <span class="p">(</span><span class="s1">&#39;Words&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">30</span><span class="p">])])</span>
 
-<span class="n">break_start_offset_ms</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">break_stop_offset_ms</span> <span class="o">=</span> <span class="o">-</span><span class="mi">500</span>
-<span class="c1"># pick some numbers that were not used before/do not exist in markers</span>
-<span class="n">break_start_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="n">break_stop_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
-<span class="n">train_runs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">train_cnts</span> <span class="o">=</span> <span class="n">create_cnts</span><span class="p">(</span><span class="s1">&#39;/home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/&#39;</span><span class="p">,</span>
-                         <span class="n">train_runs</span><span class="p">,</span>
-                         <span class="n">name_to_start_code</span><span class="p">,</span>
-                         <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">break_start_offset_ms</span><span class="p">,</span>
-                         <span class="n">break_stop_offset_ms</span><span class="p">,</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="p">)</span>
-
-<span class="n">name_to_code_with_breaks</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">name_to_start_code</span><span class="p">)</span>
-<span class="n">name_to_code_with_breaks</span><span class="p">[</span><span class="s1">&#39;Break&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">break_start_code</span>
-<span class="n">name_to_stop_code_with_breaks</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">name_to_stop_code</span><span class="p">)</span>
-<span class="n">name_to_stop_code_with_breaks</span><span class="p">[</span><span class="s1">&#39;Break&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">break_stop_code</span>
 </pre></div>
 </div>
 </div>
@@ -484,24 +456,24 @@ later combine them together.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-09-04 17:17:37,895 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R01_1-1_250Hz.BBCI.mat
+2017-10-18 14:50:15,027 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R01_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=151350
     Range : 0 ... 151349 =      0.000 ...   605.396 secs
 Ready.
-2017-09-04 17:17:38,880 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R02_1-1_250Hz.BBCI.mat
+2017-10-18 14:50:15,890 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R02_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=153500
     Range : 0 ... 153499 =      0.000 ...   613.996 secs
 Ready.
-2017-09-04 17:17:39,855 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R03_1-1_250Hz.BBCI.mat
+2017-10-18 14:50:16,737 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R01-8/AnLaNBD1S001R03_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=180700
     Range : 0 ... 180699 =      0.000 ...   722.796 secs
 Ready.
-2017-09-04 17:17:41,062 INFO : Preprocessing....
-2017-09-04 17:17:41,070 INFO : Just copying data, no resampling, since new sampling rate same.
-2017-09-04 17:17:41,166 INFO : Preprocessing....
-2017-09-04 17:17:41,171 INFO : Just copying data, no resampling, since new sampling rate same.
-2017-09-04 17:17:41,277 INFO : Preprocessing....
-2017-09-04 17:17:41,282 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-10-18 14:50:17,974 INFO : Preprocessing....
+2017-10-18 14:50:17,986 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-10-18 14:50:18,225 INFO : Preprocessing....
+2017-10-18 14:50:18,236 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-10-18 14:50:18,409 INFO : Preprocessing....
+2017-10-18 14:50:18,419 INFO : Just copying data, no resampling, since new sampling rate same.
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -511,9 +483,7 @@ Ready.
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">test_runs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
-<span class="n">test_cnts</span> <span class="o">=</span> <span class="n">create_cnts</span><span class="p">(</span><span class="s1">&#39;/home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/&#39;</span><span class="p">,</span> <span class="n">test_runs</span><span class="p">,</span> <span class="n">name_to_start_code</span><span class="p">,</span>
-           <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">break_start_offset_ms</span><span class="p">,</span>
-              <span class="n">break_stop_offset_ms</span><span class="p">,</span> <span class="n">break_start_code</span><span class="p">,</span> <span class="n">break_stop_code</span><span class="p">)</span>
+<span class="n">test_cnts</span> <span class="o">=</span> <span class="n">create_cnts</span><span class="p">(</span><span class="s1">&#39;/home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/&#39;</span><span class="p">,</span> <span class="n">test_runs</span><span class="p">,)</span>
 </pre></div>
 </div>
 </div>
@@ -522,18 +492,18 @@ Ready.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-09-04 17:17:41,349 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R09_1-1_250Hz.BBCI.mat
+2017-10-18 14:50:18,588 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R09_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=152050
     Range : 0 ... 152049 =      0.000 ...   608.196 secs
 Ready.
-2017-09-04 17:17:42,321 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R10_1-1_250Hz.BBCI.mat
+2017-10-18 14:50:19,450 INFO : Loading /home/schirrmr/data/robot-hall/AnLa/AnLaNBD1R09-10/AnLaNBD1S001R10_1-1_250Hz.BBCI.mat
 Creating RawArray with float64 data, n_channels=64, n_times=151100
     Range : 0 ... 151099 =      0.000 ...   604.396 secs
 Ready.
-2017-09-04 17:17:43,336 INFO : Preprocessing....
-2017-09-04 17:17:43,340 INFO : Just copying data, no resampling, since new sampling rate same.
-2017-09-04 17:17:43,436 INFO : Preprocessing....
-2017-09-04 17:17:43,440 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-10-18 14:50:20,541 INFO : Preprocessing....
+2017-10-18 14:50:20,551 INFO : Just copying data, no resampling, since new sampling rate same.
+2017-10-18 14:50:20,711 INFO : Preprocessing....
+2017-10-18 14:50:20,720 INFO : Just copying data, no resampling, since new sampling rate same.
 </pre></div></div>
 </div>
 </div>
@@ -602,8 +572,17 @@ Receptive field: 518/2072.00 (samples/ms)
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">train_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_signal_target_from_raw_mne</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_code_with_breaks</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">receptive_field_ms</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-                                         <span class="n">name_to_stop_code_with_breaks</span><span class="p">)</span> <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">train_cnts</span><span class="p">]</span>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.trial_segment</span> <span class="k">import</span> <span class="n">create_signal_target_with_breaks_from_mne</span>
+
+<span class="n">break_start_offset_ms</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">break_stop_offset_ms</span> <span class="o">=</span> <span class="o">-</span><span class="mi">500</span>
+
+<span class="n">train_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_signal_target_with_breaks_from_mne</span><span class="p">(</span>
+    <span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_start_code</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">min_break_length_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_break_length_ms</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+    <span class="n">break_epoch_ival_ms</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="o">-</span><span class="mi">500</span><span class="p">],</span>
+    <span class="n">prepad_trials_to_n_samples</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">)</span>
+              <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">train_cnts</span><span class="p">]</span>
 <span class="n">train_set</span> <span class="o">=</span> <span class="n">concatenate_sets</span><span class="p">(</span><span class="n">train_sets</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -613,15 +592,12 @@ Receptive field: 518/2072.00 (samples/ms)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-09-04 17:17:47,054 WARNING : No end marker for start marker code 1 at sample 150051 found.
-2017-09-04 17:17:47,054 INFO : Trial per class:
-Counter({&#39;Right Hand&#39;: 29, &#39;Words&#39;: 21, &#39;Feet&#39;: 19, &#39;Break&#39;: 18, &#39;Rotation&#39;: 4})
-2017-09-04 17:17:47,059 WARNING : No end marker for start marker code 4 at sample 152701 found.
-2017-09-04 17:17:47,060 INFO : Trial per class:
-Counter({&#39;Feet&#39;: 31, &#39;Words&#39;: 26, &#39;Break&#39;: 20, &#39;Right Hand&#39;: 18, &#39;Rotation&#39;: 6})
-2017-09-04 17:17:47,064 WARNING : No end marker for start marker code 1 at sample 179301 found.
-2017-09-04 17:17:47,065 INFO : Trial per class:
-Counter({&#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Break&#39;: 23, &#39;Right Hand&#39;: 22, &#39;Rotation&#39;: 7})
+2017-10-18 14:50:23,917 INFO : Trial per class:
+Counter({&#39;Break&#39;: 72, &#39;Right Hand&#39;: 29, &#39;Words&#39;: 21, &#39;Feet&#39;: 19, &#39;Rotation&#39;: 4})
+2017-10-18 14:50:23,943 INFO : Trial per class:
+Counter({&#39;Break&#39;: 80, &#39;Feet&#39;: 31, &#39;Words&#39;: 26, &#39;Right Hand&#39;: 18, &#39;Rotation&#39;: 6})
+2017-10-18 14:50:23,970 INFO : Trial per class:
+Counter({&#39;Break&#39;: 95, &#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Right Hand&#39;: 22, &#39;Rotation&#39;: 7})
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -630,8 +606,12 @@ Counter({&#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Break&#39;: 23, &#39;Righ
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">test_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_signal_target_from_raw_mne</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_code_with_breaks</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">receptive_field_ms</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-                                         <span class="n">name_to_stop_code_with_breaks</span><span class="p">)</span> <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">test_cnts</span><span class="p">]</span>
+<span></span><span class="n">test_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">create_signal_target_with_breaks_from_mne</span><span class="p">(</span>
+    <span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_start_code</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">name_to_stop_code</span><span class="p">,</span> <span class="n">min_break_length_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_break_length_ms</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+    <span class="n">break_epoch_ival_ms</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span><span class="o">-</span><span class="mi">500</span><span class="p">],</span>
+    <span class="n">prepad_trials_to_n_samples</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">)</span>
+              <span class="k">for</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="n">test_cnts</span><span class="p">]</span>
 <span class="n">test_set</span> <span class="o">=</span> <span class="n">concatenate_sets</span><span class="p">(</span><span class="n">test_sets</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -641,12 +621,10 @@ Counter({&#39;Feet&#39;: 38, &#39;Words&#39;: 29, &#39;Break&#39;: 23, &#39;Righ
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-09-04 17:17:47,090 WARNING : No end marker for start marker code 4 at sample 150601 found.
-2017-09-04 17:17:47,091 INFO : Trial per class:
-Counter({&#39;Feet&#39;: 24, &#39;Right Hand&#39;: 24, &#39;Words&#39;: 19, &#39;Break&#39;: 19, &#39;Rotation&#39;: 10})
-2017-09-04 17:17:47,095 WARNING : No end marker for start marker code 4 at sample 149601 found.
-2017-09-04 17:17:47,096 INFO : Trial per class:
-Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39;Break&#39;: 20, &#39;Rotation&#39;: 8})
+2017-10-18 14:50:24,055 INFO : Trial per class:
+Counter({&#39;Break&#39;: 76, &#39;Feet&#39;: 24, &#39;Right Hand&#39;: 24, &#39;Words&#39;: 19, &#39;Rotation&#39;: 10})
+2017-10-18 14:50:24,078 INFO : Trial per class:
+Counter({&#39;Break&#39;: 80, &#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39;Rotation&#39;: 8})
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -705,9 +683,10 @@ Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
 <span class="kn">from</span> <span class="nn">braindecode.torch_ext.modules</span> <span class="k">import</span> <span class="n">Expression</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.losses</span> <span class="k">import</span> <span class="n">log_categorical_crossentropy</span>
 
 
-<span class="n">loss_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">preds</span><span class="p">,</span> <span class="n">targets</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">targets</span><span class="p">)</span>
+<span class="n">loss_function</span> <span class="o">=</span> <span class="n">log_categorical_crossentropy</span>
 
 <span class="n">model_constraint</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">monitors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LossMonitor</span><span class="p">(),</span> <span class="n">MisclassMonitor</span><span class="p">(</span><span class="n">col_suffix</span><span class="o">=</span><span class="s1">&#39;sample_misclass&#39;</span><span class="p">),</span>
@@ -737,327 +716,440 @@ Counter({&#39;Feet&#39;: 30, &#39;Right Hand&#39;: 22, &#39;Words&#39;: 21, &#39
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-09-04 17:17:47,219 INFO : Run until first stop...
-2017-09-04 17:17:47,865 INFO : Epoch 0
-2017-09-04 17:17:47,866 INFO : train_loss                11.53333
-2017-09-04 17:17:47,867 INFO : valid_loss                12.37084
-2017-09-04 17:17:47,868 INFO : test_loss                 11.33717
-2017-09-04 17:17:47,869 INFO : train_sample_misclass     0.93548
-2017-09-04 17:17:47,869 INFO : valid_sample_misclass     0.98502
-2017-09-04 17:17:47,870 INFO : test_sample_misclass      0.91691
-2017-09-04 17:17:47,871 INFO : train_misclass            0.93976
-2017-09-04 17:17:47,871 INFO : valid_misclass            0.96774
-2017-09-04 17:17:47,872 INFO : test_misclass             0.90863
-2017-09-04 17:17:47,873 INFO : runtime                   0.00000
-2017-09-04 17:17:47,874 INFO :
-2017-09-04 17:17:47,875 INFO : New best valid_misclass: 0.967742
-2017-09-04 17:17:47,876 INFO :
-2017-09-04 17:17:48,405 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:49,011 INFO : Epoch 1
-2017-09-04 17:17:49,012 INFO : train_loss                1.50393
-2017-09-04 17:17:49,013 INFO : valid_loss                1.45453
-2017-09-04 17:17:49,014 INFO : test_loss                 1.55869
-2017-09-04 17:17:49,014 INFO : train_sample_misclass     0.64498
-2017-09-04 17:17:49,015 INFO : valid_sample_misclass     0.62718
-2017-09-04 17:17:49,016 INFO : test_sample_misclass      0.66700
-2017-09-04 17:17:49,017 INFO : train_misclass            0.58233
-2017-09-04 17:17:49,017 INFO : valid_misclass            0.58065
-2017-09-04 17:17:49,018 INFO : test_misclass             0.62437
-2017-09-04 17:17:49,019 INFO : runtime                   1.18624
-2017-09-04 17:17:49,019 INFO :
-2017-09-04 17:17:49,021 INFO : New best valid_misclass: 0.580645
-2017-09-04 17:17:49,022 INFO :
-2017-09-04 17:17:49,545 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:50,151 INFO : Epoch 2
-2017-09-04 17:17:50,152 INFO : train_loss                1.41951
-2017-09-04 17:17:50,153 INFO : valid_loss                1.48343
-2017-09-04 17:17:50,154 INFO : test_loss                 1.53018
-2017-09-04 17:17:50,155 INFO : train_sample_misclass     0.60707
-2017-09-04 17:17:50,155 INFO : valid_sample_misclass     0.62290
-2017-09-04 17:17:50,156 INFO : test_sample_misclass      0.64429
-2017-09-04 17:17:50,157 INFO : train_misclass            0.56627
-2017-09-04 17:17:50,157 INFO : valid_misclass            0.62903
-2017-09-04 17:17:50,158 INFO : test_misclass             0.64975
-2017-09-04 17:17:50,159 INFO : runtime                   1.13945
-2017-09-04 17:17:50,160 INFO :
-2017-09-04 17:17:50,684 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:51,291 INFO : Epoch 3
-2017-09-04 17:17:51,292 INFO : train_loss                1.42581
-2017-09-04 17:17:51,293 INFO : valid_loss                1.49817
-2017-09-04 17:17:51,294 INFO : test_loss                 1.61901
-2017-09-04 17:17:51,294 INFO : train_sample_misclass     0.61668
-2017-09-04 17:17:51,295 INFO : valid_sample_misclass     0.65217
-2017-09-04 17:17:51,296 INFO : test_sample_misclass      0.67644
-2017-09-04 17:17:51,297 INFO : train_misclass            0.60241
-2017-09-04 17:17:51,297 INFO : valid_misclass            0.72581
-2017-09-04 17:17:51,298 INFO : test_misclass             0.67513
-2017-09-04 17:17:51,299 INFO : runtime                   1.13913
-2017-09-04 17:17:51,299 INFO :
-2017-09-04 17:17:51,823 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:52,429 INFO : Epoch 4
-2017-09-04 17:17:52,430 INFO : train_loss                1.38586
-2017-09-04 17:17:52,431 INFO : valid_loss                1.48687
-2017-09-04 17:17:52,432 INFO : test_loss                 1.55094
-2017-09-04 17:17:52,433 INFO : train_sample_misclass     0.59819
-2017-09-04 17:17:52,433 INFO : valid_sample_misclass     0.64463
-2017-09-04 17:17:52,434 INFO : test_sample_misclass      0.65671
-2017-09-04 17:17:52,435 INFO : train_misclass            0.52610
-2017-09-04 17:17:52,435 INFO : valid_misclass            0.67742
-2017-09-04 17:17:52,436 INFO : test_misclass             0.62944
-2017-09-04 17:17:52,437 INFO : runtime                   1.13857
-2017-09-04 17:17:52,438 INFO :
-2017-09-04 17:17:52,961 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:53,569 INFO : Epoch 5
-2017-09-04 17:17:53,570 INFO : train_loss                1.41485
-2017-09-04 17:17:53,570 INFO : valid_loss                1.44874
-2017-09-04 17:17:53,571 INFO : test_loss                 1.55589
-2017-09-04 17:17:53,572 INFO : train_sample_misclass     0.60224
-2017-09-04 17:17:53,573 INFO : valid_sample_misclass     0.62897
-2017-09-04 17:17:53,573 INFO : test_sample_misclass      0.65083
-2017-09-04 17:17:53,574 INFO : train_misclass            0.51406
-2017-09-04 17:17:53,575 INFO : valid_misclass            0.58065
-2017-09-04 17:17:53,575 INFO : test_misclass             0.63452
-2017-09-04 17:17:53,576 INFO : runtime                   1.13840
-2017-09-04 17:17:53,577 INFO :
-2017-09-04 17:17:53,579 INFO : New best valid_misclass: 0.580645
-2017-09-04 17:17:53,580 INFO :
-2017-09-04 17:17:54,102 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:54,708 INFO : Epoch 6
-2017-09-04 17:17:54,709 INFO : train_loss                1.36745
-2017-09-04 17:17:54,710 INFO : valid_loss                1.41226
-2017-09-04 17:17:54,711 INFO : test_loss                 1.52581
-2017-09-04 17:17:54,712 INFO : train_sample_misclass     0.58987
-2017-09-04 17:17:54,712 INFO : valid_sample_misclass     0.63906
-2017-09-04 17:17:54,713 INFO : test_sample_misclass      0.64640
-2017-09-04 17:17:54,714 INFO : train_misclass            0.49398
-2017-09-04 17:17:54,714 INFO : valid_misclass            0.61290
-2017-09-04 17:17:54,715 INFO : test_misclass             0.60406
-2017-09-04 17:17:54,716 INFO : runtime                   1.14130
-2017-09-04 17:17:54,717 INFO :
-2017-09-04 17:17:55,240 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:55,847 INFO : Epoch 7
-2017-09-04 17:17:55,848 INFO : train_loss                1.37782
-2017-09-04 17:17:55,849 INFO : valid_loss                1.43321
-2017-09-04 17:17:55,850 INFO : test_loss                 1.50327
-2017-09-04 17:17:55,851 INFO : train_sample_misclass     0.57490
-2017-09-04 17:17:55,852 INFO : valid_sample_misclass     0.62826
-2017-09-04 17:17:55,852 INFO : test_sample_misclass      0.63315
-2017-09-04 17:17:55,853 INFO : train_misclass            0.51406
-2017-09-04 17:17:55,854 INFO : valid_misclass            0.70968
-2017-09-04 17:17:55,854 INFO : test_misclass             0.63452
-2017-09-04 17:17:55,855 INFO : runtime                   1.13720
-2017-09-04 17:17:55,856 INFO :
-2017-09-04 17:17:56,380 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:56,989 INFO : Epoch 8
-2017-09-04 17:17:56,990 INFO : train_loss                1.37211
-2017-09-04 17:17:56,991 INFO : valid_loss                1.42880
-2017-09-04 17:17:56,992 INFO : test_loss                 1.53159
-2017-09-04 17:17:56,993 INFO : train_sample_misclass     0.58581
-2017-09-04 17:17:56,993 INFO : valid_sample_misclass     0.65533
-2017-09-04 17:17:56,994 INFO : test_sample_misclass      0.67241
-2017-09-04 17:17:56,995 INFO : train_misclass            0.56225
-2017-09-04 17:17:56,996 INFO : valid_misclass            0.67742
-2017-09-04 17:17:56,996 INFO : test_misclass             0.66497
-2017-09-04 17:17:56,997 INFO : runtime                   1.14047
-2017-09-04 17:17:56,998 INFO :
-2017-09-04 17:17:57,520 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:58,127 INFO : Epoch 9
-2017-09-04 17:17:58,128 INFO : train_loss                1.36910
-2017-09-04 17:17:58,128 INFO : valid_loss                1.43300
-2017-09-04 17:17:58,129 INFO : test_loss                 1.54117
-2017-09-04 17:17:58,130 INFO : train_sample_misclass     0.59271
-2017-09-04 17:17:58,131 INFO : valid_sample_misclass     0.65435
-2017-09-04 17:17:58,131 INFO : test_sample_misclass      0.67089
-2017-09-04 17:17:58,132 INFO : train_misclass            0.57831
-2017-09-04 17:17:58,133 INFO : valid_misclass            0.67742
-2017-09-04 17:17:58,134 INFO : test_misclass             0.66497
-2017-09-04 17:17:58,134 INFO : runtime                   1.14038
-2017-09-04 17:17:58,135 INFO :
-2017-09-04 17:17:58,659 INFO : Time only for training updates: 0.40s
-2017-09-04 17:17:59,268 INFO : Epoch 10
-2017-09-04 17:17:59,270 INFO : train_loss                1.34061
-2017-09-04 17:17:59,270 INFO : valid_loss                1.47586
-2017-09-04 17:17:59,271 INFO : test_loss                 1.52879
-2017-09-04 17:17:59,272 INFO : train_sample_misclass     0.57797
-2017-09-04 17:17:59,273 INFO : valid_sample_misclass     0.64290
-2017-09-04 17:17:59,273 INFO : test_sample_misclass      0.65074
-2017-09-04 17:17:59,274 INFO : train_misclass            0.48594
-2017-09-04 17:17:59,275 INFO : valid_misclass            0.56452
-2017-09-04 17:17:59,275 INFO : test_misclass             0.60406
-2017-09-04 17:17:59,276 INFO : runtime                   1.13859
-2017-09-04 17:17:59,277 INFO :
-2017-09-04 17:17:59,279 INFO : New best valid_misclass: 0.564516
-2017-09-04 17:17:59,279 INFO :
-2017-09-04 17:17:59,809 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:00,417 INFO : Epoch 11
-2017-09-04 17:18:00,418 INFO : train_loss                1.37122
-2017-09-04 17:18:00,418 INFO : valid_loss                1.39534
-2017-09-04 17:18:00,419 INFO : test_loss                 1.57000
-2017-09-04 17:18:00,420 INFO : train_sample_misclass     0.58240
-2017-09-04 17:18:00,420 INFO : valid_sample_misclass     0.64185
-2017-09-04 17:18:00,421 INFO : test_sample_misclass      0.67935
-2017-09-04 17:18:00,422 INFO : train_misclass            0.51004
-2017-09-04 17:18:00,423 INFO : valid_misclass            0.64516
-2017-09-04 17:18:00,423 INFO : test_misclass             0.64467
-2017-09-04 17:18:00,424 INFO : runtime                   1.15042
-2017-09-04 17:18:00,425 INFO :
-2017-09-04 17:18:00,955 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:01,563 INFO : Epoch 12
-2017-09-04 17:18:01,564 INFO : train_loss                1.38608
-2017-09-04 17:18:01,565 INFO : valid_loss                1.48440
-2017-09-04 17:18:01,565 INFO : test_loss                 1.57658
-2017-09-04 17:18:01,566 INFO : train_sample_misclass     0.60330
-2017-09-04 17:18:01,567 INFO : valid_sample_misclass     0.62552
-2017-09-04 17:18:01,568 INFO : test_sample_misclass      0.66465
-2017-09-04 17:18:01,568 INFO : train_misclass            0.56225
-2017-09-04 17:18:01,569 INFO : valid_misclass            0.61290
-2017-09-04 17:18:01,570 INFO : test_misclass             0.66497
-2017-09-04 17:18:01,570 INFO : runtime                   1.14569
-2017-09-04 17:18:01,571 INFO :
-2017-09-04 17:18:02,101 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:02,709 INFO : Epoch 13
-2017-09-04 17:18:02,710 INFO : train_loss                1.34758
-2017-09-04 17:18:02,711 INFO : valid_loss                1.47008
-2017-09-04 17:18:02,712 INFO : test_loss                 1.57330
-2017-09-04 17:18:02,713 INFO : train_sample_misclass     0.56943
-2017-09-04 17:18:02,713 INFO : valid_sample_misclass     0.63394
-2017-09-04 17:18:02,714 INFO : test_sample_misclass      0.65246
-2017-09-04 17:18:02,715 INFO : train_misclass            0.50201
-2017-09-04 17:18:02,715 INFO : valid_misclass            0.56452
-2017-09-04 17:18:02,716 INFO : test_misclass             0.58883
-2017-09-04 17:18:02,717 INFO : runtime                   1.14636
-2017-09-04 17:18:02,718 INFO :
-2017-09-04 17:18:02,719 INFO : New best valid_misclass: 0.564516
-2017-09-04 17:18:02,720 INFO :
-2017-09-04 17:18:03,248 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:03,857 INFO : Epoch 14
-2017-09-04 17:18:03,858 INFO : train_loss                1.35378
-2017-09-04 17:18:03,859 INFO : valid_loss                1.45730
-2017-09-04 17:18:03,860 INFO : test_loss                 1.53986
-2017-09-04 17:18:03,861 INFO : train_sample_misclass     0.58917
-2017-09-04 17:18:03,861 INFO : valid_sample_misclass     0.63594
-2017-09-04 17:18:03,862 INFO : test_sample_misclass      0.65305
-2017-09-04 17:18:03,863 INFO : train_misclass            0.48594
-2017-09-04 17:18:03,864 INFO : valid_misclass            0.59677
-2017-09-04 17:18:03,864 INFO : test_misclass             0.63452
-2017-09-04 17:18:03,865 INFO : runtime                   1.14647
-2017-09-04 17:18:03,866 INFO :
-2017-09-04 17:18:04,395 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:05,004 INFO : Epoch 15
-2017-09-04 17:18:05,005 INFO : train_loss                1.32959
-2017-09-04 17:18:05,006 INFO : valid_loss                1.39044
-2017-09-04 17:18:05,007 INFO : test_loss                 1.51507
-2017-09-04 17:18:05,007 INFO : train_sample_misclass     0.56187
-2017-09-04 17:18:05,008 INFO : valid_sample_misclass     0.62517
-2017-09-04 17:18:05,009 INFO : test_sample_misclass      0.64205
-2017-09-04 17:18:05,010 INFO : train_misclass            0.46586
-2017-09-04 17:18:05,010 INFO : valid_misclass            0.56452
-2017-09-04 17:18:05,011 INFO : test_misclass             0.61929
-2017-09-04 17:18:05,012 INFO : runtime                   1.14746
-2017-09-04 17:18:05,012 INFO :
-2017-09-04 17:18:05,014 INFO : New best valid_misclass: 0.564516
-2017-09-04 17:18:05,015 INFO :
-2017-09-04 17:18:05,545 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:06,153 INFO : Epoch 16
-2017-09-04 17:18:06,154 INFO : train_loss                1.35525
-2017-09-04 17:18:06,155 INFO : valid_loss                1.47013
-2017-09-04 17:18:06,156 INFO : test_loss                 1.55756
-2017-09-04 17:18:06,156 INFO : train_sample_misclass     0.58248
-2017-09-04 17:18:06,157 INFO : valid_sample_misclass     0.61846
-2017-09-04 17:18:06,158 INFO : test_sample_misclass      0.64876
-2017-09-04 17:18:06,159 INFO : train_misclass            0.54618
-2017-09-04 17:18:06,159 INFO : valid_misclass            0.61290
-2017-09-04 17:18:06,160 INFO : test_misclass             0.65482
-2017-09-04 17:18:06,161 INFO : runtime                   1.14928
-2017-09-04 17:18:06,162 INFO :
-2017-09-04 17:18:06,693 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:07,308 INFO : Epoch 17
-2017-09-04 17:18:07,309 INFO : train_loss                1.33435
-2017-09-04 17:18:07,310 INFO : valid_loss                1.43416
-2017-09-04 17:18:07,310 INFO : test_loss                 1.50396
-2017-09-04 17:18:07,311 INFO : train_sample_misclass     0.57857
-2017-09-04 17:18:07,312 INFO : valid_sample_misclass     0.63746
-2017-09-04 17:18:07,313 INFO : test_sample_misclass      0.64018
-2017-09-04 17:18:07,313 INFO : train_misclass            0.51807
-2017-09-04 17:18:07,314 INFO : valid_misclass            0.56452
-2017-09-04 17:18:07,315 INFO : test_misclass             0.63452
-2017-09-04 17:18:07,316 INFO : runtime                   1.14819
-2017-09-04 17:18:07,316 INFO :
-2017-09-04 17:18:07,318 INFO : New best valid_misclass: 0.564516
-2017-09-04 17:18:07,319 INFO :
-2017-09-04 17:18:07,845 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:08,455 INFO : Epoch 18
-2017-09-04 17:18:08,456 INFO : train_loss                1.37355
-2017-09-04 17:18:08,456 INFO : valid_loss                1.48895
-2017-09-04 17:18:08,457 INFO : test_loss                 1.61437
-2017-09-04 17:18:08,458 INFO : train_sample_misclass     0.60029
-2017-09-04 17:18:08,459 INFO : valid_sample_misclass     0.63202
-2017-09-04 17:18:08,459 INFO : test_sample_misclass      0.66740
-2017-09-04 17:18:08,460 INFO : train_misclass            0.53414
-2017-09-04 17:18:08,461 INFO : valid_misclass            0.54839
-2017-09-04 17:18:08,462 INFO : test_misclass             0.63959
-2017-09-04 17:18:08,462 INFO : runtime                   1.15258
-2017-09-04 17:18:08,463 INFO :
-2017-09-04 17:18:08,465 INFO : New best valid_misclass: 0.548387
-2017-09-04 17:18:08,465 INFO :
-2017-09-04 17:18:08,997 INFO : Time only for training updates: 0.40s
-2017-09-04 17:18:09,605 INFO : Epoch 19
-2017-09-04 17:18:09,606 INFO : train_loss                1.38204
-2017-09-04 17:18:09,607 INFO : valid_loss                1.45591
-2017-09-04 17:18:09,608 INFO : test_loss                 1.53040
-2017-09-04 17:18:09,608 INFO : train_sample_misclass     0.58602
-2017-09-04 17:18:09,609 INFO : valid_sample_misclass     0.62653
-2017-09-04 17:18:09,610 INFO : test_sample_misclass      0.64120
-2017-09-04 17:18:09,611 INFO : train_misclass            0.50602
-2017-09-04 17:18:09,611 INFO : valid_misclass            0.67742
-2017-09-04 17:18:09,612 INFO : test_misclass             0.59898
-2017-09-04 17:18:09,613 INFO : runtime                   1.15132
-2017-09-04 17:18:09,614 INFO :
-2017-09-04 17:18:10,146 INFO : Time only for training updates: 0.41s
-2017-09-04 17:18:10,754 INFO : Epoch 20
-2017-09-04 17:18:10,755 INFO : train_loss                1.33167
-2017-09-04 17:18:10,755 INFO : valid_loss                1.36411
-2017-09-04 17:18:10,756 INFO : test_loss                 1.50689
-2017-09-04 17:18:10,757 INFO : train_sample_misclass     0.56731
-2017-09-04 17:18:10,758 INFO : valid_sample_misclass     0.60955
-2017-09-04 17:18:10,758 INFO : test_sample_misclass      0.63849
-2017-09-04 17:18:10,759 INFO : train_misclass            0.47390
-2017-09-04 17:18:10,760 INFO : valid_misclass            0.62903
-2017-09-04 17:18:10,760 INFO : test_misclass             0.58883
-2017-09-04 17:18:10,761 INFO : runtime                   1.14884
-2017-09-04 17:18:10,762 INFO :
-2017-09-04 17:18:10,763 INFO : Setup for second stop...
-2017-09-04 17:18:10,765 INFO : Train loss to reach 1.37355
-2017-09-04 17:18:10,766 INFO : Run until second stop...
-2017-09-04 17:18:11,460 INFO : Epoch 19
-2017-09-04 17:18:11,461 INFO : train_loss                1.39583
-2017-09-04 17:18:11,462 INFO : valid_loss                1.48895
-2017-09-04 17:18:11,463 INFO : test_loss                 1.61437
-2017-09-04 17:18:11,464 INFO : train_sample_misclass     0.60642
-2017-09-04 17:18:11,464 INFO : valid_sample_misclass     0.63202
-2017-09-04 17:18:11,465 INFO : test_sample_misclass      0.66740
-2017-09-04 17:18:11,466 INFO : train_misclass            0.53698
-2017-09-04 17:18:11,467 INFO : valid_misclass            0.54839
-2017-09-04 17:18:11,467 INFO : test_misclass             0.63959
-2017-09-04 17:18:11,468 INFO : runtime                   0.62059
-2017-09-04 17:18:11,469 INFO :
-2017-09-04 17:18:12,117 INFO : Time only for training updates: 0.49s
-2017-09-04 17:18:12,797 INFO : Epoch 20
-2017-09-04 17:18:12,798 INFO : train_loss                1.35322
-2017-09-04 17:18:12,799 INFO : valid_loss                1.33134
-2017-09-04 17:18:12,799 INFO : test_loss                 1.58535
-2017-09-04 17:18:12,800 INFO : train_sample_misclass     0.57861
-2017-09-04 17:18:12,801 INFO : valid_sample_misclass     0.61952
-2017-09-04 17:18:12,802 INFO : test_sample_misclass      0.69420
-2017-09-04 17:18:12,802 INFO : train_misclass            0.47910
-2017-09-04 17:18:12,803 INFO : valid_misclass            0.56452
-2017-09-04 17:18:12,804 INFO : test_misclass             0.69543
-2017-09-04 17:18:12,805 INFO : runtime                   1.35119
-2017-09-04 17:18:12,805 INFO :
+2017-10-18 14:50:24,318 INFO : Run until first stop...
+2017-10-18 14:50:25,203 INFO : Epoch 0
+2017-10-18 14:50:25,205 INFO : train_loss                6.69229
+2017-10-18 14:50:25,206 INFO : valid_loss                6.46568
+2017-10-18 14:50:25,207 INFO : test_loss                 7.03033
+2017-10-18 14:50:25,208 INFO : train_sample_misclass     0.82260
+2017-10-18 14:50:25,209 INFO : valid_sample_misclass     0.80963
+2017-10-18 14:50:25,209 INFO : test_sample_misclass      0.84529
+2017-10-18 14:50:25,210 INFO : train_misclass            0.84673
+2017-10-18 14:50:25,211 INFO : valid_misclass            0.83838
+2017-10-18 14:50:25,212 INFO : test_misclass             0.87261
+2017-10-18 14:50:25,213 INFO : runtime                   0.00000
+2017-10-18 14:50:25,213 INFO :
+2017-10-18 14:50:25,215 INFO : New best valid_misclass: 0.838384
+2017-10-18 14:50:25,216 INFO :
+2017-10-18 14:50:26,150 INFO : Time only for training updates: 0.83s
+2017-10-18 14:50:26,968 INFO : Epoch 1
+2017-10-18 14:50:26,969 INFO : train_loss                1.11001
+2017-10-18 14:50:26,970 INFO : valid_loss                1.27912
+2017-10-18 14:50:26,971 INFO : test_loss                 1.36407
+2017-10-18 14:50:26,972 INFO : train_sample_misclass     0.42907
+2017-10-18 14:50:26,973 INFO : valid_sample_misclass     0.49287
+2017-10-18 14:50:26,974 INFO : test_sample_misclass      0.53433
+2017-10-18 14:50:26,975 INFO : train_misclass            0.35678
+2017-10-18 14:50:26,976 INFO : valid_misclass            0.44444
+2017-10-18 14:50:26,977 INFO : test_misclass             0.45860
+2017-10-18 14:50:26,978 INFO : runtime                   1.83260
+2017-10-18 14:50:26,978 INFO :
+2017-10-18 14:50:26,981 INFO : New best valid_misclass: 0.444444
+2017-10-18 14:50:26,981 INFO :
+2017-10-18 14:50:27,835 INFO : Time only for training updates: 0.76s
+2017-10-18 14:50:28,662 INFO : Epoch 2
+2017-10-18 14:50:28,664 INFO : train_loss                0.89875
+2017-10-18 14:50:28,665 INFO : valid_loss                1.17061
+2017-10-18 14:50:28,666 INFO : test_loss                 1.30881
+2017-10-18 14:50:28,667 INFO : train_sample_misclass     0.34735
+2017-10-18 14:50:28,667 INFO : valid_sample_misclass     0.41196
+2017-10-18 14:50:28,668 INFO : test_sample_misclass      0.50215
+2017-10-18 14:50:28,669 INFO : train_misclass            0.29146
+2017-10-18 14:50:28,670 INFO : valid_misclass            0.40404
+2017-10-18 14:50:28,671 INFO : test_misclass             0.46815
+2017-10-18 14:50:28,671 INFO : runtime                   1.68467
+2017-10-18 14:50:28,672 INFO :
+2017-10-18 14:50:28,675 INFO : New best valid_misclass: 0.404040
+2017-10-18 14:50:28,675 INFO :
+2017-10-18 14:50:29,529 INFO : Time only for training updates: 0.76s
+2017-10-18 14:50:30,330 INFO : Epoch 3
+2017-10-18 14:50:30,332 INFO : train_loss                0.81131
+2017-10-18 14:50:30,333 INFO : valid_loss                1.24022
+2017-10-18 14:50:30,333 INFO : test_loss                 1.32239
+2017-10-18 14:50:30,334 INFO : train_sample_misclass     0.31672
+2017-10-18 14:50:30,335 INFO : valid_sample_misclass     0.44705
+2017-10-18 14:50:30,336 INFO : test_sample_misclass      0.49326
+2017-10-18 14:50:30,337 INFO : train_misclass            0.25377
+2017-10-18 14:50:30,337 INFO : valid_misclass            0.43434
+2017-10-18 14:50:30,339 INFO : test_misclass             0.45860
+2017-10-18 14:50:30,339 INFO : runtime                   1.69471
+2017-10-18 14:50:30,340 INFO :
+2017-10-18 14:50:31,114 INFO : Time only for training updates: 0.68s
+2017-10-18 14:50:31,795 INFO : Epoch 4
+2017-10-18 14:50:31,797 INFO : train_loss                0.73873
+2017-10-18 14:50:31,798 INFO : valid_loss                1.21135
+2017-10-18 14:50:31,799 INFO : test_loss                 1.31384
+2017-10-18 14:50:31,800 INFO : train_sample_misclass     0.27905
+2017-10-18 14:50:31,800 INFO : valid_sample_misclass     0.42946
+2017-10-18 14:50:31,801 INFO : test_sample_misclass      0.47758
+2017-10-18 14:50:31,802 INFO : train_misclass            0.23618
+2017-10-18 14:50:31,803 INFO : valid_misclass            0.39394
+2017-10-18 14:50:31,804 INFO : test_misclass             0.44586
+2017-10-18 14:50:31,804 INFO : runtime                   1.58493
+2017-10-18 14:50:31,805 INFO :
+2017-10-18 14:50:31,807 INFO : New best valid_misclass: 0.393939
+2017-10-18 14:50:31,808 INFO :
+2017-10-18 14:50:32,579 INFO : Time only for training updates: 0.68s
+2017-10-18 14:50:33,342 INFO : Epoch 5
+2017-10-18 14:50:33,344 INFO : train_loss                0.69869
+2017-10-18 14:50:33,345 INFO : valid_loss                1.20289
+2017-10-18 14:50:33,345 INFO : test_loss                 1.31080
+2017-10-18 14:50:33,346 INFO : train_sample_misclass     0.26115
+2017-10-18 14:50:33,347 INFO : valid_sample_misclass     0.42991
+2017-10-18 14:50:33,348 INFO : test_sample_misclass      0.47041
+2017-10-18 14:50:33,349 INFO : train_misclass            0.23367
+2017-10-18 14:50:33,349 INFO : valid_misclass            0.41414
+2017-10-18 14:50:33,351 INFO : test_misclass             0.46178
+2017-10-18 14:50:33,351 INFO : runtime                   1.46461
+2017-10-18 14:50:33,352 INFO :
+2017-10-18 14:50:34,131 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:34,811 INFO : Epoch 6
+2017-10-18 14:50:34,812 INFO : train_loss                0.68707
+2017-10-18 14:50:34,813 INFO : valid_loss                1.21013
+2017-10-18 14:50:34,814 INFO : test_loss                 1.37914
+2017-10-18 14:50:34,815 INFO : train_sample_misclass     0.26331
+2017-10-18 14:50:34,815 INFO : valid_sample_misclass     0.42182
+2017-10-18 14:50:34,816 INFO : test_sample_misclass      0.47911
+2017-10-18 14:50:34,817 INFO : train_misclass            0.22362
+2017-10-18 14:50:34,818 INFO : valid_misclass            0.41414
+2017-10-18 14:50:34,819 INFO : test_misclass             0.43631
+2017-10-18 14:50:34,820 INFO : runtime                   1.55183
+2017-10-18 14:50:34,820 INFO :
+2017-10-18 14:50:35,599 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:36,324 INFO : Epoch 7
+2017-10-18 14:50:36,325 INFO : train_loss                0.64282
+2017-10-18 14:50:36,326 INFO : valid_loss                1.26288
+2017-10-18 14:50:36,327 INFO : test_loss                 1.33289
+2017-10-18 14:50:36,328 INFO : train_sample_misclass     0.23890
+2017-10-18 14:50:36,329 INFO : valid_sample_misclass     0.43012
+2017-10-18 14:50:36,329 INFO : test_sample_misclass      0.45965
+2017-10-18 14:50:36,330 INFO : train_misclass            0.19347
+2017-10-18 14:50:36,331 INFO : valid_misclass            0.37374
+2017-10-18 14:50:36,332 INFO : test_misclass             0.43312
+2017-10-18 14:50:36,333 INFO : runtime                   1.46798
+2017-10-18 14:50:36,334 INFO :
+2017-10-18 14:50:36,336 INFO : New best valid_misclass: 0.373737
+2017-10-18 14:50:36,337 INFO :
+2017-10-18 14:50:37,116 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:37,795 INFO : Epoch 8
+2017-10-18 14:50:37,797 INFO : train_loss                0.63941
+2017-10-18 14:50:37,797 INFO : valid_loss                1.26928
+2017-10-18 14:50:37,798 INFO : test_loss                 1.37608
+2017-10-18 14:50:37,799 INFO : train_sample_misclass     0.24049
+2017-10-18 14:50:37,800 INFO : valid_sample_misclass     0.43250
+2017-10-18 14:50:37,801 INFO : test_sample_misclass      0.47260
+2017-10-18 14:50:37,801 INFO : train_misclass            0.20352
+2017-10-18 14:50:37,802 INFO : valid_misclass            0.44444
+2017-10-18 14:50:37,803 INFO : test_misclass             0.42994
+2017-10-18 14:50:37,804 INFO : runtime                   1.51735
+2017-10-18 14:50:37,805 INFO :
+2017-10-18 14:50:38,616 INFO : Time only for training updates: 0.72s
+2017-10-18 14:50:39,503 INFO : Epoch 9
+2017-10-18 14:50:39,505 INFO : train_loss                0.60996
+2017-10-18 14:50:39,506 INFO : valid_loss                1.22873
+2017-10-18 14:50:39,507 INFO : test_loss                 1.40349
+2017-10-18 14:50:39,508 INFO : train_sample_misclass     0.22514
+2017-10-18 14:50:39,509 INFO : valid_sample_misclass     0.43381
+2017-10-18 14:50:39,510 INFO : test_sample_misclass      0.48518
+2017-10-18 14:50:39,511 INFO : train_misclass            0.19598
+2017-10-18 14:50:39,511 INFO : valid_misclass            0.42424
+2017-10-18 14:50:39,512 INFO : test_misclass             0.46497
+2017-10-18 14:50:39,513 INFO : runtime                   1.49966
+2017-10-18 14:50:39,514 INFO :
+2017-10-18 14:50:40,344 INFO : Time only for training updates: 0.72s
+2017-10-18 14:50:41,092 INFO : Epoch 10
+2017-10-18 14:50:41,093 INFO : train_loss                0.64813
+2017-10-18 14:50:41,094 INFO : valid_loss                1.28606
+2017-10-18 14:50:41,095 INFO : test_loss                 1.42089
+2017-10-18 14:50:41,096 INFO : train_sample_misclass     0.24833
+2017-10-18 14:50:41,097 INFO : valid_sample_misclass     0.44124
+2017-10-18 14:50:41,097 INFO : test_sample_misclass      0.47843
+2017-10-18 14:50:41,098 INFO : train_misclass            0.24121
+2017-10-18 14:50:41,099 INFO : valid_misclass            0.41414
+2017-10-18 14:50:41,100 INFO : test_misclass             0.44904
+2017-10-18 14:50:41,101 INFO : runtime                   1.72894
+2017-10-18 14:50:41,102 INFO :
+2017-10-18 14:50:41,877 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:42,555 INFO : Epoch 11
+2017-10-18 14:50:42,556 INFO : train_loss                0.60051
+2017-10-18 14:50:42,557 INFO : valid_loss                1.19706
+2017-10-18 14:50:42,557 INFO : test_loss                 1.51804
+2017-10-18 14:50:42,558 INFO : train_sample_misclass     0.22628
+2017-10-18 14:50:42,559 INFO : valid_sample_misclass     0.43046
+2017-10-18 14:50:42,560 INFO : test_sample_misclass      0.50534
+2017-10-18 14:50:42,561 INFO : train_misclass            0.18593
+2017-10-18 14:50:42,561 INFO : valid_misclass            0.35354
+2017-10-18 14:50:42,562 INFO : test_misclass             0.47452
+2017-10-18 14:50:42,563 INFO : runtime                   1.53205
+2017-10-18 14:50:42,564 INFO :
+2017-10-18 14:50:42,566 INFO : New best valid_misclass: 0.353535
+2017-10-18 14:50:42,567 INFO :
+2017-10-18 14:50:43,341 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:44,020 INFO : Epoch 12
+2017-10-18 14:50:44,021 INFO : train_loss                0.57970
+2017-10-18 14:50:44,022 INFO : valid_loss                1.22897
+2017-10-18 14:50:44,023 INFO : test_loss                 1.39584
+2017-10-18 14:50:44,023 INFO : train_sample_misclass     0.21025
+2017-10-18 14:50:44,024 INFO : valid_sample_misclass     0.42520
+2017-10-18 14:50:44,025 INFO : test_sample_misclass      0.45905
+2017-10-18 14:50:44,026 INFO : train_misclass            0.17588
+2017-10-18 14:50:44,027 INFO : valid_misclass            0.39394
+2017-10-18 14:50:44,027 INFO : test_misclass             0.41720
+2017-10-18 14:50:44,028 INFO : runtime                   1.46401
+2017-10-18 14:50:44,029 INFO :
+2017-10-18 14:50:44,852 INFO : Time only for training updates: 0.73s
+2017-10-18 14:50:45,649 INFO : Epoch 13
+2017-10-18 14:50:45,650 INFO : train_loss                0.56397
+2017-10-18 14:50:45,651 INFO : valid_loss                1.31031
+2017-10-18 14:50:45,651 INFO : test_loss                 1.35571
+2017-10-18 14:50:45,652 INFO : train_sample_misclass     0.19995
+2017-10-18 14:50:45,653 INFO : valid_sample_misclass     0.43131
+2017-10-18 14:50:45,654 INFO : test_sample_misclass      0.45480
+2017-10-18 14:50:45,655 INFO : train_misclass            0.17588
+2017-10-18 14:50:45,655 INFO : valid_misclass            0.41414
+2017-10-18 14:50:45,656 INFO : test_misclass             0.41083
+2017-10-18 14:50:45,657 INFO : runtime                   1.51096
+2017-10-18 14:50:45,658 INFO :
+2017-10-18 14:50:46,436 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:47,119 INFO : Epoch 14
+2017-10-18 14:50:47,120 INFO : train_loss                0.62183
+2017-10-18 14:50:47,121 INFO : valid_loss                1.40024
+2017-10-18 14:50:47,122 INFO : test_loss                 1.41603
+2017-10-18 14:50:47,122 INFO : train_sample_misclass     0.23847
+2017-10-18 14:50:47,123 INFO : valid_sample_misclass     0.45525
+2017-10-18 14:50:47,124 INFO : test_sample_misclass      0.46670
+2017-10-18 14:50:47,125 INFO : train_misclass            0.23367
+2017-10-18 14:50:47,125 INFO : valid_misclass            0.39394
+2017-10-18 14:50:47,126 INFO : test_misclass             0.39172
+2017-10-18 14:50:47,127 INFO : runtime                   1.58344
+2017-10-18 14:50:47,128 INFO :
+2017-10-18 14:50:47,937 INFO : Time only for training updates: 0.72s
+2017-10-18 14:50:48,744 INFO : Epoch 15
+2017-10-18 14:50:48,746 INFO : train_loss                0.55989
+2017-10-18 14:50:48,747 INFO : valid_loss                1.37898
+2017-10-18 14:50:48,747 INFO : test_loss                 1.49118
+2017-10-18 14:50:48,748 INFO : train_sample_misclass     0.19834
+2017-10-18 14:50:48,749 INFO : valid_sample_misclass     0.44247
+2017-10-18 14:50:48,750 INFO : test_sample_misclass      0.47654
+2017-10-18 14:50:48,751 INFO : train_misclass            0.16332
+2017-10-18 14:50:48,752 INFO : valid_misclass            0.42424
+2017-10-18 14:50:48,753 INFO : test_misclass             0.43312
+2017-10-18 14:50:48,753 INFO : runtime                   1.50150
+2017-10-18 14:50:48,754 INFO :
+2017-10-18 14:50:49,532 INFO : Time only for training updates: 0.68s
+2017-10-18 14:50:50,207 INFO : Epoch 16
+2017-10-18 14:50:50,209 INFO : train_loss                0.52858
+2017-10-18 14:50:50,210 INFO : valid_loss                1.33544
+2017-10-18 14:50:50,210 INFO : test_loss                 1.51773
+2017-10-18 14:50:50,211 INFO : train_sample_misclass     0.18624
+2017-10-18 14:50:50,212 INFO : valid_sample_misclass     0.46426
+2017-10-18 14:50:50,213 INFO : test_sample_misclass      0.48499
+2017-10-18 14:50:50,214 INFO : train_misclass            0.15829
+2017-10-18 14:50:50,214 INFO : valid_misclass            0.42424
+2017-10-18 14:50:50,215 INFO : test_misclass             0.44268
+2017-10-18 14:50:50,216 INFO : runtime                   1.59488
+2017-10-18 14:50:50,217 INFO :
+2017-10-18 14:50:50,985 INFO : Time only for training updates: 0.68s
+2017-10-18 14:50:51,654 INFO : Epoch 17
+2017-10-18 14:50:51,655 INFO : train_loss                0.53156
+2017-10-18 14:50:51,656 INFO : valid_loss                1.27842
+2017-10-18 14:50:51,657 INFO : test_loss                 1.56092
+2017-10-18 14:50:51,658 INFO : train_sample_misclass     0.19427
+2017-10-18 14:50:51,659 INFO : valid_sample_misclass     0.43265
+2017-10-18 14:50:51,659 INFO : test_sample_misclass      0.48788
+2017-10-18 14:50:51,660 INFO : train_misclass            0.16332
+2017-10-18 14:50:51,661 INFO : valid_misclass            0.39394
+2017-10-18 14:50:51,662 INFO : test_misclass             0.44904
+2017-10-18 14:50:51,663 INFO : runtime                   1.45262
+2017-10-18 14:50:51,663 INFO :
+2017-10-18 14:50:52,433 INFO : Time only for training updates: 0.68s
+2017-10-18 14:50:53,101 INFO : Epoch 18
+2017-10-18 14:50:53,102 INFO : train_loss                0.52132
+2017-10-18 14:50:53,104 INFO : valid_loss                1.34977
+2017-10-18 14:50:53,104 INFO : test_loss                 1.45901
+2017-10-18 14:50:53,105 INFO : train_sample_misclass     0.18319
+2017-10-18 14:50:53,106 INFO : valid_sample_misclass     0.44667
+2017-10-18 14:50:53,107 INFO : test_sample_misclass      0.47998
+2017-10-18 14:50:53,108 INFO : train_misclass            0.16332
+2017-10-18 14:50:53,108 INFO : valid_misclass            0.40404
+2017-10-18 14:50:53,109 INFO : test_misclass             0.42994
+2017-10-18 14:50:53,110 INFO : runtime                   1.44806
+2017-10-18 14:50:53,111 INFO :
+2017-10-18 14:50:53,878 INFO : Time only for training updates: 0.68s
+2017-10-18 14:50:54,550 INFO : Epoch 19
+2017-10-18 14:50:54,551 INFO : train_loss                0.52834
+2017-10-18 14:50:54,552 INFO : valid_loss                1.33830
+2017-10-18 14:50:54,553 INFO : test_loss                 1.56657
+2017-10-18 14:50:54,554 INFO : train_sample_misclass     0.19550
+2017-10-18 14:50:54,555 INFO : valid_sample_misclass     0.44553
+2017-10-18 14:50:54,556 INFO : test_sample_misclass      0.47506
+2017-10-18 14:50:54,556 INFO : train_misclass            0.15327
+2017-10-18 14:50:54,557 INFO : valid_misclass            0.42424
+2017-10-18 14:50:54,558 INFO : test_misclass             0.42675
+2017-10-18 14:50:54,559 INFO : runtime                   1.44554
+2017-10-18 14:50:54,559 INFO :
+2017-10-18 14:50:55,334 INFO : Time only for training updates: 0.69s
+2017-10-18 14:50:56,005 INFO : Epoch 20
+2017-10-18 14:50:56,006 INFO : train_loss                0.50343
+2017-10-18 14:50:56,007 INFO : valid_loss                1.28780
+2017-10-18 14:50:56,008 INFO : test_loss                 1.54259
+2017-10-18 14:50:56,009 INFO : train_sample_misclass     0.17428
+2017-10-18 14:50:56,009 INFO : valid_sample_misclass     0.43808
+2017-10-18 14:50:56,010 INFO : test_sample_misclass      0.48275
+2017-10-18 14:50:56,011 INFO : train_misclass            0.17085
+2017-10-18 14:50:56,012 INFO : valid_misclass            0.38384
+2017-10-18 14:50:56,012 INFO : test_misclass             0.42994
+2017-10-18 14:50:56,013 INFO : runtime                   1.45522
+2017-10-18 14:50:56,014 INFO :
+2017-10-18 14:50:56,015 INFO : Setup for second stop...
+2017-10-18 14:50:56,018 INFO : Train loss to reach 0.60051
+2017-10-18 14:50:56,018 INFO : Run until second stop...
+2017-10-18 14:50:56,779 INFO : Epoch 12
+2017-10-18 14:50:56,780 INFO : train_loss                0.71576
+2017-10-18 14:50:56,781 INFO : valid_loss                1.19706
+2017-10-18 14:50:56,782 INFO : test_loss                 1.51804
+2017-10-18 14:50:56,783 INFO : train_sample_misclass     0.26572
+2017-10-18 14:50:56,783 INFO : valid_sample_misclass     0.43046
+2017-10-18 14:50:56,784 INFO : test_sample_misclass      0.50534
+2017-10-18 14:50:56,785 INFO : train_misclass            0.21932
+2017-10-18 14:50:56,786 INFO : valid_misclass            0.35354
+2017-10-18 14:50:56,787 INFO : test_misclass             0.47452
+2017-10-18 14:50:56,787 INFO : runtime                   0.68491
+2017-10-18 14:50:56,788 INFO :
+2017-10-18 14:50:57,756 INFO : Time only for training updates: 0.86s
+2017-10-18 14:50:58,504 INFO : Epoch 13
+2017-10-18 14:50:58,506 INFO : train_loss                0.71471
+2017-10-18 14:50:58,506 INFO : valid_loss                1.02581
+2017-10-18 14:50:58,507 INFO : test_loss                 1.36558
+2017-10-18 14:50:58,508 INFO : train_sample_misclass     0.26531
+2017-10-18 14:50:58,509 INFO : valid_sample_misclass     0.38159
+2017-10-18 14:50:58,510 INFO : test_sample_misclass      0.47685
+2017-10-18 14:50:58,510 INFO : train_misclass            0.20926
+2017-10-18 14:50:58,511 INFO : valid_misclass            0.34343
+2017-10-18 14:50:58,512 INFO : test_misclass             0.42675
+2017-10-18 14:50:58,513 INFO : runtime                   1.73792
+2017-10-18 14:50:58,514 INFO :
+2017-10-18 14:50:59,466 INFO : Time only for training updates: 0.85s
+2017-10-18 14:51:00,218 INFO : Epoch 14
+2017-10-18 14:51:00,219 INFO : train_loss                0.68170
+2017-10-18 14:51:00,220 INFO : valid_loss                0.92394
+2017-10-18 14:51:00,221 INFO : test_loss                 1.41772
+2017-10-18 14:51:00,221 INFO : train_sample_misclass     0.25490
+2017-10-18 14:51:00,222 INFO : valid_sample_misclass     0.34080
+2017-10-18 14:51:00,223 INFO : test_sample_misclass      0.48808
+2017-10-18 14:51:00,224 INFO : train_misclass            0.21932
+2017-10-18 14:51:00,224 INFO : valid_misclass            0.27273
+2017-10-18 14:51:00,225 INFO : test_misclass             0.45223
+2017-10-18 14:51:00,226 INFO : runtime                   1.70998
+2017-10-18 14:51:00,227 INFO :
+2017-10-18 14:51:01,178 INFO : Time only for training updates: 0.84s
+2017-10-18 14:51:01,930 INFO : Epoch 15
+2017-10-18 14:51:01,931 INFO : train_loss                0.65605
+2017-10-18 14:51:01,932 INFO : valid_loss                0.86897
+2017-10-18 14:51:01,933 INFO : test_loss                 1.45535
+2017-10-18 14:51:01,934 INFO : train_sample_misclass     0.23970
+2017-10-18 14:51:01,934 INFO : valid_sample_misclass     0.33495
+2017-10-18 14:51:01,935 INFO : test_sample_misclass      0.49566
+2017-10-18 14:51:01,936 INFO : train_misclass            0.22938
+2017-10-18 14:51:01,937 INFO : valid_misclass            0.33333
+2017-10-18 14:51:01,938 INFO : test_misclass             0.50318
+2017-10-18 14:51:01,938 INFO : runtime                   1.71482
+2017-10-18 14:51:01,939 INFO :
+2017-10-18 14:51:02,888 INFO : Time only for training updates: 0.84s
+2017-10-18 14:51:03,649 INFO : Epoch 16
+2017-10-18 14:51:03,650 INFO : train_loss                0.67181
+2017-10-18 14:51:03,651 INFO : valid_loss                0.88845
+2017-10-18 14:51:03,652 INFO : test_loss                 1.46706
+2017-10-18 14:51:03,653 INFO : train_sample_misclass     0.25109
+2017-10-18 14:51:03,653 INFO : valid_sample_misclass     0.35517
+2017-10-18 14:51:03,654 INFO : test_sample_misclass      0.51937
+2017-10-18 14:51:03,655 INFO : train_misclass            0.22535
+2017-10-18 14:51:03,656 INFO : valid_misclass            0.30303
+2017-10-18 14:51:03,656 INFO : test_misclass             0.47134
+2017-10-18 14:51:03,657 INFO : runtime                   1.70727
+2017-10-18 14:51:03,658 INFO :
+2017-10-18 14:51:04,617 INFO : Time only for training updates: 0.85s
+2017-10-18 14:51:05,367 INFO : Epoch 17
+2017-10-18 14:51:05,368 INFO : train_loss                0.65910
+2017-10-18 14:51:05,369 INFO : valid_loss                0.85162
+2017-10-18 14:51:05,370 INFO : test_loss                 1.38902
+2017-10-18 14:51:05,371 INFO : train_sample_misclass     0.24354
+2017-10-18 14:51:05,371 INFO : valid_sample_misclass     0.32217
+2017-10-18 14:51:05,372 INFO : test_sample_misclass      0.47177
+2017-10-18 14:51:05,373 INFO : train_misclass            0.23541
+2017-10-18 14:51:05,374 INFO : valid_misclass            0.28283
+2017-10-18 14:51:05,375 INFO : test_misclass             0.45223
+2017-10-18 14:51:05,375 INFO : runtime                   1.72950
+2017-10-18 14:51:05,376 INFO :
+2017-10-18 14:51:06,339 INFO : Time only for training updates: 0.86s
+2017-10-18 14:51:07,086 INFO : Epoch 18
+2017-10-18 14:51:07,087 INFO : train_loss                0.60787
+2017-10-18 14:51:07,088 INFO : valid_loss                0.76043
+2017-10-18 14:51:07,089 INFO : test_loss                 1.40329
+2017-10-18 14:51:07,090 INFO : train_sample_misclass     0.22378
+2017-10-18 14:51:07,091 INFO : valid_sample_misclass     0.29690
+2017-10-18 14:51:07,091 INFO : test_sample_misclass      0.48220
+2017-10-18 14:51:07,092 INFO : train_misclass            0.18712
+2017-10-18 14:51:07,093 INFO : valid_misclass            0.27273
+2017-10-18 14:51:07,094 INFO : test_misclass             0.45860
+2017-10-18 14:51:07,095 INFO : runtime                   1.72085
+2017-10-18 14:51:07,095 INFO :
+2017-10-18 14:51:08,059 INFO : Time only for training updates: 0.85s
+2017-10-18 14:51:08,811 INFO : Epoch 19
+2017-10-18 14:51:08,813 INFO : train_loss                0.61094
+2017-10-18 14:51:08,813 INFO : valid_loss                0.78442
+2017-10-18 14:51:08,814 INFO : test_loss                 1.37597
+2017-10-18 14:51:08,815 INFO : train_sample_misclass     0.22366
+2017-10-18 14:51:08,816 INFO : valid_sample_misclass     0.30590
+2017-10-18 14:51:08,817 INFO : test_sample_misclass      0.47004
+2017-10-18 14:51:08,817 INFO : train_misclass            0.18712
+2017-10-18 14:51:08,818 INFO : valid_misclass            0.24242
+2017-10-18 14:51:08,819 INFO : test_misclass             0.43312
+2017-10-18 14:51:08,820 INFO : runtime                   1.72112
+2017-10-18 14:51:08,821 INFO :
+2017-10-18 14:51:09,772 INFO : Time only for training updates: 0.84s
+2017-10-18 14:51:10,527 INFO : Epoch 20
+2017-10-18 14:51:10,529 INFO : train_loss                0.59383
+2017-10-18 14:51:10,530 INFO : valid_loss                0.71788
+2017-10-18 14:51:10,530 INFO : test_loss                 1.45661
+2017-10-18 14:51:10,531 INFO : train_sample_misclass     0.21128
+2017-10-18 14:51:10,532 INFO : valid_sample_misclass     0.26403
+2017-10-18 14:51:10,533 INFO : test_sample_misclass      0.49466
+2017-10-18 14:51:10,534 INFO : train_misclass            0.20121
+2017-10-18 14:51:10,534 INFO : valid_misclass            0.27273
+2017-10-18 14:51:10,535 INFO : test_misclass             0.46497
+2017-10-18 14:51:10,536 INFO : runtime                   1.71215
+2017-10-18 14:51:10,537 INFO :
+2017-10-18 14:51:11,494 INFO : Time only for training updates: 0.85s
+2017-10-18 14:51:12,248 INFO : Epoch 21
+2017-10-18 14:51:12,249 INFO : train_loss                0.60204
+2017-10-18 14:51:12,250 INFO : valid_loss                0.75404
+2017-10-18 14:51:12,251 INFO : test_loss                 1.50374
+2017-10-18 14:51:12,251 INFO : train_sample_misclass     0.21586
+2017-10-18 14:51:12,252 INFO : valid_sample_misclass     0.28866
+2017-10-18 14:51:12,253 INFO : test_sample_misclass      0.51124
+2017-10-18 14:51:12,254 INFO : train_misclass            0.19316
+2017-10-18 14:51:12,254 INFO : valid_misclass            0.27273
+2017-10-18 14:51:12,255 INFO : test_misclass             0.48089
+2017-10-18 14:51:12,256 INFO : runtime                   1.72200
+2017-10-18 14:51:12,257 INFO :
+2017-10-18 14:51:13,203 INFO : Time only for training updates: 0.84s
+2017-10-18 14:51:13,953 INFO : Epoch 22
+2017-10-18 14:51:13,954 INFO : train_loss                0.65319
+2017-10-18 14:51:13,955 INFO : valid_loss                0.82842
+2017-10-18 14:51:13,956 INFO : test_loss                 1.39787
+2017-10-18 14:51:13,957 INFO : train_sample_misclass     0.25414
+2017-10-18 14:51:13,958 INFO : valid_sample_misclass     0.33484
+2017-10-18 14:51:13,958 INFO : test_sample_misclass      0.48461
+2017-10-18 14:51:13,959 INFO : train_misclass            0.23944
+2017-10-18 14:51:13,960 INFO : valid_misclass            0.30303
+2017-10-18 14:51:13,961 INFO : test_misclass             0.45860
+2017-10-18 14:51:13,962 INFO : runtime                   1.70928
+2017-10-18 14:51:13,962 INFO :
 </pre></div></div>
 </div>
-<p>We arrive only at 31% accuracy. With only 3 sensors and 3 training runs,
-cannot expect too much great performance :)</p>
+<p>We arrive at about 54% accuracy. With only 3 sensors and 3 training
+runs, we cannot get much better :)</p>
 </div>
 </div>
 
@@ -1096,7 +1188,7 @@ cannot expect too much great performance :)</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.2.1',
+            VERSION:'0.3.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

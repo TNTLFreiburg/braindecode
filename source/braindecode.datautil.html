@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.datautil package &mdash; Braindecode 0.2.1 documentation</title>
+  <title>braindecode.datautil package &mdash; Braindecode 0.3.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.2.1 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.3.0 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.experiments package" href="braindecode.experiments.html"/>
         <link rel="prev" title="Amplitude Perturbation Visualization" href="../notebooks/visualization/Perturbation.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -642,7 +642,7 @@ of trials in first set.</p>
 <span id="braindecode-datautil-trial-segment-module"></span><h2>braindecode.datautil.trial_segment module<a class="headerlink" href="#module-braindecode.datautil.trial_segment" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.datautil.trial_segment.create_signal_target_from_raw_mne">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_from_raw_mne</code><span class="sig-paren">(</span><em>raw</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L15-L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_from_raw_mne" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_from_raw_mne</code><span class="sig-paren">(</span><em>raw</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em>, <em>prepad_trials_to_n_samples=None</em>, <em>one_hot_labels=False</em>, <em>one_label_per_trial=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L16-L66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_from_raw_mne" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SignalTarget set from given <cite>mne.io.RawArray</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -661,6 +661,11 @@ after the start marker until 500 ms before the stop marker.</li>
 <li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.
 Order does not matter, dictionary should contain each class in
 <cite>name_to_codes</cite> dictionary.</li>
+<li><strong>prepad_trials_to_n_samples</strong> (<em>int</em>) – Pad trials that would be too short with the signal before it (only
+valid if name_to_stop_codes is not None).</li>
+<li><strong>one_hot_labels</strong> (<em>bool, optional</em>) – Whether to have the labels in a one-hot format, e.g. [0,0,1] or to
+have them just as an int, e.g. 2</li>
+<li><strong>one_label_per_trial</strong> (<em>bool, optional</em>) – Whether to have a timeseries of labels or just a single label per trial.</li>
 </ul>
 </td>
 </tr>
@@ -676,7 +681,7 @@ Order does not matter, dictionary should contain each class in
 
 <dl class="function">
 <dt id="braindecode.datautil.trial_segment.create_signal_target">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target</code><span class="sig-paren">(</span><em>data</em>, <em>events</em>, <em>fs</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L52-L93"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target</code><span class="sig-paren">(</span><em>data</em>, <em>events</em>, <em>fs</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em>, <em>prepad_trials_to_n_samples=None</em>, <em>one_hot_labels=False</em>, <em>one_label_per_trial=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L69-L123"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SignalTarget set given continuous data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -698,6 +703,11 @@ after the start marker until 500 ms before the stop marker.</li>
 <li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.
 Order does not matter, dictionary should contain each class in
 <cite>name_to_codes</cite> dictionary.</li>
+<li><strong>prepad_trials_to_n_samples</strong> (<em>int, optional</em>) – Pad trials that would be too short with the signal before it (only
+valid if name_to_stop_codes is not None).</li>
+<li><strong>one_hot_labels</strong> (<em>bool, optional</em>) – Whether to have the labels in a one-hot format, e.g. [0,0,1] or to
+have them just as an int, e.g. 2</li>
+<li><strong>one_label_per_trial</strong> (<em>bool, optional</em>) – Whether to have a timeseries of labels or just a single label per trial.</li>
 </ul>
 </td>
 </tr>
@@ -712,8 +722,47 @@ Order does not matter, dictionary should contain each class in
 </dd></dl>
 
 <dl class="function">
+<dt id="braindecode.datautil.trial_segment.create_signal_target_with_breaks_from_mne">
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_with_breaks_from_mne</code><span class="sig-paren">(</span><em>cnt</em>, <em>name_to_start_codes</em>, <em>trial_epoch_ival_ms</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms</em>, <em>max_break_length_ms</em>, <em>break_epoch_ival_ms</em>, <em>prepad_trials_to_n_samples=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L414-L501"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_with_breaks_from_mne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create SignalTarget set from given <cite>mne.io.RawArray</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cnt</strong> (<cite>mne.io.RawArray</cite>)</li>
+<li><strong>name_to_start_codes</strong> (<em>OrderedDict (str -&gt; int or list of int)</em>) – Ordered dictionary mapping class names to marker code or marker codes.
+y-labels will be assigned in increasing key order, i.e.
+first classname gets y-value 0, second classname y-value 1, etc.</li>
+<li><strong>trial_epoch_ival_ms</strong> (<em>iterable of (int,int)</em>) – Epoching interval in milliseconds. Represents offset from start marker
+and offset from stop marker. E.g. [500, -500] would mean 500ms
+after the start marker until 500 ms before the stop marker.</li>
+<li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.
+Order does not matter, dictionary should contain each class in
+<cite>name_to_codes</cite> dictionary.</li>
+<li><strong>min_break_length_ms</strong> (<em>number</em>) – Breaks below this length are excluded.</li>
+<li><strong>max_break_length_ms</strong> (<em>number</em>) – Breaks above this length are excluded.</li>
+<li><strong>break_epoch_ival_ms</strong> (<em>number</em>) – Break ival, offset from trial end to start of the break in ms and
+offset from trial start to end of break in ms.</li>
+<li><strong>prepad_trials_to_n_samples</strong> (<em>int</em>) – Pad trials that would be too short with the signal before it (only
+valid if name_to_stop_codes is not None).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dataset</strong> – Dataset with <cite>X</cite> as the trial signals and <cite>y</cite> as the trial labels.
+Labels as timeseries and of integers, i.e., not one-hot encoded.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="braindecode.datautil.trial_segment.add_breaks">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">add_breaks</code><span class="sig-paren">(</span><em>events</em>, <em>fs</em>, <em>break_start_code</em>, <em>break_stop_code</em>, <em>name_to_start_codes</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms=None</em>, <em>max_break_length_ms=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L202-L263"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.add_breaks" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">add_breaks</code><span class="sig-paren">(</span><em>events</em>, <em>fs</em>, <em>break_start_code</em>, <em>break_stop_code</em>, <em>name_to_start_codes</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms=None</em>, <em>max_break_length_ms=None</em>, <em>break_start_offset_ms=None</em>, <em>break_stop_offset_ms=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L504-L574"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.add_breaks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add break events to given events.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -730,6 +779,8 @@ start marker codes.</li>
 <li><strong>name_to_stop_codes</strong> (<em>dict (str -&gt; int or list of int), optional</em>) – Dictionary mapping class names to stop marker code or stop marker codes.</li>
 <li><strong>min_break_length_ms</strong> (<em>number, optional</em>) – Minimum length in milliseconds a break should have to be included.</li>
 <li><strong>max_break_length_ms</strong> (<em>number, optional</em>) – Maximum length in milliseconds a break can have to be included.</li>
+<li><strong>break_start_offset_ms</strong> (<em>number, optional</em>) – What offset from trial end to start of the break in ms.</li>
+<li><strong>break_stop_offset_ms</strong> (<em>number, optional</em>) – What offset from next trial start end to previous break end in ms.</li>
 </ul>
 </td>
 </tr>
@@ -841,7 +892,7 @@ start marker codes.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.2.1',
+            VERSION:'0.3.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
