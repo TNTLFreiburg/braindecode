@@ -278,7 +278,7 @@ after best epoch from epochs dataframe.</p>
 
 <dl class="class">
 <dt id="braindecode.experiments.experiment.Experiment">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.experiment.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>model</em>, <em>train_set</em>, <em>valid_set</em>, <em>test_set</em>, <em>iterator</em>, <em>loss_function</em>, <em>optimizer</em>, <em>model_constraint</em>, <em>monitors</em>, <em>stop_criterion</em>, <em>remember_best_column</em>, <em>run_after_early_stop</em>, <em>model_loss_function=None</em>, <em>batch_modifier=None</em>, <em>cuda=True</em>, <em>pin_memory=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L85-L401"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.experiment.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>model</em>, <em>train_set</em>, <em>valid_set</em>, <em>test_set</em>, <em>iterator</em>, <em>loss_function</em>, <em>optimizer</em>, <em>model_constraint</em>, <em>monitors</em>, <em>stop_criterion</em>, <em>remember_best_column</em>, <em>run_after_early_stop</em>, <em>model_loss_function=None</em>, <em>batch_modifier=None</em>, <em>cuda=True</em>, <em>pin_memory=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L85-L405"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class that performs one experiment on training, validation and test set.</p>
 <p>It trains as follows:</p>
@@ -419,7 +419,7 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.eval_on_batch">
-<code class="descname">eval_on_batch</code><span class="sig-paren">(</span><em>inputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L300-L325"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.eval_on_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">eval_on_batch</code><span class="sig-paren">(</span><em>inputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L300-L329"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.eval_on_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate given inputs and targets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -444,7 +444,7 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><em>datasets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L327-L372"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><em>datasets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L331-L376"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate one epoch for given datasets.</p>
 <p>Stores results in <cite>epochs_df</cite></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -460,13 +460,13 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.print_epoch">
-<code class="descname">print_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L374-L384"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.print_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">print_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L378-L388"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.print_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print monitoring values for this epoch.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.setup_after_stop_training">
-<code class="descname">setup_after_stop_training</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L386-L401"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.setup_after_stop_training" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setup_after_stop_training</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L390-L405"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.setup_after_stop_training" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setup training after first stop.</p>
 <p>Resets parameters to best parameters and updates stop criterion.</p>
 </dd></dl>
@@ -478,32 +478,38 @@ fulfilled.</p>
 <span id="braindecode-experiments-monitors-module"></span><h2>braindecode.experiments.monitors module<a class="headerlink" href="#module-braindecode.experiments.monitors" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.experiments.monitors.MisclassMonitor">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">MisclassMonitor</code><span class="sig-paren">(</span><em>col_suffix=’misclass’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L5-L57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.MisclassMonitor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">MisclassMonitor</code><span class="sig-paren">(</span><em>col_suffix=’misclass’</em>, <em>threshold_for_binary_case=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L5-L70"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.MisclassMonitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Monitor the examplewise misclassification rate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>col_suffix</strong> (<em>str, optional</em>) – Name of the column in the monitoring output.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>col_suffix</strong> (<em>str, optional</em>) – Name of the column in the monitoring output.</li>
+<li><strong>threshold_for_binary_case</strong> (<em>bool, optional</em>) – In case of binary classification with only one output prediction
+per target, define the threshold for separating the classes, i.e.
+0.5 for sigmoid outputs, or np.log(0.5) for log sigmoid outputs</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="braindecode.experiments.monitors.MisclassMonitor.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L18-L19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.MisclassMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L23-L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.MisclassMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.monitors.MisclassMonitor.monitor_set">
-<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L21-L57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.MisclassMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L26-L70"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.MisclassMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="braindecode.experiments.monitors.AveragePerClassMisclassMonitor">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">AveragePerClassMisclassMonitor</code><span class="sig-paren">(</span><em>col_suffix=’misclass’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L60-L118"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.AveragePerClassMisclassMonitor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">AveragePerClassMisclassMonitor</code><span class="sig-paren">(</span><em>col_suffix=’misclass’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L73-L131"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.AveragePerClassMisclassMonitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Compute average of misclasses per class,
 useful if classes are highly imbalanced.</p>
@@ -517,36 +523,36 @@ useful if classes are highly imbalanced.</p>
 </table>
 <dl class="method">
 <dt id="braindecode.experiments.monitors.AveragePerClassMisclassMonitor.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L73-L74"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.AveragePerClassMisclassMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L86-L87"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.AveragePerClassMisclassMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.monitors.AveragePerClassMisclassMonitor.monitor_set">
-<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L76-L118"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.AveragePerClassMisclassMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L89-L131"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.AveragePerClassMisclassMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="braindecode.experiments.monitors.LossMonitor">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">LossMonitor</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L121-L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.LossMonitor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">LossMonitor</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L134-L148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.LossMonitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Monitor the examplewise loss.</p>
 <dl class="method">
 <dt id="braindecode.experiments.monitors.LossMonitor.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L125-L126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.LossMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L138-L139"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.LossMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.monitors.LossMonitor.monitor_set">
-<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L128-L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.LossMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L141-L148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.LossMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="braindecode.experiments.monitors.CroppedTrialMisclassMonitor">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">CroppedTrialMisclassMonitor</code><span class="sig-paren">(</span><em>input_time_length=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L138-L204"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.CroppedTrialMisclassMonitor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">CroppedTrialMisclassMonitor</code><span class="sig-paren">(</span><em>input_time_length=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L151-L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.CroppedTrialMisclassMonitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Compute trialwise misclasses from predictions for crops.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -559,12 +565,12 @@ useful if classes are highly imbalanced.</p>
 </table>
 <dl class="method">
 <dt id="braindecode.experiments.monitors.CroppedTrialMisclassMonitor.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L150-L151"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.CroppedTrialMisclassMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L163-L164"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.CroppedTrialMisclassMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.monitors.CroppedTrialMisclassMonitor.monitor_set">
-<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L153-L168"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.CroppedTrialMisclassMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L166-L181"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.CroppedTrialMisclassMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assuming one hot encoding for now</p>
 </dd></dl>
 
@@ -572,7 +578,7 @@ useful if classes are highly imbalanced.</p>
 
 <dl class="function">
 <dt id="braindecode.experiments.monitors.compute_preds_per_trial_for_set">
-<code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">compute_preds_per_trial_for_set</code><span class="sig-paren">(</span><em>all_preds</em>, <em>input_time_length</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L207-L233"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.compute_preds_per_trial_for_set" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">compute_preds_per_trial_for_set</code><span class="sig-paren">(</span><em>all_preds</em>, <em>input_time_length</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L220-L246"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.compute_preds_per_trial_for_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute predictions per trial from predictions for crops.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -597,7 +603,7 @@ useful if classes are highly imbalanced.</p>
 
 <dl class="function">
 <dt id="braindecode.experiments.monitors.compute_preds_per_trial_from_n_preds_per_trial">
-<code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">compute_preds_per_trial_from_n_preds_per_trial</code><span class="sig-paren">(</span><em>all_preds</em>, <em>n_preds_per_trial</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L236-L280"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.compute_preds_per_trial_from_n_preds_per_trial" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">compute_preds_per_trial_from_n_preds_per_trial</code><span class="sig-paren">(</span><em>all_preds</em>, <em>n_preds_per_trial</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L249-L293"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.compute_preds_per_trial_from_n_preds_per_trial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute predictions per trial from predictions for crops.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -622,18 +628,18 @@ useful if classes are highly imbalanced.</p>
 
 <dl class="class">
 <dt id="braindecode.experiments.monitors.RuntimeMonitor">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">RuntimeMonitor</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L283-L303"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.RuntimeMonitor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.monitors.</code><code class="descname">RuntimeMonitor</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L296-L316"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.RuntimeMonitor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Monitor the runtime of each epoch.</p>
 <p>First epoch will have runtime 0.</p>
 <dl class="method">
 <dt id="braindecode.experiments.monitors.RuntimeMonitor.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L292-L299"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.RuntimeMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L305-L312"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.RuntimeMonitor.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.monitors.RuntimeMonitor.monitor_set">
-<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L301-L303"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.RuntimeMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_set</code><span class="sig-paren">(</span><em>setname</em>, <em>all_preds</em>, <em>all_losses</em>, <em>all_batch_sizes</em>, <em>all_targets</em>, <em>dataset</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/monitors.py#L314-L316"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.monitors.RuntimeMonitor.monitor_set" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
