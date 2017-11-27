@@ -300,7 +300,7 @@ balanced batches (maximum size difference 1).</td>
 
 <dl class="class">
 <dt id="braindecode.datautil.iterators.CropsFromTrialsIterator">
-<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">CropsFromTrialsIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>input_time_length</em>, <em>n_preds_per_input</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L144-L222"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">CropsFromTrialsIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>input_time_length</em>, <em>n_preds_per_input</em>, <em>seed=(2017</em>, <em>6</em>, <em>28)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L144-L226"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Iterator sampling crops out the trials so that each sample
 (after receptive size of the ConvNet) in each trial is predicted.</p>
@@ -320,6 +320,7 @@ can help with removing the overlapped predictions again for evaluation.</p>
 <li><strong>n_preds_per_input</strong> (<em>int</em>) – Number of predictions ConvNet makes per one input. Can be computed
 by making a forward pass with the given input time length, the
 output length in 3rd dimension is n_preds_per_input.</li>
+<li><strong>seed</strong> (<em>int</em>) – Random seed for initialization of <cite>numpy.RandomState</cite>.</li>
 </ul>
 </td>
 </tr>
@@ -334,12 +335,12 @@ output length in 3rd dimension is n_preds_per_input.</li>
 </div>
 <dl class="method">
 <dt id="braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng">
-<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L176-L177"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L180-L181"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches">
-<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L179-L202"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L183-L206"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -637,12 +638,36 @@ of trials in first set.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="braindecode.datautil.splitters.select_examples">
+<code class="descclassname">braindecode.datautil.splitters.</code><code class="descname">select_examples</code><span class="sig-paren">(</span><em>dataset</em>, <em>indices</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/splitters.py#L81-L105"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.splitters.select_examples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select examples from dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a>)</li>
+<li><strong>indices</strong> (<em>list of int, 1d-array of int</em>) – Indices to select</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reduced_set</strong> – Dataset with only examples selected.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#braindecode.datautil.signal_target.SignalAndTarget" title="braindecode.datautil.signal_target.SignalAndTarget"><code class="xref py py-class docutils literal"><span class="pre">SignalAndTarget</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-braindecode.datautil.trial_segment">
 <span id="braindecode-datautil-trial-segment-module"></span><h2>braindecode.datautil.trial_segment module<a class="headerlink" href="#module-braindecode.datautil.trial_segment" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.datautil.trial_segment.create_signal_target_from_raw_mne">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_from_raw_mne</code><span class="sig-paren">(</span><em>raw</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em>, <em>prepad_trials_to_n_samples=None</em>, <em>one_hot_labels=False</em>, <em>one_label_per_trial=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L16-L66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_from_raw_mne" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_from_raw_mne</code><span class="sig-paren">(</span><em>raw</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em>, <em>prepad_trials_to_n_samples=None</em>, <em>one_hot_labels=False</em>, <em>one_label_per_trial=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L13-L63"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_from_raw_mne" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SignalTarget set from given <cite>mne.io.RawArray</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -681,7 +706,7 @@ have them just as an int, e.g. 2</li>
 
 <dl class="function">
 <dt id="braindecode.datautil.trial_segment.create_signal_target">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target</code><span class="sig-paren">(</span><em>data</em>, <em>events</em>, <em>fs</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em>, <em>prepad_trials_to_n_samples=None</em>, <em>one_hot_labels=False</em>, <em>one_label_per_trial=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L69-L123"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target</code><span class="sig-paren">(</span><em>data</em>, <em>events</em>, <em>fs</em>, <em>name_to_start_codes</em>, <em>epoch_ival_ms</em>, <em>name_to_stop_codes=None</em>, <em>prepad_trials_to_n_samples=None</em>, <em>one_hot_labels=False</em>, <em>one_label_per_trial=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L66-L120"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SignalTarget set given continuous data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -723,7 +748,7 @@ have them just as an int, e.g. 2</li>
 
 <dl class="function">
 <dt id="braindecode.datautil.trial_segment.create_signal_target_with_breaks_from_mne">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_with_breaks_from_mne</code><span class="sig-paren">(</span><em>cnt</em>, <em>name_to_start_codes</em>, <em>trial_epoch_ival_ms</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms</em>, <em>max_break_length_ms</em>, <em>break_epoch_ival_ms</em>, <em>prepad_trials_to_n_samples=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L414-L501"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_with_breaks_from_mne" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">create_signal_target_with_breaks_from_mne</code><span class="sig-paren">(</span><em>cnt</em>, <em>name_to_start_codes</em>, <em>trial_epoch_ival_ms</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms</em>, <em>max_break_length_ms</em>, <em>break_epoch_ival_ms</em>, <em>prepad_trials_to_n_samples=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L411-L498"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.create_signal_target_with_breaks_from_mne" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SignalTarget set from given <cite>mne.io.RawArray</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -762,7 +787,7 @@ Labels as timeseries and of integers, i.e., not one-hot encoded.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.trial_segment.add_breaks">
-<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">add_breaks</code><span class="sig-paren">(</span><em>events</em>, <em>fs</em>, <em>break_start_code</em>, <em>break_stop_code</em>, <em>name_to_start_codes</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms=None</em>, <em>max_break_length_ms=None</em>, <em>break_start_offset_ms=None</em>, <em>break_stop_offset_ms=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L504-L574"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.add_breaks" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.trial_segment.</code><code class="descname">add_breaks</code><span class="sig-paren">(</span><em>events</em>, <em>fs</em>, <em>break_start_code</em>, <em>break_stop_code</em>, <em>name_to_start_codes</em>, <em>name_to_stop_codes</em>, <em>min_break_length_ms=None</em>, <em>max_break_length_ms=None</em>, <em>break_start_offset_ms=None</em>, <em>break_stop_offset_ms=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/trial_segment.py#L501-L571"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.trial_segment.add_breaks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add break events to given events.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

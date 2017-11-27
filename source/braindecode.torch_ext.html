@@ -403,7 +403,7 @@ of the expected class labels, i.e., [0,log_preds.size()[1]-1].</p>
 <span id="braindecode-torch-ext-util-module"></span><h2>braindecode.torch_ext.util module<a class="headerlink" href="#module-braindecode.torch_ext.util" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.torch_ext.util.np_to_var">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>dtype=None</em>, <em>pin_memory=False</em>, <em>**var_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L33"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>dtype=None</em>, <em>pin_memory=False</em>, <em>**var_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to transform numpy array to <cite>torch.autograd.Variable</cite>.</p>
 <p>Converts <cite>X</cite> to ndarray using asarray if necessary.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -411,7 +411,7 @@ of the expected class labels, i.e., [0,log_preds.size()[1]-1].</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>ndarray or list</em>) – Input arrays</li>
+<li><strong>X</strong> (<em>ndarray or list or number</em>) – Input arrays</li>
 <li><strong>requires_grad</strong> (<em>bool</em>) – passed on to Variable constructor</li>
 <li><strong>dtype</strong> (<em>numpy dtype, optional</em>)</li>
 <li><strong>var_kwargs</strong> – passed on to Variable constructor</li>
@@ -430,7 +430,7 @@ of the expected class labels, i.e., [0,log_preds.size()[1]-1].</p>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.util.var_to_np">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L36-L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L38-L43"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to transform <cite>torch.autograd.Variable</cite> to numpy
 array.</p>
 <p>Should work both for CPU and GPU.</p>
@@ -438,7 +438,7 @@ array.</p>
 
 <dl class="function">
 <dt id="braindecode.torch_ext.util.set_random_seeds">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">set_random_seeds</code><span class="sig-paren">(</span><em>seed</em>, <em>cuda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L44-L60"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.set_random_seeds" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">set_random_seeds</code><span class="sig-paren">(</span><em>seed</em>, <em>cuda</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L46-L62"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.set_random_seeds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set seeds for python random module numpy.random and torch.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -452,6 +452,14 @@ array.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.torch_ext.util.confirm_gpu_availability">
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">confirm_gpu_availability</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L65-L76"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.confirm_gpu_availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should crash if gpu not available, attempts to create a FloatTensor on GPU.
+:returns: <strong>success</strong> – Always returns true, should crash if gpu not available
+:rtype: bool</p>
 </dd></dl>
 
 </div>
