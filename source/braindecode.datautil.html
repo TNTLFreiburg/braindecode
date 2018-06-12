@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.datautil package &mdash; Braindecode 0.3.0 documentation</title>
+  <title>braindecode.datautil package &mdash; Braindecode 0.3.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.3.0 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.3.2 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.experiments package" href="braindecode.experiments.html"/>
         <link rel="prev" title="Amplitude Perturbation Visualization" href="../notebooks/visualization/Perturbation.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.2
               </div>
             
           
@@ -513,7 +513,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.bandpass_cnt">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">bandpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L149-L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.bandpass_cnt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">bandpass_cnt</code><span class="sig-paren">(</span><em>data</em>, <em>low_cut_hz</em>, <em>high_cut_hz</em>, <em>fs</em>, <em>filt_order=3</em>, <em>axis=0</em>, <em>filtfilt=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L149-L192"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.bandpass_cnt" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div>Bandpass signal applying <strong>causal</strong> butterworth filter of given order.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -526,6 +526,7 @@ application of the function.</p>
 <li><strong>high_cut_hz</strong> (<em>float</em>)</li>
 <li><strong>fs</strong> (<em>float</em>)</li>
 <li><strong>filt_order</strong> (<em>int</em>)</li>
+<li><strong>filtfilt</strong> (<em>bool</em>) – Whether to use filtfilt instead of lfilter</li>
 </ul>
 </td>
 </tr>
@@ -541,7 +542,7 @@ application of the function.</p>
 
 <dl class="function">
 <dt id="braindecode.datautil.signalproc.filter_is_stable">
-<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">filter_is_stable</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L189-L216"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.filter_is_stable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.signalproc.</code><code class="descname">filter_is_stable</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/signalproc.py#L195-L222"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.signalproc.filter_is_stable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if filter coefficients of IIR filter are stable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -917,7 +918,7 @@ start marker codes.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0',
+            VERSION:'0.3.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

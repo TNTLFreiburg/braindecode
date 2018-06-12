@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.visualization package &mdash; Braindecode 0.3.0 documentation</title>
+  <title>braindecode.visualization package &mdash; Braindecode 0.3.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.3.0 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.3.2 documentation" href="../index.html"/>
         <link rel="prev" title="braindecode.torch_ext package" href="braindecode.torch_ext.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.2
               </div>
             
           
@@ -103,8 +103,10 @@
 <li class="toctree-l1"><a class="reference internal" href="braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">braindecode.visualization package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.visualization.input_windows">braindecode.visualization.input_windows module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-braindecode.visualization.perturbation">braindecode.visualization.perturbation module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-braindecode.visualization.plot">braindecode.visualization.plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.visualization.sinfit">braindecode.visualization.sinfit module</a></li>
 </ul>
 </li>
 </ul>
@@ -210,26 +212,307 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-braindecode.visualization.perturbation">
-<span id="braindecode-visualization-perturbation-module"></span><h2>braindecode.visualization.perturbation module<a class="headerlink" href="#module-braindecode.visualization.perturbation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-braindecode.visualization.input_windows">
+<span id="braindecode-visualization-input-windows-module"></span><h2>braindecode.visualization.input_windows module<a class="headerlink" href="#module-braindecode.visualization.input_windows" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="braindecode.visualization.perturbation.gaussian_perturbation">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">gaussian_perturbation</code><span class="sig-paren">(</span><em>amps</em>, <em>rng</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L12-L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.gaussian_perturbation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create gaussian noise tensor with same shape as amplitudes.</p>
+<dt id="braindecode.visualization.input_windows.calc_Hout">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">calc_Hout</code><span class="sig-paren">(</span><em>Hin</em>, <em>kernel</em>, <em>stride</em>, <em>dilation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L4-L6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.calc_Hout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.calc_Hin">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">calc_Hin</code><span class="sig-paren">(</span><em>Hout</em>, <em>kernel</em>, <em>stride</em>, <em>dilation</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L8-L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.calc_Hin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.calc_receptive_field_size">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">calc_receptive_field_size</code><span class="sig-paren">(</span><em>model</em>, <em>layer_ind</em>, <em>start_receptive_field=array([ 1.</em>, <em>1.])</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L12-L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.calc_receptive_field_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate receptive field size for unit in specific layer of the network
+Only tested for 2d convolutions/poolings. Dimshuffle operations may lead to a wrong result</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>amps</strong> (<em>ndarray</em>) – Amplitudes.</li>
-<li><strong>rng</strong> (<em>RandomState</em>) – Random generator.</li>
+<li><strong>model</strong> (<em>model object</em>) – Network model</li>
+<li><strong>layer_ind</strong> (<em>int</em>) – Index of the layer of interest in <cite>model.children()</cite></li>
+<li><strong>start_receptive_field</strong> (<em>int, optional</em>) – How many units are looked at in specified layer (default: [1,1])</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>perturbation</strong> – Perturbations to add to the amplitudes.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>receptive_field_size</strong> – [HxW] in the input layer</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.get_max_act_index">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">get_max_act_index</code><span class="sig-paren">(</span><em>activations</em>, <em>unique_per_input=True</em>, <em>n_units=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L42-L77"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.get_max_act_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve index of maximum activation in a feature map</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>activations</strong> (<em>numpy array</em>) – [Nx1xHxW] can only take 1 filter</li>
+<li><strong>unique_per_input</strong> (<em>bool, optional</em>) – Specifies if only 1 index (maximum) for each input is returned (default: True)</li>
+<li><strong>n_units</strong> (<em>int, optional</em>) – How many indeces are returned in total. If None all (default: None)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>units</strong> (<em>numpy array</em>) – [Nx4] with the columns <cite>Input_i</cite>,`Filter(0)`,`H_i`,`W_i` indeces of the units</li>
+<li><strong>units_activation</strong> (<em>numpy array</em>) – Activation of the units</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.calc_receptive_field_for_units_2d">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">calc_receptive_field_for_units_2d</code><span class="sig-paren">(</span><em>units</em>, <em>receptive_field_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L79-L84"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.calc_receptive_field_for_units_2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.get_input_windows_from_units_2d">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">get_input_windows_from_units_2d</code><span class="sig-paren">(</span><em>inputs</em>, <em>units</em>, <em>receptive_field_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L86-L109"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.get_input_windows_from_units_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cut input windows in receptive field of specified units from inputs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>numpy array</em>) – [NxCxHxW] Inputs x Channels x Time x W</li>
+<li><strong>units</strong> (<em>numpy array</em>) – [Mx4] unit indeces specifying Input and time indeces.
+Second dimension consists of Input x Filter(1) x H x W indeces. Can only handle 1 filter.</li>
+<li><strong>receptive_field_size</strong> (<em>int</em>) – Size of receptive field of units on input</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>windows</strong> – Cut input windows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.most_activating_input_windows">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">most_activating_input_windows</code><span class="sig-paren">(</span><em>inputs</em>, <em>activations</em>, <em>receptive_field_size</em>, <em>top_percentage=0.05</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L112-L139"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.most_activating_input_windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the input windows that evoked highest activation in a feature map</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>numpy array</em>) – [NxCxTx1] Inputs used for the calculation of activations</li>
+<li><strong>activations</strong> (<em>numpy array</em>) – [NxFxHx1] Activations</li>
+<li><strong>receptive_field_size</strong> (<em>numpy array</em>) – [Wx1] Receptive field of a unit of the layer on the input</li>
+<li><strong>top_percentage</strong> (<em>float, optional</em>) – How many of the most activating input windows should be returned (default: top 5%)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>input_windows</strong> – [FxUxCxWx1] Returns <cite>U</cite> (resulting from top_percentage) input windows for each filter</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.input_windows.activation_reverse_correlation">
+<code class="descclassname">braindecode.visualization.input_windows.</code><code class="descname">activation_reverse_correlation</code><span class="sig-paren">(</span><em>inputs</em>, <em>activations</em>, <em>receptive_field_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/input_windows.py#L141-L170"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.input_windows.activation_reverse_correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get reverse correlations for filters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inputs</strong> (<em>numpy array</em>) – [NxCxTx1] Inputs used for the calculation of activations</li>
+<li><strong>activations</strong> (<em>numpy array</em>) – [NxFxHx1] Activations</li>
+<li><strong>receptive_field_size</strong> (<em>numpy array</em>) – [Wx1] Receptive field of a unit of the layer on the input</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>reverse_corr</strong> – [FxCxWx1] Reverse correlations over all input windows for each filter</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.visualization.perturbation">
+<span id="braindecode-visualization-perturbation-module"></span><h2>braindecode.visualization.perturbation module<a class="headerlink" href="#module-braindecode.visualization.perturbation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.visualization.perturbation.phase_perturbation">
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">phase_perturbation</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=&lt;mtrand.RandomState object&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L11-L45"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.phase_perturbation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes amps and phases of BxCxF with B input, C channels, F frequencies
+Shifts spectral phases randomly U(-pi,pi) for input and frequencies, but same for all channels</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amps</strong> (<em>numpy array</em>) – Spectral amplitude (not used)</li>
+<li><strong>phases</strong> (<em>numpy array</em>) – Spectral phases</li>
+<li><strong>rng</strong> (<em>object</em>) – Random Seed</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>amps</strong> (<em>numpy array</em>) – Input amps (not modified)</li>
+<li><strong>phases_pert</strong> (<em>numpy array</em>) – Shifted phases</li>
+<li><strong>pert_vals</strong> (<em>numpy array</em>) – Absolute phase shifts</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.perturbation.amp_perturbation_additive">
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amp_perturbation_additive</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=&lt;mtrand.RandomState object&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L47-L73"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amp_perturbation_additive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes amplitudes and phases of BxCxF with B input, C channels, F frequencies
+Adds additive noise N(0,0.02) to amplitudes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amps</strong> (<em>numpy array</em>) – Spectral amplitude</li>
+<li><strong>phases</strong> (<em>numpy array</em>) – Spectral phases (not used)</li>
+<li><strong>rng</strong> (<em>object</em>) – Random Seed</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>amps_pert</strong> (<em>numpy array</em>) – Scaled amplitudes</li>
+<li><strong>phases_pert</strong> (<em>numpy array</em>) – Input phases (not modified)</li>
+<li><strong>pert_vals</strong> (<em>numpy array</em>) – Amplitude noise</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.perturbation.amp_perturbation_multiplicative">
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amp_perturbation_multiplicative</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=&lt;mtrand.RandomState object&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L75-L100"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amp_perturbation_multiplicative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes amplitude and phases of BxCxF with B input, C channels, F frequencies
+Adds multiplicative noise N(1,0.02) to amplitudes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>amps</strong> (<em>numpy array</em>) – Spectral amplitude</li>
+<li><strong>phases</strong> (<em>numpy array</em>) – Spectral phases (not used)</li>
+<li><strong>rng</strong> (<em>object</em>) – Random Seed</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>amps_pert</strong> (<em>numpy array</em>) – Scaled amplitudes</li>
+<li><strong>phases_pert</strong> (<em>numpy array</em>) – Input phases (not modified)</li>
+<li><strong>pert_vals</strong> (<em>numpy array</em>) – Amplitude scaling factor</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.perturbation.correlate_feature_maps">
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">correlate_feature_maps</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L102-L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.correlate_feature_maps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes two activation matrices of the form Bx[F]xT where B is batch size, F number of filters (optional) and T time points
+Returns correlations of the corresponding activations over T</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>numpy array</em>) – Activations Bx[F]xT</li>
+<li><strong>y</strong> (<em>numpy array</em>) – Activations Bx[F]xT</li>
+<li><strong>Returns</strong></li>
+<li><strong>correlations</strong> (<em>numpy array</em>) – Correlations of <cite>x</cite> and <cite>y</cite> Bx[F]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.perturbation.mean_diff_feature_maps">
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">mean_diff_feature_maps</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L137-L153"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.mean_diff_feature_maps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes two activation matrices of the form BxFxT where B is batch size, F number of filters and T time points
+Returns mean difference between feature map activations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>numpy array</em>) – Activations Bx[F]xT</li>
+<li><strong>y</strong> (<em>numpy array</em>) – Activations Bx[F]xT</li>
+<li><strong>Returns</strong></li>
+<li><strong>mean_diff</strong> (<em>numpy array</em>) – Mean difference between <cite>x</cite> and <cite>y</cite> Bx[F]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.perturbation.spectral_perturbation_correlation">
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">spectral_perturbation_correlation</code><span class="sig-paren">(</span><em>pert_fn</em>, <em>diff_fn</em>, <em>pred_fn</em>, <em>n_layers</em>, <em>inputs</em>, <em>n_iterations</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L155-L241"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.spectral_perturbation_correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates perturbation correlations for layers in network by perturbing either amplitudes or phases</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pert_fn</strong> (<em>function</em>) – Function that perturbs spectral phase and amplitudes of inputs</li>
+<li><strong>diff_fn</strong> (<em>function</em>) – Function that calculates difference between original and perturbed activations</li>
+<li><strong>pred_fn</strong> (<em>function</em>) – Function that returns a list of activations.
+Each entry in the list corresponds to the output of 1 layer in a network</li>
+<li><strong>n_layers</strong> (<em>int</em>) – Number of layers pred_fn returns activations for.</li>
+<li><strong>inputs</strong> (<em>numpy array</em>) – Original inputs that are used for perturbation [B,X,T,1]
+Phase perturbations are sampled for each input individually, but applied to all X of that input</li>
+<li><strong>n_iterations</strong> (<em>int</em>) – Number of iterations of correlation computation. The higher the better</li>
+<li><strong>batch_size</strong> (<em>int</em>) – Number of inputs that are used for one forward pass. (Concatenated for all inputs)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pert_corrs</strong> – List of length n_layers containing average perturbation correlations over iterations
+L  x  CxFrxFi (Channels,Frequencies,Filters)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
 </td>
 </tr>
 </tbody>
@@ -238,7 +521,7 @@
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.compute_amplitude_prediction_correlations">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">compute_amplitude_prediction_correlations</code><span class="sig-paren">(</span><em>pred_fn</em>, <em>examples</em>, <em>n_iterations</em>, <em>perturb_fn=&lt;function gaussian_perturbation&gt;</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L32-L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">compute_amplitude_prediction_correlations</code><span class="sig-paren">(</span><em>pred_fn</em>, <em>examples</em>, <em>n_iterations</em>, <em>perturb_fn=&lt;function amp_perturbation_additive&gt;</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L244-L291"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perturb input amplitudes and compute correlation between amplitude
 perturbations and prediction changes when pushing perturbed input through
 the prediction function.</p>
@@ -339,6 +622,59 @@ arXiv preprint arXiv:1703.05051.</td></tr>
 </dd></dl>
 
 </div>
+<div class="section" id="module-braindecode.visualization.sinfit">
+<span id="braindecode-visualization-sinfit-module"></span><h2>braindecode.visualization.sinfit module<a class="headerlink" href="#module-braindecode.visualization.sinfit" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="braindecode.visualization.sinfit.err_fn_sin">
+<code class="descclassname">braindecode.visualization.sinfit.</code><code class="descname">err_fn_sin</code><span class="sig-paren">(</span><em>p</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/sinfit.py#L4-L5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.sinfit.err_fn_sin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.sinfit.err_fn_lin">
+<code class="descclassname">braindecode.visualization.sinfit.</code><code class="descname">err_fn_lin</code><span class="sig-paren">(</span><em>p</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/sinfit.py#L7-L8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.sinfit.err_fn_lin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.sinfit.fit_fn_lin">
+<code class="descclassname">braindecode.visualization.sinfit.</code><code class="descname">fit_fn_lin</code><span class="sig-paren">(</span><em>x</em>, <em>*kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/sinfit.py#L10-L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.sinfit.fit_fn_lin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.sinfit.fit_fn_sin">
+<code class="descclassname">braindecode.visualization.sinfit.</code><code class="descname">fit_fn_sin</code><span class="sig-paren">(</span><em>x</em>, <em>*kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/sinfit.py#L13-L20"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.sinfit.fit_fn_sin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="braindecode.visualization.sinfit.signal_fit">
+<code class="descclassname">braindecode.visualization.sinfit.</code><code class="descname">signal_fit</code><span class="sig-paren">(</span><em>signals</em>, <em>fs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/sinfit.py#L22-L89"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.sinfit.signal_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits sinusoid and linear function to signals
+see sinfit.fit_fn_sin and sinfit.fit_fn_lin</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>signals</strong> (<em>numpy array</em>) – [FxCxTx1] Filters x Channels x Time x 1</li>
+<li><strong>fs</strong> (<em>float</em>) – Sampling frequency</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>params_sin</strong> (<em>numpy array</em>) – [FxCx4] Parameters of sinusoid fit
+Parameters are: Frequency,Amplitude,Phase,DCOffset</li>
+<li><strong>params_lin</strong> (<em>numpy array</em>) – [FxCx2] Parameters of sinusoid fit
+Parameters are: Frequency,Amplitude,Phase,DCOffset</li>
+<li><strong>err_sin</strong> (<em>numpy array</em>) – [FxCx1] MSE for sinusoid fit</li>
+<li><strong>err_lin</strong> (<em>numpy array</em>) – [FxCx1] MSE for linear fit</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -383,7 +719,7 @@ arXiv preprint arXiv:1703.05051.</td></tr>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.0',
+            VERSION:'0.3.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
