@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.datautil package &mdash; Braindecode 0.3.2 documentation</title>
+  <title>braindecode.datautil package &mdash; Braindecode 0.4.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.3.2 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.0 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.experiments package" href="braindecode.experiments.html"/>
         <link rel="prev" title="Amplitude Perturbation Visualization" href="../notebooks/visualization/Perturbation.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.4.0
               </div>
             
           
@@ -91,9 +91,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Trialwise_Decoding.html">Trialwise Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Trialwise_Manual_Training_Loop.html">Trialwise Manual Training Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul class="current">
@@ -219,7 +220,7 @@
 <span id="braindecode-datautil-iterators-module"></span><h2>braindecode.datautil.iterators module<a class="headerlink" href="#module-braindecode.datautil.iterators" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.datautil.iterators.get_balanced_batches">
-<code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">get_balanced_batches</code><span class="sig-paren">(</span><em>n_trials</em>, <em>rng</em>, <em>shuffle</em>, <em>n_batches=None</em>, <em>batch_size=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L5-L54"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.get_balanced_batches" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">get_balanced_batches</code><span class="sig-paren">(</span><em>n_trials</em>, <em>rng</em>, <em>shuffle</em>, <em>n_batches=None</em>, <em>batch_size=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L5-L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.get_balanced_batches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create indices for batches balanced in size
 (batches will have maximum size difference of 1).
 Supply either batch size or number of batches. Resulting batches
@@ -244,34 +245,39 @@ that allows to split the set into balanced batches (maximum size difference 1).<
 
 <dl class="class">
 <dt id="braindecode.datautil.iterators.BalancedBatchSizeIterator">
-<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">BalancedBatchSizeIterator</code><span class="sig-paren">(</span><em>batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L57-L88"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">BalancedBatchSizeIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>seed=328774</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L56-L91"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Create batches of balanced size.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>batch_size</strong> (<em>int</em>) – Resulting batches will not necessarily have the given batch size
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>batch_size</strong> (<em>int</em>) – Resulting batches will not necessarily have the given batch size
 but rather the next largest batch size that allows to split the set into
-balanced batches (maximum size difference 1).</td>
+balanced batches (maximum size difference 1).</li>
+<li><strong>seed</strong> (<em>int</em>) – Random seed for initialization of <cite>numpy.RandomState</cite> random generator
+that shuffles the batches.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="braindecode.datautil.iterators.BalancedBatchSizeIterator.get_batches">
-<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L72-L85"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L75-L88"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator.get_batches" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.datautil.iterators.BalancedBatchSizeIterator.reset_rng">
-<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L87-L88"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L90-L91"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.BalancedBatchSizeIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="braindecode.datautil.iterators.ClassBalancedBatchSizeIterator">
-<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">ClassBalancedBatchSizeIterator</code><span class="sig-paren">(</span><em>batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L91-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">ClassBalancedBatchSizeIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>seed=328774</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L94-L148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Create batches of balanced size, that are also balanced per class, i.e.
 each class should be sampled roughly with the same frequency during
@@ -280,34 +286,39 @@ training.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>batch_size</strong> (<em>int</em>) – Resulting batches will not necessarily have the given batch size
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>batch_size</strong> (<em>int</em>) – Resulting batches will not necessarily have the given batch size
 but rather the next largest batch size that allows to split the set into
-balanced batches (maximum size difference 1).</td>
+balanced batches (maximum size difference 1).</li>
+<li><strong>seed</strong> (<em>int</em>) – Random seed for initialization of <cite>numpy.RandomState</cite> random generator
+that shuffles the batches.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.get_batches">
-<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L109-L138"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L116-L145"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.get_batches" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.reset_rng">
-<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L140-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L147-L148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="braindecode.datautil.iterators.CropsFromTrialsIterator">
-<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">CropsFromTrialsIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>input_time_length</em>, <em>n_preds_per_input</em>, <em>seed=(2017</em>, <em>6</em>, <em>28)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L144-L226"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datautil.iterators.</code><code class="descname">CropsFromTrialsIterator</code><span class="sig-paren">(</span><em>batch_size</em>, <em>input_time_length</em>, <em>n_preds_per_input</em>, <em>seed=(2017</em>, <em>6</em>, <em>28)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L151-L234"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Iterator sampling crops out the trials so that each sample
 (after receptive size of the ConvNet) in each trial is predicted.</p>
 <p>Predicting the given input batches can lead to some samples
 being predicted multiple times, if the receptive field size
 (input_time_length - n_preds_per_input + 1) is not a divisor
-of the trial length.  <code class="xref py py-func docutils literal"><span class="pre">compute_preds_per_trial_for_set()</span></code>
+of the trial length.  <code class="xref py py-func docutils literal"><span class="pre">compute_preds_per_trial_from_crops()</span></code>
 can help with removing the overlapped predictions again for evaluation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -320,7 +331,8 @@ can help with removing the overlapped predictions again for evaluation.</p>
 <li><strong>n_preds_per_input</strong> (<em>int</em>) – Number of predictions ConvNet makes per one input. Can be computed
 by making a forward pass with the given input time length, the
 output length in 3rd dimension is n_preds_per_input.</li>
-<li><strong>seed</strong> (<em>int</em>) – Random seed for initialization of <cite>numpy.RandomState</cite>.</li>
+<li><strong>seed</strong> (<em>int</em>) – Random seed for initialization of <cite>numpy.RandomState</cite> random generator
+that shuffles the batches.</li>
 </ul>
 </td>
 </tr>
@@ -329,18 +341,18 @@ output length in 3rd dimension is n_preds_per_input.</li>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
-<dt><a class="reference internal" href="braindecode.experiments.html#braindecode.experiments.monitors.compute_preds_per_trial_for_set" title="braindecode.experiments.monitors.compute_preds_per_trial_for_set"><code class="xref py py-class docutils literal"><span class="pre">braindecode.experiments.monitors.compute_preds_per_trial_for_set</span></code></a></dt>
+<dt><a class="reference internal" href="braindecode.experiments.html#braindecode.experiments.monitors.compute_preds_per_trial_from_crops" title="braindecode.experiments.monitors.compute_preds_per_trial_from_crops"><code class="xref py py-class docutils literal"><span class="pre">braindecode.experiments.monitors.compute_preds_per_trial_from_crops</span></code></a></dt>
 <dd>Assigns predictions to trials, removes overlaps.</dd>
 </dl>
 </div>
 <dl class="method">
 <dt id="braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng">
-<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L180-L181"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset_rng</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L188-L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches">
-<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L183-L206"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_batches</code><span class="sig-paren">(</span><em>dataset</em>, <em>shuffle</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datautil/iterators.py#L191-L214"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -896,7 +908,7 @@ start marker codes.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister.
 
     </p>
   </div>
@@ -918,7 +930,7 @@ start marker codes.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.2',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

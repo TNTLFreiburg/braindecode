@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; Braindecode 0.3.2 documentation</title>
+  <title>Index &mdash; Braindecode 0.4.0 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Braindecode 0.3.2 documentation" href="index.html"/> 
+    <link rel="top" title="Braindecode 0.4.0 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.4.0
               </div>
             
           
@@ -90,9 +90,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Trialwise_Decoding.html">Trialwise Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Trialwise_Manual_Training_Loop.html">Trialwise Manual Training Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul>
@@ -186,12 +187,15 @@
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.input_windows.activation_reverse_correlation">activation_reverse_correlation() (in module braindecode.visualization.input_windows)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.optimizers.AdamW">AdamW (class in braindecode.torch_ext.optimizers)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.trial_segment.add_breaks">add_breaks() (in module braindecode.datautil.trial_segment)</a>
 </li>
@@ -201,10 +205,10 @@
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.perturbation.amp_perturbation_multiplicative">amp_perturbation_multiplicative() (in module braindecode.visualization.perturbation)</a>
 </li>
-      <li><a href="source/braindecode.experiments.html#braindecode.experiments.stopcriteria.And">And (class in braindecode.experiments.stopcriteria)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.stopcriteria.And">And (class in braindecode.experiments.stopcriteria)</a>
+</li>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.constraints.MaxNormDefaultConstraint.apply">apply() (braindecode.torch_ext.constraints.MaxNormDefaultConstraint method)</a>
 
       <ul>
@@ -228,6 +232,8 @@
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.BalancedBatchSizeIterator">BalancedBatchSizeIterator (class in braindecode.datautil.iterators)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.signalproc.bandpass_cnt">bandpass_cnt() (in module braindecode.datautil.signalproc)</a>
+</li>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel">BaseModel (class in braindecode.models.base)</a>
 </li>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.bbci.BBCIDataset">BBCIDataset (class in braindecode.datasets.bbci)</a>
 </li>
@@ -263,21 +269,27 @@
 </li>
       <li><a href="source/braindecode.experiments.html#module-braindecode.experiments.experiment">braindecode.experiments.experiment (module)</a>
 </li>
+      <li><a href="source/braindecode.experiments.html#module-braindecode.experiments.loggers">braindecode.experiments.loggers (module)</a>
+</li>
       <li><a href="source/braindecode.experiments.html#module-braindecode.experiments.monitors">braindecode.experiments.monitors (module)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#module-braindecode.experiments.stopcriteria">braindecode.experiments.stopcriteria (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.mne_ext.html#module-braindecode.mne_ext">braindecode.mne_ext (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.mne_ext.html#module-braindecode.mne_ext.signalproc">braindecode.mne_ext.signalproc (module)</a>
 </li>
       <li><a href="source/braindecode.models.html#module-braindecode.models">braindecode.models (module)</a>
 </li>
+      <li><a href="source/braindecode.models.html#module-braindecode.models.base">braindecode.models.base (module)</a>
+</li>
       <li><a href="source/braindecode.models.html#module-braindecode.models.deep4">braindecode.models.deep4 (module)</a>
 </li>
       <li><a href="source/braindecode.models.html#module-braindecode.models.eegnet">braindecode.models.eegnet (module)</a>
+</li>
+      <li><a href="source/braindecode.models.html#module-braindecode.models.hybrid">braindecode.models.hybrid (module)</a>
 </li>
       <li><a href="source/braindecode.models.html#module-braindecode.models.shallow_fbcsp">braindecode.models.shallow_fbcsp (module)</a>
 </li>
@@ -294,6 +306,10 @@
       <li><a href="source/braindecode.torch_ext.html#module-braindecode.torch_ext.losses">braindecode.torch_ext.losses (module)</a>
 </li>
       <li><a href="source/braindecode.torch_ext.html#module-braindecode.torch_ext.modules">braindecode.torch_ext.modules (module)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#module-braindecode.torch_ext.optimizers">braindecode.torch_ext.optimizers (module)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#module-braindecode.torch_ext.schedulers">braindecode.torch_ext.schedulers (module)</a>
 </li>
       <li><a href="source/braindecode.torch_ext.html#module-braindecode.torch_ext.util">braindecode.torch_ext.util (module)</a>
 </li>
@@ -329,11 +345,17 @@
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.stopcriteria.ColumnBelow">ColumnBelow (class in braindecode.experiments.stopcriteria)</a>
 </li>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.compile">compile() (braindecode.models.base.BaseModel method)</a>
+</li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations">compute_amplitude_prediction_correlations() (in module braindecode.visualization.perturbation)</a>
 </li>
-      <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.compute_preds_per_trial_for_set">compute_preds_per_trial_for_set() (in module braindecode.experiments.monitors)</a>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.compute_pred_labels_from_trial_preds">compute_pred_labels_from_trial_preds() (in module braindecode.experiments.monitors)</a>
+</li>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.compute_preds_per_trial_from_crops">compute_preds_per_trial_from_crops() (in module braindecode.experiments.monitors)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.compute_preds_per_trial_from_n_preds_per_trial">compute_preds_per_trial_from_n_preds_per_trial() (in module braindecode.experiments.monitors)</a>
+</li>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.compute_trial_labels_from_crop_preds">compute_trial_labels_from_crop_preds() (in module braindecode.experiments.monitors)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.splitters.concatenate_np_array_or_add_lists">concatenate_np_array_or_add_lists() (in module braindecode.datautil.splitters)</a>
 </li>
@@ -341,15 +363,19 @@
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.splitters.concatenate_sets">concatenate_sets() (in module braindecode.datautil.splitters)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.splitters.concatenate_two_sets">concatenate_two_sets() (in module braindecode.datautil.splitters)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.util.confirm_gpu_availability">confirm_gpu_availability() (in module braindecode.torch_ext.util)</a>
+</li>
+      <li><a href="source/braindecode.models.html#braindecode.models.eegnet.Conv2dWithConstraint">Conv2dWithConstraint (class in braindecode.models.eegnet)</a>
 </li>
       <li><a href="source/braindecode.html#braindecode.util.corr">corr() (in module braindecode.util)</a>
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.perturbation.correlate_feature_maps">correlate_feature_maps() (in module braindecode.visualization.perturbation)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.CosineAnnealing">CosineAnnealing (class in braindecode.torch_ext.schedulers)</a>
 </li>
       <li><a href="source/braindecode.html#braindecode.util.cov">cov() (in module braindecode.util)</a>
 </li>
@@ -357,6 +383,10 @@
 
       <ul>
         <li><a href="source/braindecode.models.html#braindecode.models.eegnet.EEGNet.create_network">(braindecode.models.eegnet.EEGNet method)</a>
+</li>
+        <li><a href="source/braindecode.models.html#braindecode.models.eegnet.EEGNetv4.create_network">(braindecode.models.eegnet.EEGNetv4 method)</a>
+</li>
+        <li><a href="source/braindecode.models.html#braindecode.models.hybrid.HybridNet.create_network">(braindecode.models.hybrid.HybridNet method)</a>
 </li>
         <li><a href="source/braindecode.models.html#braindecode.models.shallow_fbcsp.ShallowFBCSPNet.create_network">(braindecode.models.shallow_fbcsp.ShallowFBCSPNet method)</a>
 </li>
@@ -370,6 +400,8 @@
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.CroppedTrialMisclassMonitor">CroppedTrialMisclassMonitor (class in braindecode.experiments.monitors)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.CropsFromTrialsIterator">CropsFromTrialsIterator (class in braindecode.datautil.iterators)</a>
+</li>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.cuda">cuda() (braindecode.models.base.BaseModel method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -395,16 +427,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.models.html#braindecode.models.eegnet.EEGNet">EEGNet (class in braindecode.models.eegnet)</a>
 </li>
+      <li><a href="source/braindecode.models.html#braindecode.models.eegnet.EEGNetv4">EEGNetv4 (class in braindecode.models.eegnet)</a>
+</li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.sinfit.err_fn_lin">err_fn_lin() (in module braindecode.visualization.sinfit)</a>
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.sinfit.err_fn_sin">err_fn_sin() (in module braindecode.visualization.sinfit)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment.eval_on_batch">eval_on_batch() (braindecode.experiments.experiment.Experiment method)</a>
 </li>
-      <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment">Experiment (class in braindecode.experiments.experiment)</a>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.evaluate">evaluate() (braindecode.models.base.BaseModel method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment">Experiment (class in braindecode.experiments.experiment)</a>
+</li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.signalproc.exponential_running_demean">exponential_running_demean() (in module braindecode.datautil.signalproc)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.signalproc.exponential_running_standardize">exponential_running_standardize() (in module braindecode.datautil.signalproc)</a>
@@ -423,15 +459,23 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.signalproc.filter_is_stable">filter_is_stable() (in module braindecode.datautil.signalproc)</a>
 </li>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.find_optimizer">find_optimizer() (in module braindecode.models.base)</a>
+</li>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.fit">fit() (braindecode.models.base.BaseModel method)</a>
+</li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.sinfit.fit_fn_lin">fit_fn_lin() (in module braindecode.visualization.sinfit)</a>
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.sinfit.fit_fn_sin">fit_fn_sin() (in module braindecode.visualization.sinfit)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.modules.AvgPool2dWithConv.forward">forward() (braindecode.torch_ext.modules.AvgPool2dWithConv method)</a>
+      <li><a href="source/braindecode.models.html#braindecode.models.eegnet.Conv2dWithConstraint.forward">forward() (braindecode.models.eegnet.Conv2dWithConstraint method)</a>
 
       <ul>
+        <li><a href="source/braindecode.models.html#braindecode.models.hybrid.HybridNet.forward">(braindecode.models.hybrid.HybridNet method)</a>
+</li>
+        <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.modules.AvgPool2dWithConv.forward">(braindecode.torch_ext.modules.AvgPool2dWithConv method)</a>
+</li>
         <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.modules.Expression.forward">(braindecode.torch_ext.modules.Expression method)</a>
 </li>
         <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.modules.IntermediateOutputWrapper.forward">(braindecode.torch_ext.modules.IntermediateOutputWrapper method)</a>
@@ -457,15 +501,19 @@
         <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches">(braindecode.datautil.iterators.CropsFromTrialsIterator method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.sensor_positions.get_channelpos">get_channelpos() (in module braindecode.datasets.sensor_positions)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.sensor_positions.get_channelpos_from_angle">get_channelpos_from_angle() (in module braindecode.datasets.sensor_positions)</a>
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.input_windows.get_input_windows_from_units_2d">get_input_windows_from_units_2d() (in module braindecode.visualization.input_windows)</a>
 </li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.CosineAnnealing.get_lr">get_lr() (braindecode.torch_ext.schedulers.CosineAnnealing method)</a>
+</li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.input_windows.get_max_act_index">get_max_act_index() (in module braindecode.visualization.input_windows)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.CosineAnnealing.get_weight_decay">get_weight_decay() (braindecode.torch_ext.schedulers.CosineAnnealing method)</a>
 </li>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.init.glorot_weight_zero_bias">glorot_weight_zero_bias() (in module braindecode.torch_ext.init)</a>
 </li>
@@ -476,6 +524,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.signalproc.highpass_cnt">highpass_cnt() (in module braindecode.datautil.signalproc)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.models.html#braindecode.models.hybrid.HybridNet">HybridNet (class in braindecode.models.hybrid)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -507,13 +559,27 @@
         <li><a href="source/braindecode.datasets.html#braindecode.datasets.multiple.MultipleSetLoader.load">(braindecode.datasets.multiple.MultipleSetLoader method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.bbci.load_bbci_sets_from_folder">load_bbci_sets_from_folder() (in module braindecode.datasets.bbci)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.ScheduledOptimizer.load_state_dict">load_state_dict() (braindecode.torch_ext.schedulers.ScheduledOptimizer method)</a>
 </li>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.losses.log_categorical_crossentropy">log_categorical_crossentropy() (in module braindecode.torch_ext.losses)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.losses.log_categorical_crossentropy_1_hot">log_categorical_crossentropy_1_hot() (in module braindecode.torch_ext.losses)</a>
+</li>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment.log_epoch">log_epoch() (braindecode.experiments.experiment.Experiment method)</a>
+
+      <ul>
+        <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.Logger.log_epoch">(braindecode.experiments.loggers.Logger method)</a>
+</li>
+        <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.Printer.log_epoch">(braindecode.experiments.loggers.Printer method)</a>
+</li>
+        <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.TensorboardWriter.log_epoch">(braindecode.experiments.loggers.TensorboardWriter method)</a>
+</li>
+      </ul></li>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.Logger">Logger (class in braindecode.experiments.loggers)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.monitors.LossMonitor">LossMonitor (class in braindecode.experiments.monitors)</a>
 </li>
@@ -599,11 +665,15 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.parameters">parameters() (braindecode.models.base.BaseModel method)</a>
+</li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.perturbation.phase_perturbation">phase_perturbation() (in module braindecode.visualization.perturbation)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment.print_epoch">print_epoch() (braindecode.experiments.experiment.Experiment method)</a>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.predict">predict() (braindecode.models.base.BaseModel method)</a>
+</li>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.Printer">Printer (class in braindecode.experiments.loggers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -651,6 +721,8 @@
 </li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.util.samples_to_ms">samples_to_ms() (in module braindecode.datautil.util)</a>
 </li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.ScheduledOptimizer">ScheduledOptimizer (class in braindecode.torch_ext.schedulers)</a>
+</li>
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.splitters.select_examples">select_examples() (in module braindecode.datautil.splitters)</a>
 </li>
       <li><a href="source/braindecode.html#braindecode.util.select_inverse_inds">select_inverse_inds() (in module braindecode.util)</a>
@@ -687,18 +759,28 @@
 </li>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.functions.square">square() (in module braindecode.torch_ext.functions)</a>
 </li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.ScheduledOptimizer.state_dict">state_dict() (braindecode.torch_ext.schedulers.ScheduledOptimizer method)</a>
+</li>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.optimizers.AdamW.step">step() (braindecode.torch_ext.optimizers.AdamW method)</a>
+
+      <ul>
+        <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.ScheduledOptimizer.step">(braindecode.torch_ext.schedulers.ScheduledOptimizer method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/braindecode.models.html#braindecode.models.util.to_dense_prediction_model">to_dense_prediction_model() (in module braindecode.models.util)</a>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.TensorboardWriter">TensorboardWriter (class in braindecode.experiments.loggers)</a>
 </li>
-      <li><a href="source/braindecode.html#braindecode.util.to_tuple">to_tuple() (in module braindecode.util)</a>
+      <li><a href="source/braindecode.models.html#braindecode.models.util.to_dense_prediction_model">to_dense_prediction_model() (in module braindecode.models.util)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.html#braindecode.util.to_tuple">to_tuple() (in module braindecode.util)</a>
+</li>
       <li><a href="source/braindecode.html#braindecode.util.touch_file">touch_file() (in module braindecode.util)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment.train_batch">train_batch() (braindecode.experiments.experiment.Experiment method)</a>
@@ -717,7 +799,23 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.experiments.html#braindecode.experiments.stopcriteria.And.was_triggered">was_triggered() (braindecode.experiments.stopcriteria.And method)</a>
+
+      <ul>
+        <li><a href="source/braindecode.experiments.html#braindecode.experiments.stopcriteria.Or.was_triggered">(braindecode.experiments.stopcriteria.Or method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.html#braindecode.util.wrap_reshape_apply_fn">wrap_reshape_apply_fn() (in module braindecode.util)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.ScheduledOptimizer.zero_grad">zero_grad() (braindecode.torch_ext.schedulers.ScheduledOptimizer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -736,7 +834,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister.
 
     </p>
   </div>
@@ -758,7 +856,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.2',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

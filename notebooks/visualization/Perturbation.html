@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Amplitude Perturbation Visualization &mdash; Braindecode 0.3.2 documentation</title>
+  <title>Amplitude Perturbation Visualization &mdash; Braindecode 0.4.0 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Braindecode 0.3.2 documentation" href="../../index.html"/>
+    <link rel="top" title="Braindecode 0.4.0 documentation" href="../../index.html"/>
         <link rel="next" title="braindecode.datautil package" href="../../source/braindecode.datautil.html"/>
-        <link rel="prev" title="Using the Experiment Class" href="../Experiment_Class.html"/> 
+        <link rel="prev" title="Cropped Manual Training Loop" href="../Cropped_Manual_Training_Loop.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.4.0
               </div>
             
           
@@ -91,20 +91,22 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Trialwise_Decoding.html">Trialwise Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Cropped_Decoding.html">Cropped Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Trialwise_Manual_Training_Loop.html">Trialwise Manual Training Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Amplitude Perturbation Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Enable-logging">Enable logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Load-data">Load data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Create-the-model,-optimizer,-iterator">Create the model, optimizer, iterator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Training-loop">Training loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Create-the-model">Create the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Run-the-training">Run the training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Compute-correlation:-amplitude-perturbation---prediction-change">Compute correlation: amplitude perturbation - prediction change</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Plot-correlations">Plot correlations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Plot-with-MNE">Plot with MNE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Plot-with-Braindecode">Plot with Braindecode</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Dataset-References">Dataset References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Dataset-references">Dataset references</a></li>
 </ul>
 </li>
 </ul>
@@ -385,84 +387,103 @@ Dataset</a>,
 this time to decode imagined left hand vs. imagined right hand movement.</p>
 <div class="admonition warning">
 This tutorial might be very slow if you are not using a GPU.</div>
-<div class="section" id="Load-data">
-<h2>Load data<a class="headerlink" href="#Load-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Enable-logging">
+<h2>Enable logging<a class="headerlink" href="#Enable-logging" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="o">%%</span><span class="k">capture</span>
-import mne
-import numpy as np
-from mne.io import concatenate_raws
-from braindecode.datautil.signal_target import SignalAndTarget
-
-# First 50 subjects as train
-physionet_paths = [ mne.datasets.eegbci.load_data(sub_id,[4,8,12,]) for sub_id in range(1,51)]
-physionet_paths = np.concatenate(physionet_paths)
-parts = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;)
-         for path in physionet_paths]
-
-raw = concatenate_raws(parts)
-
-picks = mne.pick_types(raw.info, meg=False, eeg=True, stim=False, eog=False,
-                   exclude=&#39;bads&#39;)
-
-events = mne.find_events(raw, shortest_event=0, stim_channel=&#39;STI 014&#39;)
-
-# Read epochs (train will be done only between 1 and 2s)
-# Testing will be done with a running classifier
-epoched = mne.Epochs(raw, events, dict(hands=2, feet=3), tmin=1, tmax=4.1, proj=False, picks=picks,
-                baseline=None, preload=True)
-
-# Next 5 subjects as test
-physionet_paths_test = [mne.datasets.eegbci.load_data(sub_id,[4,8,12,]) for sub_id in range(51,56)]
-physionet_paths_test = np.concatenate(physionet_paths_test)
-parts_test = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;)
-         for path in physionet_paths_test]
-raw_test = concatenate_raws(parts_test)
-
-picks_test = mne.pick_types(raw_test.info, meg=False, eeg=True, stim=False, eog=False,
-                   exclude=&#39;bads&#39;)
-
-events_test = mne.find_events(raw_test, shortest_event=0, stim_channel=&#39;STI 014&#39;)
-
-# Read epochs (train will be done only between 1 and 2s)
-# Testing will be done with a running classifier
-epoched_test = mne.Epochs(raw_test, events_test, dict(hands=2, feet=3), tmin=1, tmax=4.1, proj=False, picks=picks_test,
-                baseline=None, preload=True)
-
-train_X = (epoched.get_data() * 1e6).astype(np.float32)
-train_y = (epoched.events[:,2] - 2).astype(np.int64) #2,3 -&gt; 0,1
-test_X = (epoched_test.get_data() * 1e6).astype(np.float32)
-test_y = (epoched_test.events[:,2] - 2).astype(np.int64) #2,3 -&gt; 0,1
-train_set = SignalAndTarget(train_X, y=train_y)
-test_set = SignalAndTarget(test_X, y=test_y)
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span> <span class="c1"># see https://stackoverflow.com/a/21475297/1469195</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Create-the-model,-optimizer,-iterator">
-<h2>Create the model, optimizer, iterator<a class="headerlink" href="#Create-the-model,-optimizer,-iterator" title="Permalink to this headline">¶</a></h2>
-<p>We use the deep ConvNet from <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural
-networks for EEG decoding and
-visualization</a> (Section 2.4.2).</p>
-<div class="nbinput docutils container">
+<div class="section" id="Load-data">
+<h2>Load data<a class="headerlink" href="#Load-data" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.models.deep4</span> <span class="kn">import</span> <span class="n">Deep4Net</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="kn">import</span> <span class="n">set_random_seeds</span>
-<span class="kn">from</span> <span class="nn">braindecode.models.util</span> <span class="kn">import</span> <span class="n">to_dense_prediction_model</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">mne</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">mne.io</span> <span class="k">import</span> <span class="n">concatenate_raws</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.signal_target</span> <span class="k">import</span> <span class="n">SignalAndTarget</span>
+
+<span class="c1"># First 50 subjects as train</span>
+<span class="n">physionet_paths</span> <span class="o">=</span> <span class="p">[</span> <span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">51</span><span class="p">)]</span>
+<span class="n">physionet_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths</span><span class="p">)</span>
+<span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths</span><span class="p">]</span>
+
+<span class="n">raw</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+
+<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+
+<span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
+<span class="c1"># Testing will be done with a running classifier</span>
+<span class="n">epoched</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
+                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 51-55 as validation subjects</span>
+<span class="n">physionet_paths_valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">56</span><span class="p">)]</span>
+<span class="n">physionet_paths_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths_valid</span><span class="p">)</span>
+<span class="n">parts_valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths_valid</span><span class="p">]</span>
+<span class="n">raw_valid</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts_valid</span><span class="p">)</span>
+
+<span class="n">picks_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw_valid</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+
+<span class="n">events_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw_valid</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+
+<span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
+<span class="c1"># Testing will be done with a running classifier</span>
+<span class="n">epoched_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw_valid</span><span class="p">,</span> <span class="n">events_valid</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks_valid</span><span class="p">,</span>
+                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">train_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">train_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+<span class="n">valid_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_valid</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">valid_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_valid</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">train_y</span><span class="p">)</span>
+<span class="n">valid_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">valid_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">valid_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Create-the-model">
+<h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
+<p>We use the deep ConvNet from <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural
+networks for EEG decoding and
+visualization</a> (Section 2.4.2).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.models.deep4</span> <span class="k">import</span> <span class="n">Deep4Net</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">set_random_seeds</span>
+<span class="kn">from</span> <span class="nn">braindecode.models.util</span> <span class="k">import</span> <span class="n">to_dense_prediction_model</span>
 
 <span class="c1"># Set if you want to use GPU</span>
 <span class="c1"># You can also use torch.cuda.is_available() to determine if cuda is available on your machine.</span>
-<span class="n">cuda</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">cuda</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">set_random_seeds</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">20170629</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
 
 <span class="c1"># This will determine how many crops are processed in parallel</span>
@@ -471,244 +492,299 @@ visualization</a> (Section 2.4.2).</p>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Deep4Net</span><span class="p">(</span><span class="n">in_chans</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
                  <span class="n">filter_length_3</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">filter_length_4</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                  <span class="n">pool_time_stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">stride_before_pool</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                        <span class="n">final_conv_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">create_network</span><span class="p">()</span>
-<span class="n">to_dense_prediction_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-
+                 <span class="n">stride_before_pool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">final_conv_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
     <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
-
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="kn">import</span> <span class="n">np_to_var</span>
-<span class="c1"># determine output size</span>
-<span class="n">test_input</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">input_time_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-    <span class="n">test_input</span> <span class="o">=</span> <span class="n">test_input</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
-<span class="n">n_preds_per_input</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;{:d} predictions per input/trial&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_preds_per_input</span><span class="p">))</span>
-
-<span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="kn">import</span> <span class="n">CropsFromTrialsIterator</span>
-<span class="n">iterator</span> <span class="o">=</span> <span class="n">CropsFromTrialsIterator</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span><span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
-                                  <span class="n">n_preds_per_input</span><span class="o">=</span><span class="n">n_preds_per_input</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-315 predictions per input/trial
-</pre></div></div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.optimizers</span> <span class="k">import</span> <span class="n">AdamW</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">0.001</span><span class="p">)</span> <span class="c1"># these are good values for the deep model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>  <span class="n">iterator_seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cropped</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="Training-loop">
-<h2>Training loop<a class="headerlink" href="#Training-loop" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="Run-the-training">
+<h2>Run the training<a class="headerlink" href="#Run-the-training" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="kn">import</span> <span class="n">np_to_var</span><span class="p">,</span> <span class="n">var_to_np</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="kn">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
-<span class="kn">import</span> <span class="nn">torch</span> <span class="kn">as</span> <span class="nn">th</span>
-<span class="kn">from</span> <span class="nn">braindecode.experiments.monitors</span> <span class="kn">import</span> <span class="n">compute_preds_per_trial_for_set</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">RandomState</span><span class="p">((</span><span class="mi">2017</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">30</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Epoch {:d}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_epoch</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Train....&quot;</span><span class="p">)</span>
-    <span class="c1"># Set model to training mode</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">batch_X</span><span class="p">,</span> <span class="n">batch_y</span> <span class="ow">in</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_X</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-            <span class="n">net_in</span> <span class="o">=</span> <span class="n">net_in</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-        <span class="n">net_target</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-            <span class="n">net_target</span> <span class="o">=</span> <span class="n">net_target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-        <span class="c1"># Remove gradients of last backward pass from all parameters</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">net_in</span><span class="p">)</span>
-        <span class="c1"># Mean predictions across trial</span>
-        <span class="c1"># Note that this will give identical gradients to computing</span>
-        <span class="c1"># a per-prediction loss (at least for the combination of log softmax activation</span>
-        <span class="c1"># and negative log likelihood loss which we are using here)</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
-    <span class="c1"># Print some statistics each epoch</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">setname</span><span class="p">,</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="n">train_set</span><span class="p">),(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)):</span>
-        <span class="c1"># Collect all predictions and losses</span>
-        <span class="n">all_preds</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">all_losses</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">batch_sizes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">batch_X</span><span class="p">,</span> <span class="n">batch_y</span> <span class="ow">in</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-            <span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_X</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-                <span class="n">net_in</span> <span class="o">=</span> <span class="n">net_in</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-            <span class="n">net_target</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_y</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-                <span class="n">net_target</span> <span class="o">=</span> <span class="n">net_target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">net_in</span><span class="p">)</span>
-            <span class="n">all_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">outputs</span><span class="p">))</span>
-            <span class="n">outputs</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
-            <span class="n">all_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-            <span class="n">batch_sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">batch_X</span><span class="p">))</span>
-        <span class="c1"># Compute mean per-input loss</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">all_losses</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">batch_sizes</span><span class="p">)</span> <span class="o">/</span>
-                       <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">batch_sizes</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{:6s} Loss: {:.5f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">setname</span><span class="p">,</span> <span class="n">loss</span><span class="p">))</span>
-        <span class="n">preds_per_trial</span> <span class="o">=</span> <span class="n">compute_preds_per_trial_for_set</span><span class="p">(</span><span class="n">all_preds</span><span class="p">,</span>
-                                                          <span class="n">input_time_length</span><span class="p">,</span>
-                                                          <span class="n">dataset</span><span class="p">)</span>
-        <span class="c1"># preds per trial are now trials x classes x timesteps/predictions</span>
-        <span class="c1"># Now mean across timesteps for each trial to get per-trial predictions</span>
-        <span class="n">meaned_preds_per_trial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">preds_per_trial</span><span class="p">])</span>
-        <span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">meaned_preds_per_trial</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">predicted_labels</span> <span class="o">==</span> <span class="n">dataset</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{:6s} Accuracy: {:.1f}%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">setname</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
-
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">input_time_length</span> <span class="o">=</span> <span class="mi">450</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">train_set</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">,</span>
+          <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
+         <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">valid_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">valid_set</span><span class="o">.</span><span class="n">y</span><span class="p">),)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Epoch 0
-Train....
-Train  Loss: 0.71045
-Train  Accuracy: 52.8%
-Test   Loss: 0.71548
-Test   Accuracy: 50.2%
-Epoch 1
-Train....
-Train  Loss: 0.66929
-Train  Accuracy: 61.2%
-Test   Loss: 0.64641
-Test   Accuracy: 62.0%
-Epoch 2
-Train....
-Train  Loss: 0.64144
-Train  Accuracy: 68.9%
-Test   Loss: 0.59064
-Test   Accuracy: 78.4%
-Epoch 3
-Train....
-Train  Loss: 0.63864
-Train  Accuracy: 68.2%
-Test   Loss: 0.58749
-Test   Accuracy: 83.6%
-Epoch 4
-Train....
-Train  Loss: 0.63442
-Train  Accuracy: 70.4%
-Test   Loss: 0.58189
-Test   Accuracy: 84.0%
-Epoch 5
-Train....
-Train  Loss: 0.63014
-Train  Accuracy: 70.5%
-Test   Loss: 0.55511
-Test   Accuracy: 87.3%
-Epoch 6
-Train....
-Train  Loss: 0.62961
-Train  Accuracy: 70.1%
-Test   Loss: 0.54888
-Test   Accuracy: 88.3%
-Epoch 7
-Train....
-Train  Loss: 0.62674
-Train  Accuracy: 70.2%
-Test   Loss: 0.53488
-Test   Accuracy: 88.3%
-Epoch 8
-Train....
-Train  Loss: 0.64222
-Train  Accuracy: 66.5%
-Test   Loss: 0.54465
-Test   Accuracy: 82.2%
-Epoch 9
-Train....
-Train  Loss: 0.64440
-Train  Accuracy: 66.9%
-Test   Loss: 0.54998
-Test   Accuracy: 79.3%
-Epoch 10
-Train....
-Train  Loss: 0.64741
-Train  Accuracy: 67.4%
-Test   Loss: 0.54962
-Test   Accuracy: 78.9%
-Epoch 11
-Train....
-Train  Loss: 0.64258
-Train  Accuracy: 68.6%
-Test   Loss: 0.53498
-Test   Accuracy: 81.7%
-Epoch 12
-Train....
-Train  Loss: 0.64567
-Train  Accuracy: 68.1%
-Test   Loss: 0.54567
-Test   Accuracy: 79.8%
-Epoch 13
-Train....
-Train  Loss: 0.64973
-Train  Accuracy: 67.9%
-Test   Loss: 0.54162
-Test   Accuracy: 79.3%
-Epoch 14
-Train....
-Train  Loss: 0.65352
-Train  Accuracy: 67.4%
-Test   Loss: 0.56966
-Test   Accuracy: 76.5%
-Epoch 15
-Train....
-Train  Loss: 0.63522
-Train  Accuracy: 70.1%
-Test   Loss: 0.55433
-Test   Accuracy: 77.0%
-Epoch 16
-Train....
-Train  Loss: 0.63396
-Train  Accuracy: 70.5%
-Test   Loss: 0.55300
-Test   Accuracy: 79.3%
-Epoch 17
-Train....
-Train  Loss: 0.62454
-Train  Accuracy: 70.3%
-Test   Loss: 0.54934
-Test   Accuracy: 78.4%
-Epoch 18
-Train....
-Train  Loss: 0.62037
-Train  Accuracy: 70.1%
-Test   Loss: 0.54182
-Test   Accuracy: 81.7%
-Epoch 19
-Train....
-Train  Loss: 0.62832
-Train  Accuracy: 68.2%
-Test   Loss: 0.55429
-Test   Accuracy: 78.4%
+2018-08-08 12:15:44,713 INFO : Run until first stop...
+2018-08-08 12:15:47,093 INFO : Time only for training updates: 1.97s
+2018-08-08 12:15:48,635 INFO : Epoch 0
+2018-08-08 12:15:48,636 INFO : train_loss                0.67985
+2018-08-08 12:15:48,636 INFO : valid_loss                0.61967
+2018-08-08 12:15:48,639 INFO : train_misclass            0.41846
+2018-08-08 12:15:48,641 INFO : valid_misclass            0.30986
+2018-08-08 12:15:48,644 INFO : runtime                   0.00000
+2018-08-08 12:15:48,645 INFO :
+2018-08-08 12:15:50,994 INFO : Time only for training updates: 1.93s
+2018-08-08 12:15:52,434 INFO : Epoch 1
+2018-08-08 12:15:52,436 INFO : train_loss                0.65534
+2018-08-08 12:15:52,437 INFO : valid_loss                0.57160
+2018-08-08 12:15:52,438 INFO : train_misclass            0.36551
+2018-08-08 12:15:52,439 INFO : valid_misclass            0.23944
+2018-08-08 12:15:52,441 INFO : runtime                   3.90013
+2018-08-08 12:15:52,442 INFO :
+2018-08-08 12:15:54,794 INFO : Time only for training updates: 1.93s
+2018-08-08 12:15:56,235 INFO : Epoch 2
+2018-08-08 12:15:56,236 INFO : train_loss                0.63754
+2018-08-08 12:15:56,237 INFO : valid_loss                0.55280
+2018-08-08 12:15:56,239 INFO : train_misclass            0.30647
+2018-08-08 12:15:56,240 INFO : valid_misclass            0.14554
+2018-08-08 12:15:56,241 INFO : runtime                   3.80040
+2018-08-08 12:15:56,243 INFO :
+2018-08-08 12:15:58,594 INFO : Time only for training updates: 1.93s
+2018-08-08 12:16:00,033 INFO : Epoch 3
+2018-08-08 12:16:00,034 INFO : train_loss                0.62171
+2018-08-08 12:16:00,035 INFO : valid_loss                0.53479
+2018-08-08 12:16:00,038 INFO : train_misclass            0.29475
+2018-08-08 12:16:00,040 INFO : valid_misclass            0.15493
+2018-08-08 12:16:00,042 INFO : runtime                   3.80015
+2018-08-08 12:16:00,043 INFO :
+2018-08-08 12:16:02,398 INFO : Time only for training updates: 1.93s
+2018-08-08 12:16:03,834 INFO : Epoch 4
+2018-08-08 12:16:03,835 INFO : train_loss                0.61266
+2018-08-08 12:16:03,836 INFO : valid_loss                0.51626
+2018-08-08 12:16:03,838 INFO : train_misclass            0.28444
+2018-08-08 12:16:03,840 INFO : valid_misclass            0.15493
+2018-08-08 12:16:03,843 INFO : runtime                   3.80434
+2018-08-08 12:16:03,843 INFO :
+2018-08-08 12:16:06,247 INFO : Time only for training updates: 1.98s
+2018-08-08 12:16:07,686 INFO : Epoch 5
+2018-08-08 12:16:07,687 INFO : train_loss                0.63827
+2018-08-08 12:16:07,688 INFO : valid_loss                0.56435
+2018-08-08 12:16:07,690 INFO : train_misclass            0.31912
+2018-08-08 12:16:07,691 INFO : valid_misclass            0.22066
+2018-08-08 12:16:07,692 INFO : runtime                   3.84877
+2018-08-08 12:16:07,694 INFO :
+2018-08-08 12:16:10,049 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:11,494 INFO : Epoch 6
+2018-08-08 12:16:11,495 INFO : train_loss                0.61253
+2018-08-08 12:16:11,496 INFO : valid_loss                0.53119
+2018-08-08 12:16:11,498 INFO : train_misclass            0.28725
+2018-08-08 12:16:11,499 INFO : valid_misclass            0.12676
+2018-08-08 12:16:11,500 INFO : runtime                   3.80202
+2018-08-08 12:16:11,501 INFO :
+2018-08-08 12:16:13,857 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:15,309 INFO : Epoch 7
+2018-08-08 12:16:15,310 INFO : train_loss                0.60483
+2018-08-08 12:16:15,311 INFO : valid_loss                0.51952
+2018-08-08 12:16:15,313 INFO : train_misclass            0.27366
+2018-08-08 12:16:15,314 INFO : valid_misclass            0.14085
+2018-08-08 12:16:15,315 INFO : runtime                   3.80774
+2018-08-08 12:16:15,317 INFO :
+2018-08-08 12:16:17,680 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:19,116 INFO : Epoch 8
+2018-08-08 12:16:19,117 INFO : train_loss                0.60557
+2018-08-08 12:16:19,118 INFO : valid_loss                0.52076
+2018-08-08 12:16:19,120 INFO : train_misclass            0.28444
+2018-08-08 12:16:19,123 INFO : valid_misclass            0.14554
+2018-08-08 12:16:19,124 INFO : runtime                   3.82277
+2018-08-08 12:16:19,127 INFO :
+2018-08-08 12:16:21,484 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:22,916 INFO : Epoch 9
+2018-08-08 12:16:22,917 INFO : train_loss                0.61126
+2018-08-08 12:16:22,919 INFO : valid_loss                0.51278
+2018-08-08 12:16:22,920 INFO : train_misclass            0.29100
+2018-08-08 12:16:22,921 INFO : valid_misclass            0.14085
+2018-08-08 12:16:22,923 INFO : runtime                   3.80450
+2018-08-08 12:16:22,924 INFO :
+2018-08-08 12:16:25,281 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:26,714 INFO : Epoch 10
+2018-08-08 12:16:26,715 INFO : train_loss                0.59270
+2018-08-08 12:16:26,717 INFO : valid_loss                0.49652
+2018-08-08 12:16:26,718 INFO : train_misclass            0.28210
+2018-08-08 12:16:26,719 INFO : valid_misclass            0.13146
+2018-08-08 12:16:26,721 INFO : runtime                   3.79689
+2018-08-08 12:16:26,722 INFO :
+2018-08-08 12:16:29,080 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:30,512 INFO : Epoch 11
+2018-08-08 12:16:30,513 INFO : train_loss                0.60264
+2018-08-08 12:16:30,515 INFO : valid_loss                0.52942
+2018-08-08 12:16:30,516 INFO : train_misclass            0.27366
+2018-08-08 12:16:30,517 INFO : valid_misclass            0.15493
+2018-08-08 12:16:30,519 INFO : runtime                   3.79896
+2018-08-08 12:16:30,520 INFO :
+2018-08-08 12:16:32,878 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:34,317 INFO : Epoch 12
+2018-08-08 12:16:34,318 INFO : train_loss                0.60054
+2018-08-08 12:16:34,319 INFO : valid_loss                0.47185
+2018-08-08 12:16:34,322 INFO : train_misclass            0.26523
+2018-08-08 12:16:34,324 INFO : valid_misclass            0.12676
+2018-08-08 12:16:34,327 INFO : runtime                   3.79843
+2018-08-08 12:16:34,327 INFO :
+2018-08-08 12:16:36,684 INFO : Time only for training updates: 1.93s
+2018-08-08 12:16:38,128 INFO : Epoch 13
+2018-08-08 12:16:38,129 INFO : train_loss                0.58812
+2018-08-08 12:16:38,130 INFO : valid_loss                0.47662
+2018-08-08 12:16:38,132 INFO : train_misclass            0.26148
+2018-08-08 12:16:38,135 INFO : valid_misclass            0.12676
+2018-08-08 12:16:38,135 INFO : runtime                   3.80523
+2018-08-08 12:16:38,136 INFO :
+2018-08-08 12:16:40,500 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:41,996 INFO : Epoch 14
+2018-08-08 12:16:41,997 INFO : train_loss                0.58033
+2018-08-08 12:16:41,998 INFO : valid_loss                0.50056
+2018-08-08 12:16:42,000 INFO : train_misclass            0.24695
+2018-08-08 12:16:42,001 INFO : valid_misclass            0.13615
+2018-08-08 12:16:42,002 INFO : runtime                   3.81588
+2018-08-08 12:16:42,003 INFO :
+2018-08-08 12:16:44,363 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:45,798 INFO : Epoch 15
+2018-08-08 12:16:45,799 INFO : train_loss                0.57061
+2018-08-08 12:16:45,800 INFO : valid_loss                0.47636
+2018-08-08 12:16:45,802 INFO : train_misclass            0.24133
+2018-08-08 12:16:45,803 INFO : valid_misclass            0.11268
+2018-08-08 12:16:45,804 INFO : runtime                   3.86312
+2018-08-08 12:16:45,805 INFO :
+2018-08-08 12:16:48,166 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:49,596 INFO : Epoch 16
+2018-08-08 12:16:49,598 INFO : train_loss                0.58647
+2018-08-08 12:16:49,599 INFO : valid_loss                0.49233
+2018-08-08 12:16:49,600 INFO : train_misclass            0.25070
+2018-08-08 12:16:49,602 INFO : valid_misclass            0.15962
+2018-08-08 12:16:49,603 INFO : runtime                   3.80350
+2018-08-08 12:16:49,604 INFO :
+2018-08-08 12:16:51,966 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:53,400 INFO : Epoch 17
+2018-08-08 12:16:53,401 INFO : train_loss                0.56631
+2018-08-08 12:16:53,402 INFO : valid_loss                0.46380
+2018-08-08 12:16:53,403 INFO : train_misclass            0.22446
+2018-08-08 12:16:53,405 INFO : valid_misclass            0.10329
+2018-08-08 12:16:53,406 INFO : runtime                   3.79971
+2018-08-08 12:16:53,407 INFO :
+2018-08-08 12:16:55,766 INFO : Time only for training updates: 1.94s
+2018-08-08 12:16:57,195 INFO : Epoch 18
+2018-08-08 12:16:57,196 INFO : train_loss                0.55825
+2018-08-08 12:16:57,196 INFO : valid_loss                0.48095
+2018-08-08 12:16:57,199 INFO : train_misclass            0.23477
+2018-08-08 12:16:57,201 INFO : valid_misclass            0.11268
+2018-08-08 12:16:57,203 INFO : runtime                   3.80030
+2018-08-08 12:16:57,206 INFO :
+2018-08-08 12:16:59,572 INFO : Time only for training updates: 1.94s
+2018-08-08 12:17:00,985 INFO : Epoch 19
+2018-08-08 12:17:00,986 INFO : train_loss                0.55626
+2018-08-08 12:17:00,987 INFO : valid_loss                0.47492
+2018-08-08 12:17:00,988 INFO : train_misclass            0.22680
+2018-08-08 12:17:00,989 INFO : valid_misclass            0.11737
+2018-08-08 12:17:00,991 INFO : runtime                   3.80620
+2018-08-08 12:17:00,992 INFO :
+2018-08-08 12:17:03,357 INFO : Time only for training updates: 1.94s
+2018-08-08 12:17:04,755 INFO : Epoch 20
+2018-08-08 12:17:04,756 INFO : train_loss                0.55149
+2018-08-08 12:17:04,757 INFO : valid_loss                0.47625
+2018-08-08 12:17:04,758 INFO : train_misclass            0.20572
+2018-08-08 12:17:04,759 INFO : valid_misclass            0.09390
+2018-08-08 12:17:04,761 INFO : runtime                   3.78421
+2018-08-08 12:17:04,762 INFO :
+2018-08-08 12:17:07,166 INFO : Time only for training updates: 1.98s
+2018-08-08 12:17:08,573 INFO : Epoch 21
+2018-08-08 12:17:08,574 INFO : train_loss                0.54888
+2018-08-08 12:17:08,575 INFO : valid_loss                0.47307
+2018-08-08 12:17:08,577 INFO : train_misclass            0.21837
+2018-08-08 12:17:08,578 INFO : valid_misclass            0.10798
+2018-08-08 12:17:08,579 INFO : runtime                   3.80945
+2018-08-08 12:17:08,580 INFO :
+2018-08-08 12:17:10,939 INFO : Time only for training updates: 1.94s
+2018-08-08 12:17:12,341 INFO : Epoch 22
+2018-08-08 12:17:12,342 INFO : train_loss                0.53812
+2018-08-08 12:17:12,343 INFO : valid_loss                0.46251
+2018-08-08 12:17:12,344 INFO : train_misclass            0.21087
+2018-08-08 12:17:12,346 INFO : valid_misclass            0.10329
+2018-08-08 12:17:12,347 INFO : runtime                   3.77332
+2018-08-08 12:17:12,348 INFO :
+2018-08-08 12:17:14,709 INFO : Time only for training updates: 1.94s
+2018-08-08 12:17:16,106 INFO : Epoch 23
+2018-08-08 12:17:16,107 INFO : train_loss                0.53869
+2018-08-08 12:17:16,108 INFO : valid_loss                0.47270
+2018-08-08 12:17:16,109 INFO : train_misclass            0.21462
+2018-08-08 12:17:16,111 INFO : valid_misclass            0.11268
+2018-08-08 12:17:16,112 INFO : runtime                   3.76946
+2018-08-08 12:17:16,113 INFO :
+2018-08-08 12:17:18,477 INFO : Time only for training updates: 1.94s
+2018-08-08 12:17:19,916 INFO : Epoch 24
+2018-08-08 12:17:19,918 INFO : train_loss                0.53126
+2018-08-08 12:17:19,919 INFO : valid_loss                0.47057
+2018-08-08 12:17:19,920 INFO : train_misclass            0.20572
+2018-08-08 12:17:19,921 INFO : valid_misclass            0.11737
+2018-08-08 12:17:19,923 INFO : runtime                   3.76820
+2018-08-08 12:17:19,924 INFO :
+2018-08-08 12:17:22,290 INFO : Time only for training updates: 1.94s
+2018-08-08 12:17:23,729 INFO : Epoch 25
+2018-08-08 12:17:23,730 INFO : train_loss                0.53584
+2018-08-08 12:17:23,731 INFO : valid_loss                0.46072
+2018-08-08 12:17:23,732 INFO : train_misclass            0.21275
+2018-08-08 12:17:23,733 INFO : valid_misclass            0.12676
+2018-08-08 12:17:23,734 INFO : runtime                   3.81273
+2018-08-08 12:17:23,740 INFO :
+2018-08-08 12:17:26,109 INFO : Time only for training updates: 1.95s
+2018-08-08 12:17:27,548 INFO : Epoch 26
+2018-08-08 12:17:27,549 INFO : train_loss                0.52778
+2018-08-08 12:17:27,550 INFO : valid_loss                0.46177
+2018-08-08 12:17:27,553 INFO : train_misclass            0.20056
+2018-08-08 12:17:27,555 INFO : valid_misclass            0.13146
+2018-08-08 12:17:27,556 INFO : runtime                   3.81958
+2018-08-08 12:17:27,558 INFO :
+2018-08-08 12:17:29,935 INFO : Time only for training updates: 1.95s
+2018-08-08 12:17:31,376 INFO : Epoch 27
+2018-08-08 12:17:31,378 INFO : train_loss                0.52820
+2018-08-08 12:17:31,378 INFO : valid_loss                0.46491
+2018-08-08 12:17:31,379 INFO : train_misclass            0.19822
+2018-08-08 12:17:31,380 INFO : valid_misclass            0.11737
+2018-08-08 12:17:31,381 INFO : runtime                   3.82546
+2018-08-08 12:17:31,382 INFO :
+2018-08-08 12:17:33,765 INFO : Time only for training updates: 1.95s
+2018-08-08 12:17:35,211 INFO : Epoch 28
+2018-08-08 12:17:35,212 INFO : train_loss                0.52475
+2018-08-08 12:17:35,213 INFO : valid_loss                0.46116
+2018-08-08 12:17:35,214 INFO : train_misclass            0.19166
+2018-08-08 12:17:35,216 INFO : valid_misclass            0.11737
+2018-08-08 12:17:35,217 INFO : runtime                   3.83004
+2018-08-08 12:17:35,218 INFO :
+2018-08-08 12:17:37,594 INFO : Time only for training updates: 1.95s
+2018-08-08 12:17:39,032 INFO : Epoch 29
+2018-08-08 12:17:39,034 INFO : train_loss                0.52271
+2018-08-08 12:17:39,034 INFO : valid_loss                0.46164
+2018-08-08 12:17:39,037 INFO : train_misclass            0.18978
+2018-08-08 12:17:39,039 INFO : valid_misclass            0.11737
+2018-08-08 12:17:39,042 INFO : runtime                   3.82876
+2018-08-08 12:17:39,042 INFO :
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;braindecode.experiments.experiment.Experiment at 0x7f676c42b2b0&gt;
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="Compute-correlation:-amplitude-perturbation---prediction-change">
@@ -717,11 +793,21 @@ Test   Accuracy: 78.4%
 examples:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="n">train_batches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">CropsFromTrialsIterator</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">np_to_var</span>
+<span class="n">test_input</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">input_time_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+    <span class="n">test_input</span> <span class="o">=</span> <span class="n">test_input</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">network</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
+<span class="n">n_preds_per_input</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">CropsFromTrialsIterator</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span><span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
+                                  <span class="n">n_preds_per_input</span><span class="o">=</span><span class="n">n_preds_per_input</span><span class="p">)</span>
+
+<span class="n">train_batches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 <span class="n">train_X_batches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">train_batches</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -732,34 +818,31 @@ predition before the softmax, so we create a new module with all the
 layers of the old until before the softmax.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">var_to_np</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
 <span class="n">new_model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;softmax&#39;</span><span class="p">:</span> <span class="k">break</span>
     <span class="n">new_model</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
 
 <span class="n">new_model</span><span class="o">.</span><span class="n">eval</span><span class="p">();</span>
-<span class="n">pred_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">var_to_np</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_model</span><span class="p">(</span><span class="n">np_to_var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">())[:,:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<span class="n">pred_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">var_to_np</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_model</span><span class="p">(</span><span class="n">np_to_var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">())[:,:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<p>Setup logging and compute the correlations between amplitude
-perturbations and prediction changes.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.visualization.perturbation</span> <span class="kn">import</span> <span class="n">compute_amplitude_prediction_correlations</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.visualization.perturbation</span> <span class="k">import</span> <span class="n">compute_amplitude_prediction_correlations</span>
+
 
 <span class="n">amp_pred_corrs</span> <span class="o">=</span> <span class="n">compute_amplitude_prediction_correlations</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">,</span> <span class="n">train_X_batches</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
                                          <span class="n">batch_size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
@@ -771,91 +854,103 @@ perturbations and prediction changes.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2017-10-18 15:27:22,200 INFO : Compute original predictions...
-2017-10-18 15:27:32,917 INFO : Iteration 0...
-2017-10-18 15:27:32,919 INFO : Sample perturbation...
-2017-10-18 15:27:37,219 INFO : Compute new amplitudes...
-2017-10-18 15:27:37,757 INFO : Compute new complex inputs...
-2017-10-18 15:27:49,493 INFO : Compute new real inputs...
-2017-10-18 15:27:52,005 INFO : Compute new predictions...
-2017-10-18 15:27:53,317 INFO : Compute correlation...
-2017-10-18 15:27:53,942 INFO : Iteration 1...
-2017-10-18 15:27:53,944 INFO : Sample perturbation...
-2017-10-18 15:27:58,321 INFO : Compute new amplitudes...
-2017-10-18 15:27:58,877 INFO : Compute new complex inputs...
-2017-10-18 15:28:10,613 INFO : Compute new real inputs...
-2017-10-18 15:28:13,106 INFO : Compute new predictions...
-2017-10-18 15:28:14,385 INFO : Compute correlation...
-2017-10-18 15:28:14,921 INFO : Iteration 2...
-2017-10-18 15:28:14,922 INFO : Sample perturbation...
-2017-10-18 15:28:17,722 INFO : Compute new amplitudes...
-2017-10-18 15:28:18,261 INFO : Compute new complex inputs...
-2017-10-18 15:28:22,582 INFO : Compute new real inputs...
-2017-10-18 15:28:25,074 INFO : Compute new predictions...
-2017-10-18 15:28:26,355 INFO : Compute correlation...
-2017-10-18 15:28:26,893 INFO : Iteration 3...
-2017-10-18 15:28:26,894 INFO : Sample perturbation...
-2017-10-18 15:28:29,675 INFO : Compute new amplitudes...
-2017-10-18 15:28:30,217 INFO : Compute new complex inputs...
-2017-10-18 15:28:34,539 INFO : Compute new real inputs...
-2017-10-18 15:28:37,027 INFO : Compute new predictions...
-2017-10-18 15:28:38,320 INFO : Compute correlation...
-2017-10-18 15:28:38,862 INFO : Iteration 4...
-2017-10-18 15:28:38,863 INFO : Sample perturbation...
-2017-10-18 15:28:41,646 INFO : Compute new amplitudes...
-2017-10-18 15:28:42,186 INFO : Compute new complex inputs...
-2017-10-18 15:28:46,499 INFO : Compute new real inputs...
-2017-10-18 15:28:49,000 INFO : Compute new predictions...
-2017-10-18 15:28:50,275 INFO : Compute correlation...
-2017-10-18 15:28:50,813 INFO : Iteration 5...
-2017-10-18 15:28:50,814 INFO : Sample perturbation...
-2017-10-18 15:28:53,600 INFO : Compute new amplitudes...
-2017-10-18 15:28:54,139 INFO : Compute new complex inputs...
-2017-10-18 15:28:58,452 INFO : Compute new real inputs...
-2017-10-18 15:29:00,953 INFO : Compute new predictions...
-2017-10-18 15:29:02,227 INFO : Compute correlation...
-2017-10-18 15:29:02,755 INFO : Iteration 6...
-2017-10-18 15:29:02,756 INFO : Sample perturbation...
-2017-10-18 15:29:05,538 INFO : Compute new amplitudes...
-2017-10-18 15:29:06,080 INFO : Compute new complex inputs...
-2017-10-18 15:29:10,393 INFO : Compute new real inputs...
-2017-10-18 15:29:12,917 INFO : Compute new predictions...
-2017-10-18 15:29:14,190 INFO : Compute correlation...
-2017-10-18 15:29:14,733 INFO : Iteration 7...
-2017-10-18 15:29:14,734 INFO : Sample perturbation...
-2017-10-18 15:29:17,527 INFO : Compute new amplitudes...
-2017-10-18 15:29:18,066 INFO : Compute new complex inputs...
-2017-10-18 15:29:22,380 INFO : Compute new real inputs...
-2017-10-18 15:29:24,880 INFO : Compute new predictions...
-2017-10-18 15:29:26,187 INFO : Compute correlation...
-2017-10-18 15:29:26,716 INFO : Iteration 8...
-2017-10-18 15:29:26,717 INFO : Sample perturbation...
-2017-10-18 15:29:29,519 INFO : Compute new amplitudes...
-2017-10-18 15:29:30,056 INFO : Compute new complex inputs...
-2017-10-18 15:29:34,370 INFO : Compute new real inputs...
-2017-10-18 15:29:36,890 INFO : Compute new predictions...
-2017-10-18 15:29:38,164 INFO : Compute correlation...
-2017-10-18 15:29:38,693 INFO : Iteration 9...
-2017-10-18 15:29:38,694 INFO : Sample perturbation...
-2017-10-18 15:29:41,496 INFO : Compute new amplitudes...
-2017-10-18 15:29:42,033 INFO : Compute new complex inputs...
-2017-10-18 15:29:46,344 INFO : Compute new real inputs...
-2017-10-18 15:29:48,846 INFO : Compute new predictions...
-2017-10-18 15:29:50,119 INFO : Compute correlation...
-2017-10-18 15:29:50,669 INFO : Iteration 10...
-2017-10-18 15:29:50,670 INFO : Sample perturbation...
-2017-10-18 15:29:53,469 INFO : Compute new amplitudes...
-2017-10-18 15:29:54,008 INFO : Compute new complex inputs...
-2017-10-18 15:29:58,321 INFO : Compute new real inputs...
-2017-10-18 15:30:00,843 INFO : Compute new predictions...
-2017-10-18 15:30:02,118 INFO : Compute correlation...
-2017-10-18 15:30:02,648 INFO : Iteration 11...
-2017-10-18 15:30:02,649 INFO : Sample perturbation...
-2017-10-18 15:30:05,451 INFO : Compute new amplitudes...
-2017-10-18 15:30:05,998 INFO : Compute new complex inputs...
-2017-10-18 15:30:10,301 INFO : Compute new real inputs...
-2017-10-18 15:30:12,798 INFO : Compute new predictions...
-2017-10-18 15:30:14,102 INFO : Compute correlation...
+2018-08-08 12:19:10,049 INFO : Compute original predictions...
+2018-08-08 12:19:27,871 INFO : Iteration 0...
+2018-08-08 12:19:27,873 INFO : Sample perturbation...
+2018-08-08 12:19:37,305 INFO : Compute perturbed complex inputs...
+2018-08-08 12:19:50,788 INFO : Compute perturbed real inputs...
+2018-08-08 12:20:08,863 INFO : Compute new predictions...
+2018-08-08 12:20:09,609 INFO : Layer 0...
+2018-08-08 12:20:09,610 INFO : Compute activation difference...
+2018-08-08 12:20:09,611 INFO : Compute correlation...
+2018-08-08 12:20:13,067 INFO : Iteration 1...
+2018-08-08 12:20:13,068 INFO : Sample perturbation...
+2018-08-08 12:20:20,858 INFO : Compute perturbed complex inputs...
+2018-08-08 12:20:30,561 INFO : Compute perturbed real inputs...
+2018-08-08 12:20:45,390 INFO : Compute new predictions...
+2018-08-08 12:20:46,164 INFO : Layer 0...
+2018-08-08 12:20:46,165 INFO : Compute activation difference...
+2018-08-08 12:20:46,166 INFO : Compute correlation...
+2018-08-08 12:20:49,880 INFO : Iteration 2...
+2018-08-08 12:20:49,880 INFO : Sample perturbation...
+2018-08-08 12:20:59,277 INFO : Compute perturbed complex inputs...
+2018-08-08 12:21:11,041 INFO : Compute perturbed real inputs...
+2018-08-08 12:21:32,809 INFO : Compute new predictions...
+2018-08-08 12:21:33,628 INFO : Layer 0...
+2018-08-08 12:21:33,629 INFO : Compute activation difference...
+2018-08-08 12:21:33,631 INFO : Compute correlation...
+2018-08-08 12:21:37,634 INFO : Iteration 3...
+2018-08-08 12:21:37,635 INFO : Sample perturbation...
+2018-08-08 12:21:47,688 INFO : Compute perturbed complex inputs...
+2018-08-08 12:21:59,979 INFO : Compute perturbed real inputs...
+2018-08-08 12:22:21,661 INFO : Compute new predictions...
+2018-08-08 12:22:22,430 INFO : Layer 0...
+2018-08-08 12:22:22,431 INFO : Compute activation difference...
+2018-08-08 12:22:22,432 INFO : Compute correlation...
+2018-08-08 12:22:26,532 INFO : Iteration 4...
+2018-08-08 12:22:26,533 INFO : Sample perturbation...
+2018-08-08 12:22:36,511 INFO : Compute perturbed complex inputs...
+2018-08-08 12:22:48,632 INFO : Compute perturbed real inputs...
+2018-08-08 12:23:05,148 INFO : Compute new predictions...
+2018-08-08 12:23:05,920 INFO : Layer 0...
+2018-08-08 12:23:05,921 INFO : Compute activation difference...
+2018-08-08 12:23:05,922 INFO : Compute correlation...
+2018-08-08 12:23:08,494 INFO : Iteration 5...
+2018-08-08 12:23:08,495 INFO : Sample perturbation...
+2018-08-08 12:23:17,066 INFO : Compute perturbed complex inputs...
+2018-08-08 12:23:29,459 INFO : Compute perturbed real inputs...
+2018-08-08 12:23:51,135 INFO : Compute new predictions...
+2018-08-08 12:23:51,910 INFO : Layer 0...
+2018-08-08 12:23:51,911 INFO : Compute activation difference...
+2018-08-08 12:23:51,912 INFO : Compute correlation...
+2018-08-08 12:23:52,788 INFO : Iteration 6...
+2018-08-08 12:23:52,789 INFO : Sample perturbation...
+2018-08-08 12:23:59,554 INFO : Compute perturbed complex inputs...
+2018-08-08 12:24:11,074 INFO : Compute perturbed real inputs...
+2018-08-08 12:24:31,349 INFO : Compute new predictions...
+2018-08-08 12:24:32,134 INFO : Layer 0...
+2018-08-08 12:24:32,135 INFO : Compute activation difference...
+2018-08-08 12:24:32,135 INFO : Compute correlation...
+2018-08-08 12:24:36,217 INFO : Iteration 7...
+2018-08-08 12:24:36,218 INFO : Sample perturbation...
+2018-08-08 12:24:45,191 INFO : Compute perturbed complex inputs...
+2018-08-08 12:24:55,820 INFO : Compute perturbed real inputs...
+2018-08-08 12:25:13,979 INFO : Compute new predictions...
+2018-08-08 12:25:14,761 INFO : Layer 0...
+2018-08-08 12:25:14,762 INFO : Compute activation difference...
+2018-08-08 12:25:14,763 INFO : Compute correlation...
+2018-08-08 12:25:17,312 INFO : Iteration 8...
+2018-08-08 12:25:17,313 INFO : Sample perturbation...
+2018-08-08 12:25:25,635 INFO : Compute perturbed complex inputs...
+2018-08-08 12:25:37,586 INFO : Compute perturbed real inputs...
+2018-08-08 12:25:59,839 INFO : Compute new predictions...
+2018-08-08 12:26:00,618 INFO : Layer 0...
+2018-08-08 12:26:00,619 INFO : Compute activation difference...
+2018-08-08 12:26:00,620 INFO : Compute correlation...
+2018-08-08 12:26:01,544 INFO : Iteration 9...
+2018-08-08 12:26:01,545 INFO : Sample perturbation...
+2018-08-08 12:26:07,447 INFO : Compute perturbed complex inputs...
+2018-08-08 12:26:17,042 INFO : Compute perturbed real inputs...
+2018-08-08 12:26:31,921 INFO : Compute new predictions...
+2018-08-08 12:26:32,650 INFO : Layer 0...
+2018-08-08 12:26:32,651 INFO : Compute activation difference...
+2018-08-08 12:26:32,653 INFO : Compute correlation...
+2018-08-08 12:26:35,548 INFO : Iteration 10...
+2018-08-08 12:26:35,549 INFO : Sample perturbation...
+2018-08-08 12:26:42,538 INFO : Compute perturbed complex inputs...
+2018-08-08 12:26:51,004 INFO : Compute perturbed real inputs...
+2018-08-08 12:27:04,210 INFO : Compute new predictions...
+2018-08-08 12:27:04,980 INFO : Layer 0...
+2018-08-08 12:27:04,981 INFO : Compute activation difference...
+2018-08-08 12:27:04,982 INFO : Compute correlation...
+2018-08-08 12:27:07,018 INFO : Iteration 11...
+2018-08-08 12:27:07,019 INFO : Sample perturbation...
+2018-08-08 12:27:14,177 INFO : Compute perturbed complex inputs...
+2018-08-08 12:27:24,518 INFO : Compute perturbed real inputs...
+2018-08-08 12:27:40,668 INFO : Compute new predictions...
+2018-08-08 12:27:41,417 INFO : Layer 0...
+2018-08-08 12:27:41,418 INFO : Compute activation difference...
+2018-08-08 12:27:41,419 INFO : Compute correlation...
 </pre></div></div>
 </div>
 </div>
@@ -863,12 +958,32 @@ perturbations and prediction changes.</p>
 <h2>Plot correlations<a class="headerlink" href="#Plot-correlations" title="Permalink to this headline">¶</a></h2>
 <p>Pick out one frequency range and mean correlations within that frequency
 range to make a scalp plot. Here we use the alpha frequency range.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">amp_pred_corrs</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(64, 226, 2)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 
 <span></span><span class="n">fs</span> <span class="o">=</span> <span class="n">epoched</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span>
 <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">train_X_batches</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
@@ -878,18 +993,18 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <span class="n">i_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span><span class="n">start_freq</span><span class="p">)</span>
 <span class="n">i_stop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">stop_freq</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
-<span class="n">freq_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mean_corr</span><span class="p">[:,</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_stop</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">freq_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">amp_pred_corrs</span><span class="p">[:,</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_stop</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>Now get approximate positions of the channels in the 10-20 system.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datasets.sensor_positions</span> <span class="kn">import</span> <span class="n">get_channelpos</span><span class="p">,</span> <span class="n">CHANNEL_10_20_APPROX</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.datasets.sensor_positions</span> <span class="k">import</span> <span class="n">get_channelpos</span><span class="p">,</span> <span class="n">CHANNEL_10_20_APPROX</span>
 
 <span class="n">ch_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">epoched</span><span class="o">.</span><span class="n">ch_names</span><span class="p">]</span>
 <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_channelpos</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">CHANNEL_10_20_APPROX</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ch_names</span><span class="p">]</span>
@@ -901,12 +1016,12 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <h3>Plot with MNE<a class="headerlink" href="#Plot-with-MNE" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">cm</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="n">max_abs_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">freq_corr</span><span class="p">))</span>
 </pre></div>
@@ -914,17 +1029,17 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Left Hand&#39;</span><span class="p">,</span> <span class="s1">&#39;Right Hand&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">i_class</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i_class</span><span class="p">]</span>
     <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">freq_corr</span><span class="p">[:,</span><span class="n">i_class</span><span class="p">],</span> <span class="n">positions</span><span class="p">,</span>
                      <span class="n">vmin</span><span class="o">=-</span><span class="n">max_abs_val</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">max_abs_val</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="bp">False</span><span class="p">);</span>
+                    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">class_names</span><span class="p">[</span><span class="n">i_class</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -933,7 +1048,7 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_visualization_Perturbation_24_0.png" src="../../_images/notebooks_visualization_Perturbation_24_0.png" />
+<img alt="../../_images/notebooks_visualization_Perturbation_27_0.png" src="../../_images/notebooks_visualization_Perturbation_27_0.png" />
 </div>
 </div>
 </div>
@@ -941,11 +1056,11 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <h3>Plot with Braindecode<a class="headerlink" href="#Plot-with-Braindecode" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.visualization.plot</span> <span class="kn">import</span> <span class="n">ax_scalp</span>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.visualization.plot</span> <span class="k">import</span> <span class="n">ax_scalp</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Left Hand&#39;</span><span class="p">,</span> <span class="s1">&#39;Right Hand&#39;</span><span class="p">]</span>
@@ -961,7 +1076,7 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_visualization_Perturbation_26_0.png" src="../../_images/notebooks_visualization_Perturbation_26_0.png" />
+<img alt="../../_images/notebooks_visualization_Perturbation_29_0.png" src="../../_images/notebooks_visualization_Perturbation_29_0.png" />
 </div>
 </div>
 <p>From these plots we can see the ConvNet clearly learned to use the
@@ -973,8 +1088,8 @@ visualization</a> Result 12 for some
 notes on interpretability.</p>
 </div>
 </div>
-<div class="section" id="Dataset-References">
-<h2>Dataset References<a class="headerlink" href="#Dataset-References" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Dataset-references">
+<h2>Dataset references<a class="headerlink" href="#Dataset-references" title="Permalink to this headline">¶</a></h2>
 <p>This dataset was created and contributed to PhysioNet by the developers
 of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a>
 instrumentation system, which they used in making these recordings. The
@@ -1005,7 +1120,7 @@ and further described in:</p>
         <a href="../../source/braindecode.datautil.html" class="btn btn-neutral float-right" title="braindecode.datautil package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../Experiment_Class.html" class="btn btn-neutral" title="Using the Experiment Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../Cropped_Manual_Training_Loop.html" class="btn btn-neutral" title="Cropped Manual Training Loop" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1014,7 +1129,7 @@ and further described in:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister.
 
     </p>
   </div>
@@ -1036,7 +1151,7 @@ and further described in:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.3.2',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

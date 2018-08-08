@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.torch_ext package &mdash; Braindecode 0.3.2 documentation</title>
+  <title>braindecode.torch_ext package &mdash; Braindecode 0.4.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.3.2 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.0 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.visualization package" href="braindecode.visualization.html"/>
         <link rel="prev" title="braindecode.models package" href="braindecode.models.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.4.0
               </div>
             
           
@@ -91,9 +91,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Trialwise_Decoding.html">Trialwise Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Trialwise_Manual_Training_Loop.html">Trialwise Manual Training Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul class="current">
@@ -108,6 +109,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.init">braindecode.torch_ext.init module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.losses">braindecode.torch_ext.losses module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.modules">braindecode.torch_ext.modules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.optimizers">braindecode.torch_ext.optimizers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.schedulers">braindecode.torch_ext.schedulers module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-braindecode.torch_ext.util">braindecode.torch_ext.util module</a></li>
 </ul>
 </li>
@@ -430,12 +433,99 @@ forward() returns list of intermediate activations in a network during forward p
 </dd></dl>
 
 </div>
+<div class="section" id="module-braindecode.torch_ext.optimizers">
+<span id="braindecode-torch-ext-optimizers-module"></span><h2>braindecode.torch_ext.optimizers module<a class="headerlink" href="#module-braindecode.torch_ext.optimizers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.torch_ext.optimizers.AdamW">
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.optimizers.</code><code class="descname">AdamW</code><span class="sig-paren">(</span><em>params</em>, <em>lr=0.001</em>, <em>betas=(0.9</em>, <em>0.999)</em>, <em>eps=1e-08</em>, <em>weight_decay=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/optimizers.py#L6-L77"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.optimizers.AdamW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">torch.optim.optimizer.Optimizer</span></code></p>
+<p>Implements Adam algorithm with fixed as TODO</p>
+<p>It has been proposed in <a class="reference external" href="https://arxiv.org/abs/1412.6980">Adam: A Method for Stochastic Optimization</a>.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first docutils">
+<dt>params (iterable): iterable of parameters to optimize or dicts defining</dt>
+<dd>parameter groups</dd>
+</dl>
+<p>lr (float, optional): learning rate (default: 1e-3)
+betas (Tuple[float, float], optional): coefficients used for computing</p>
+<blockquote>
+<div>running averages of gradient and its square (default: (0.9, 0.999))</div></blockquote>
+<dl class="docutils">
+<dt>eps (float, optional): term added to the denominator to improve</dt>
+<dd>numerical stability (default: 1e-8)</dd>
+</dl>
+<p class="last">weight_decay (float, optional): weight decay (L2 penalty) (default: 0)</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="braindecode.torch_ext.optimizers.AdamW.step">
+<code class="descname">step</code><span class="sig-paren">(</span><em>closure=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/optimizers.py#L31-L77"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.optimizers.AdamW.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a single optimization step.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt>closure (callable, optional): A closure that reevaluates the model</dt>
+<dd>and returns the loss.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.torch_ext.schedulers">
+<span id="braindecode-torch-ext-schedulers-module"></span><h2>braindecode.torch_ext.schedulers module<a class="headerlink" href="#module-braindecode.torch_ext.schedulers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.torch_ext.schedulers.ScheduledOptimizer">
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.schedulers.</code><code class="descname">ScheduledOptimizer</code><span class="sig-paren">(</span><em>scheduler</em>, <em>optimizer</em>, <em>schedule_weight_decay</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L4-L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.ScheduledOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="braindecode.torch_ext.schedulers.ScheduledOptimizer.step">
+<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L16-L26"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.ScheduledOptimizer.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.torch_ext.schedulers.ScheduledOptimizer.state_dict">
+<code class="descname">state_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L28-L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.ScheduledOptimizer.state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.torch_ext.schedulers.ScheduledOptimizer.load_state_dict">
+<code class="descname">load_state_dict</code><span class="sig-paren">(</span><em>state_dict</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L31-L32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.ScheduledOptimizer.load_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.torch_ext.schedulers.ScheduledOptimizer.zero_grad">
+<code class="descname">zero_grad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L34-L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.ScheduledOptimizer.zero_grad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="braindecode.torch_ext.schedulers.CosineAnnealing">
+<em class="property">class </em><code class="descclassname">braindecode.torch_ext.schedulers.</code><code class="descname">CosineAnnealing</code><span class="sig-paren">(</span><em>n_updates_per_period</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L38-L64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.CosineAnnealing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="braindecode.torch_ext.schedulers.CosineAnnealing.get_lr">
+<code class="descname">get_lr</code><span class="sig-paren">(</span><em>initial_val</em>, <em>i_update</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L47-L61"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.CosineAnnealing.get_lr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="braindecode.torch_ext.schedulers.CosineAnnealing.get_weight_decay">
+<code class="descname">get_weight_decay</code><span class="sig-paren">(</span><em>initial_val</em>, <em>i_update</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/schedulers.py#L63-L64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.schedulers.CosineAnnealing.get_weight_decay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-braindecode.torch_ext.util">
 <span id="braindecode-torch-ext-util-module"></span><h2>braindecode.torch_ext.util module<a class="headerlink" href="#module-braindecode.torch_ext.util" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.torch_ext.util.np_to_var">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>dtype=None</em>, <em>pin_memory=False</em>, <em>**var_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to transform numpy array to <cite>torch.autograd.Variable</cite>.</p>
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">np_to_var</code><span class="sig-paren">(</span><em>X</em>, <em>requires_grad=False</em>, <em>dtype=None</em>, <em>pin_memory=False</em>, <em>**tensor_kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L7-L36"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.np_to_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to transform numpy array to <cite>torch.Tensor</cite>.</p>
 <p>Converts <cite>X</cite> to ndarray using asarray if necessary.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -452,7 +542,7 @@ forward() returns list of intermediate activations in a network during forward p
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>var</strong></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>torch.autograd.Variable</cite></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>torch.Tensor</cite></p>
 </td>
 </tr>
 </tbody>
@@ -461,8 +551,8 @@ forward() returns list of intermediate activations in a network during forward p
 
 <dl class="function">
 <dt id="braindecode.torch_ext.util.var_to_np">
-<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L38-L43"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to transform <cite>torch.autograd.Variable</cite> to numpy
+<code class="descclassname">braindecode.torch_ext.util.</code><code class="descname">var_to_np</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/torch_ext/util.py#L39-L44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.torch_ext.util.var_to_np" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to transform <cite>torch.Tensor</cite> to numpy
 array.</p>
 <p>Should work both for CPU and GPU.</p>
 </dd></dl>
@@ -518,7 +608,7 @@ array.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister.
 
     </p>
   </div>
@@ -540,7 +630,7 @@ array.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.2',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

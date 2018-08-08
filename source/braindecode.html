@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode package &mdash; Braindecode 0.3.2 documentation</title>
+  <title>braindecode package &mdash; Braindecode 0.4.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.3.2 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.4.0 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.4.0
               </div>
             
           
@@ -89,9 +89,10 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/TrialWise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Trialwise_Decoding.html">Trialwise Decoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Decoding.html">Cropped Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Trialwise_Manual_Training_Loop.html">Trialwise Manual Training Loop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul>
@@ -225,6 +226,7 @@
 <li class="toctree-l1"><a class="reference internal" href="braindecode.experiments.html">braindecode.experiments package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.experiments.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.experiments.html#module-braindecode.experiments.experiment">braindecode.experiments.experiment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="braindecode.experiments.html#module-braindecode.experiments.loggers">braindecode.experiments.loggers module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.experiments.html#module-braindecode.experiments.monitors">braindecode.experiments.monitors module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.experiments.html#module-braindecode.experiments.stopcriteria">braindecode.experiments.stopcriteria module</a></li>
 </ul>
@@ -236,8 +238,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="braindecode.models.html">braindecode.models package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#module-braindecode.models.base">braindecode.models.base module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#module-braindecode.models.deep4">braindecode.models.deep4 module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#module-braindecode.models.eegnet">braindecode.models.eegnet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#module-braindecode.models.hybrid">braindecode.models.hybrid module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#module-braindecode.models.shallow_fbcsp">braindecode.models.shallow_fbcsp module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.models.html#module-braindecode.models.util">braindecode.models.util module</a></li>
 </ul>
@@ -249,6 +253,8 @@
 <li class="toctree-l2"><a class="reference internal" href="braindecode.torch_ext.html#module-braindecode.torch_ext.init">braindecode.torch_ext.init module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.torch_ext.html#module-braindecode.torch_ext.losses">braindecode.torch_ext.losses module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.torch_ext.html#module-braindecode.torch_ext.modules">braindecode.torch_ext.modules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="braindecode.torch_ext.html#module-braindecode.torch_ext.optimizers">braindecode.torch_ext.optimizers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="braindecode.torch_ext.html#module-braindecode.torch_ext.schedulers">braindecode.torch_ext.schedulers module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="braindecode.torch_ext.html#module-braindecode.torch_ext.util">braindecode.torch_ext.util module</a></li>
 </ul>
 </li>
@@ -426,7 +432,7 @@ precedence goes to key value pairs in latter dicts.
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister.
 
     </p>
   </div>
@@ -448,7 +454,7 @@ precedence goes to key value pairs in latter dicts.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.2',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
