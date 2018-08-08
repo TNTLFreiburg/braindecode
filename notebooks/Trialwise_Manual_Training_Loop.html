@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Trialwise Decoding &mdash; Braindecode 0.3.2 documentation</title>
+  <title>Trialwise Manual Training Loop &mdash; Braindecode 0.4.0 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.3.2 documentation" href="../index.html"/>
-        <link rel="next" title="Cropped Decoding" href="Cropped_Decoding.html"/>
-        <link rel="prev" title="Welcome to Braindecode" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.4.0 documentation" href="../index.html"/>
+        <link rel="next" title="Cropped Manual Training Loop" href="Cropped_Manual_Training_Loop.html"/>
+        <link rel="prev" title="Cropped Decoding" href="Cropped_Decoding.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.4.0
               </div>
             
           
@@ -91,16 +91,19 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Trialwise Decoding</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="Trialwise_Decoding.html">Trialwise Decoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cropped_Decoding.html">Cropped Decoding</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Trialwise Manual Training Loop</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Enable-logging">Enable logging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Load-data">Load data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Convert-data-to-Braindecode-Format">Convert data to Braindecode Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Convert-data-to-Braindecode-format">Convert data to Braindecode format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Create-the-model">Create the model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Training-loop">Training loop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Dataset-References">Dataset References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Dataset-references">Dataset references</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Cropped_Decoding.html">Cropped Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Experiment_Class.html">Using the Experiment Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul>
@@ -154,13 +157,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Trialwise Decoding</li>
+      <li>Trialwise Manual Training Loop</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/TrialWise_Decoding.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/Trialwise_Manual_Training_Loop.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -367,8 +370,12 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="Trialwise-Decoding">
-<h1>Trialwise Decoding<a class="headerlink" href="#Trialwise-Decoding" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Trialwise-Manual-Training-Loop">
+<h1>Trialwise Manual Training Loop<a class="headerlink" href="#Trialwise-Manual-Training-Loop" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+Here, we show the trialwise decoding when you want to write your own
+training loop. For more simple code with a predefined training loop, see
+the <a class="reference external" href="./Trialwise_Decoding.html">Trialwise Decoding Tutorial</a>.</div>
 <p>In this example, we will use a convolutional neural network on the
 <a class="reference external" href="https://www.physionet.org/physiobank/database/eegmmidb/">Physiobank EEG Motor Movement/Imagery
 Dataset</a> to
@@ -381,6 +388,27 @@ decode two classes:</p>
 We use only one subject (with 90 trials) in this tutorial for
 demonstration purposes. A more interesting decoding task with many more
 trials would be to do cross-subject decoding on the same dataset.</div>
+<div class="section" id="Enable-logging">
+<h2>Enable logging<a class="headerlink" href="#Enable-logging" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span> <span class="c1"># see https://stackoverflow.com/a/21475297/1469195</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="Load-data">
 <h2>Load data<a class="headerlink" href="#Load-data" title="Permalink to this headline">¶</a></h2>
 <p>You can load and preprocess your EEG dataset in any way, Braindecode
@@ -392,9 +420,9 @@ tutorial from MNE using Common Spatial Patterns to decode this data, see
 <a class="reference external" href="http://martinos.org/mne/stable/auto_examples/decoding/plot_decoding_csp_eeg.html">here</a>.
 For another library useful for loading EEG data, take a look at <a class="reference external" href="https://pythonhosted.org/neo/io.html">Neo
 IO</a>.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -402,7 +430,7 @@ IO</a>.</p>
 <span class="kn">from</span> <span class="nn">mne.io</span> <span class="k">import</span> <span class="n">concatenate_raws</span>
 
 <span class="c1"># 5,6,7,10,13,14 are codes for executed and imagined hands/feet</span>
-<span class="n">subject_id</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">subject_id</span> <span class="o">=</span> <span class="mi">22</span> <span class="c1"># carefully cherry-picked to give nice results on such limited data :)</span>
 <span class="n">event_codes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
 
 <span class="c1"># This will download the files if you don&#39;t have them yet,</span>
@@ -429,29 +457,16 @@ IO</a>.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Removing orphaned offset at the beginning of the file.
-179 events found
-Events id: [1 2 3]
-90 matching events found
-Loading data for 90 events and 497 original time points ...
-0 bad epochs dropped
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="Convert-data-to-Braindecode-Format">
-<h2>Convert data to Braindecode Format<a class="headerlink" href="#Convert-data-to-Braindecode-Format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Convert-data-to-Braindecode-format">
+<h2>Convert data to Braindecode format<a class="headerlink" href="#Convert-data-to-Braindecode-format" title="Permalink to this headline">¶</a></h2>
 <p>Braindecode has a minimalistic <code class="docutils literal"><span class="pre">SignalAndTarget</span></code> class, with
 attributes <code class="docutils literal"><span class="pre">X</span></code> for the signal and <code class="docutils literal"><span class="pre">y</span></code> for the labels. <code class="docutils literal"><span class="pre">X</span></code> should
 have these dimensions: trials x channels x timesteps. <code class="docutils literal"><span class="pre">y</span></code> should have
 one label per trial.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -463,17 +478,23 @@ one label per trial.</p>
 </pre></div>
 </div>
 </div>
-<p>We use the first 60 trials for training and the last 30 for testing.</p>
+<p>We use the first 40 trials for training and the next 30 trials for
+validation. The validation accuracies can be used to tune
+hyperparameters such as learning rate etc. The final 20 trials are split
+apart so we have a final hold-out evaluation set that is not part of any
+hyperparameter optimization. As mentioned before, this dataset is
+dangerously small to get any meaningful results and only used here for
+quick demonstration purposes.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.signal_target</span> <span class="k">import</span> <span class="n">SignalAndTarget</span>
 
-<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">60</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[:</span><span class="mi">60</span><span class="p">])</span>
-<span class="n">test_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">60</span><span class="p">:],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="mi">60</span><span class="p">:])</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">40</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[:</span><span class="mi">40</span><span class="p">])</span>
+<span class="n">valid_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">70</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">70</span><span class="p">])</span>
 
 </pre></div>
 </div>
@@ -487,7 +508,7 @@ model from <a class="reference external" href="https://arxiv.org/abs/1703.05051"
 decoding and visualization</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -510,17 +531,33 @@ decoding and visualization</a>.</p>
 </pre></div>
 </div>
 </div>
-<p>We use <a class="reference external" href="https://arxiv.org/abs/1412.6980">Adam</a> to optimize the
-parameters of our network.</p>
+<p>We use <a class="reference external" href="https://arxiv.org/abs/1711.05101">AdamW</a> to optimize the
+parameters of our network together with <a class="reference external" href="https://arxiv.org/abs/1608.03983">Cosine
+Annealing</a> of the learning rate. We
+supply some default parameters that we have found to work well for motor
+decoding, however we strongly encourage you to perform your own
+hyperparameter optimization using cross validation on your training
+data.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">optim</span>
-
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+<span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.optimizers</span> <span class="k">import</span> <span class="n">AdamW</span>
+<span class="kn">from</span> <span class="nn">braindecode.torch_ext.schedulers</span> <span class="k">import</span> <span class="n">ScheduledOptimizer</span><span class="p">,</span> <span class="n">CosineAnnealing</span>
+<span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">get_balanced_batches</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">RandomState</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">RandomState</span><span class="p">((</span><span class="mi">2018</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="c1">#optimizer = AdamW(model.parameters(), lr=1*0.01, weight_decay=0.5*0.001) # these are good values for the deep model</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0625</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Need to determine number of batch passes per epoch for cosine annealing</span>
+<span class="n">n_epochs</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">n_updates_per_epoch</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">get_balanced_batches</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">),</span> <span class="n">rng</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">batch_size</span><span class="o">=</span><span class="mi">30</span><span class="p">)))</span>
+<span class="n">scheduler</span> <span class="o">=</span> <span class="n">CosineAnnealing</span><span class="p">(</span><span class="n">n_epochs</span> <span class="o">*</span> <span class="n">n_updates_per_epoch</span><span class="p">)</span>
+<span class="c1"># schedule_weight_decay must be True for AdamW</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">ScheduledOptimizer</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">schedule_weight_decay</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -538,16 +575,13 @@ statistics like mean accuracy and mean loss.</li>
 </ol>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">np_to_var</span><span class="p">,</span> <span class="n">var_to_np</span>
-<span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">get_balanced_batches</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <span class="n">RandomState</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">RandomState</span><span class="p">((</span><span class="mi">2017</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">30</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i_epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i_epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
     <span class="n">i_trials_in_batch</span> <span class="o">=</span> <span class="n">get_balanced_batches</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">),</span> <span class="n">rng</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                             <span class="n">batch_size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
     <span class="c1"># Set model to training mode</span>
@@ -576,7 +610,7 @@ statistics like mean accuracy and mean loss.</li>
     <span class="c1"># Print some statistics each epoch</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_epoch</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">setname</span><span class="p">,</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="n">train_set</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">setname</span><span class="p">,</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">&#39;Train&#39;</span><span class="p">,</span> <span class="n">train_set</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Valid&#39;</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">)):</span>
         <span class="c1"># Here, we will use the entire dataset at once, which is still possible</span>
         <span class="c1"># for such smaller datasets. Otherwise we would have to use batches.</span>
         <span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">X</span><span class="p">[:,:,:,</span><span class="kc">None</span><span class="p">])</span>
@@ -602,166 +636,207 @@ statistics like mean accuracy and mean loss.</li>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch 0
-Train  Loss: 1.17760
-Train  Accuracy: 51.7%
-Test   Loss: 1.26024
-Test   Accuracy: 53.3%
+Train  Loss: 1.38360
+Train  Accuracy: 47.5%
+Valid  Loss: 1.41585
+Valid  Accuracy: 50.0%
 Epoch 1
-Train  Loss: 0.70688
-Train  Accuracy: 63.3%
-Test   Loss: 0.93679
-Test   Accuracy: 56.7%
+Train  Loss: 0.88988
+Train  Accuracy: 60.0%
+Valid  Loss: 1.03939
+Valid  Accuracy: 56.7%
 Epoch 2
-Train  Loss: 0.39426
-Train  Accuracy: 86.7%
-Test   Loss: 0.65984
-Test   Accuracy: 66.7%
+Train  Loss: 0.67633
+Train  Accuracy: 67.5%
+Valid  Loss: 0.94319
+Valid  Accuracy: 60.0%
 Epoch 3
-Train  Loss: 0.33593
-Train  Accuracy: 90.0%
-Test   Loss: 0.65626
-Test   Accuracy: 63.3%
+Train  Loss: 0.41825
+Train  Accuracy: 80.0%
+Valid  Loss: 0.75822
+Valid  Accuracy: 63.3%
 Epoch 4
-Train  Loss: 0.27905
-Train  Accuracy: 96.7%
-Test   Loss: 0.61044
-Test   Accuracy: 56.7%
-Epoch 5
-Train  Loss: 0.27319
-Train  Accuracy: 96.7%
-Test   Loss: 0.59499
-Test   Accuracy: 66.7%
-Epoch 6
-Train  Loss: 0.26624
-Train  Accuracy: 88.3%
-Test   Loss: 0.61360
-Test   Accuracy: 70.0%
-Epoch 7
-Train  Loss: 0.23338
-Train  Accuracy: 91.7%
-Test   Loss: 0.65626
-Test   Accuracy: 73.3%
-Epoch 8
-Train  Loss: 0.21903
+Train  Loss: 0.22624
 Train  Accuracy: 90.0%
-Test   Loss: 0.68762
-Test   Accuracy: 63.3%
+Valid  Loss: 0.67704
+Valid  Accuracy: 66.7%
+Epoch 5
+Train  Loss: 0.13072
+Train  Accuracy: 97.5%
+Valid  Loss: 0.62466
+Valid  Accuracy: 73.3%
+Epoch 6
+Train  Loss: 0.10054
+Train  Accuracy: 97.5%
+Valid  Loss: 0.62027
+Valid  Accuracy: 73.3%
+Epoch 7
+Train  Loss: 0.08371
+Train  Accuracy: 97.5%
+Valid  Loss: 0.62787
+Valid  Accuracy: 73.3%
+Epoch 8
+Train  Loss: 0.07234
+Train  Accuracy: 97.5%
+Valid  Loss: 0.62938
+Valid  Accuracy: 70.0%
 Epoch 9
-Train  Loss: 0.18902
-Train  Accuracy: 96.7%
-Test   Loss: 0.67174
-Test   Accuracy: 56.7%
+Train  Loss: 0.06713
+Train  Accuracy: 97.5%
+Valid  Loss: 0.63169
+Valid  Accuracy: 70.0%
 Epoch 10
-Train  Loss: 0.17774
-Train  Accuracy: 96.7%
-Test   Loss: 0.68129
-Test   Accuracy: 56.7%
+Train  Loss: 0.06175
+Train  Accuracy: 97.5%
+Valid  Loss: 0.63279
+Valid  Accuracy: 70.0%
 Epoch 11
-Train  Loss: 0.16396
-Train  Accuracy: 98.3%
-Test   Loss: 0.69190
-Test   Accuracy: 56.7%
+Train  Loss: 0.05743
+Train  Accuracy: 97.5%
+Valid  Loss: 0.62944
+Valid  Accuracy: 70.0%
 Epoch 12
-Train  Loss: 0.15179
-Train  Accuracy: 98.3%
-Test   Loss: 0.69641
-Test   Accuracy: 56.7%
+Train  Loss: 0.05303
+Train  Accuracy: 97.5%
+Valid  Loss: 0.62220
+Valid  Accuracy: 70.0%
 Epoch 13
-Train  Loss: 0.15035
-Train  Accuracy: 98.3%
-Test   Loss: 0.70514
-Test   Accuracy: 60.0%
+Train  Loss: 0.04724
+Train  Accuracy: 97.5%
+Valid  Loss: 0.61127
+Valid  Accuracy: 70.0%
 Epoch 14
-Train  Loss: 0.14255
-Train  Accuracy: 98.3%
-Test   Loss: 0.74239
-Test   Accuracy: 53.3%
+Train  Loss: 0.04223
+Train  Accuracy: 100.0%
+Valid  Loss: 0.59926
+Valid  Accuracy: 70.0%
 Epoch 15
-Train  Loss: 0.13597
-Train  Accuracy: 98.3%
-Test   Loss: 0.77918
-Test   Accuracy: 53.3%
+Train  Loss: 0.03736
+Train  Accuracy: 100.0%
+Valid  Loss: 0.58510
+Valid  Accuracy: 70.0%
 Epoch 16
-Train  Loss: 0.13680
-Train  Accuracy: 98.3%
-Test   Loss: 0.84159
-Test   Accuracy: 56.7%
+Train  Loss: 0.03282
+Train  Accuracy: 100.0%
+Valid  Loss: 0.56685
+Valid  Accuracy: 70.0%
 Epoch 17
-Train  Loss: 0.12191
-Train  Accuracy: 98.3%
-Test   Loss: 0.87802
-Test   Accuracy: 56.7%
+Train  Loss: 0.02917
+Train  Accuracy: 100.0%
+Valid  Loss: 0.54962
+Valid  Accuracy: 73.3%
 Epoch 18
-Train  Loss: 0.10604
-Train  Accuracy: 98.3%
-Test   Loss: 0.90945
-Test   Accuracy: 56.7%
+Train  Loss: 0.02635
+Train  Accuracy: 100.0%
+Valid  Loss: 0.53484
+Valid  Accuracy: 73.3%
 Epoch 19
-Train  Loss: 0.10445
-Train  Accuracy: 98.3%
-Test   Loss: 0.93717
-Test   Accuracy: 56.7%
+Train  Loss: 0.02404
+Train  Accuracy: 100.0%
+Valid  Loss: 0.52472
+Valid  Accuracy: 73.3%
 Epoch 20
-Train  Loss: 0.10497
-Train  Accuracy: 98.3%
-Test   Loss: 0.95502
-Test   Accuracy: 60.0%
+Train  Loss: 0.02188
+Train  Accuracy: 100.0%
+Valid  Loss: 0.51820
+Valid  Accuracy: 73.3%
 Epoch 21
-Train  Loss: 0.10946
+Train  Loss: 0.02015
 Train  Accuracy: 100.0%
-Test   Loss: 0.99562
-Test   Accuracy: 60.0%
+Valid  Loss: 0.51563
+Valid  Accuracy: 73.3%
 Epoch 22
-Train  Loss: 0.05721
+Train  Loss: 0.01874
 Train  Accuracy: 100.0%
-Test   Loss: 0.84824
-Test   Accuracy: 60.0%
+Valid  Loss: 0.51309
+Valid  Accuracy: 73.3%
 Epoch 23
-Train  Loss: 0.04464
+Train  Loss: 0.01756
 Train  Accuracy: 100.0%
-Test   Loss: 0.78784
-Test   Accuracy: 56.7%
+Valid  Loss: 0.51196
+Valid  Accuracy: 73.3%
 Epoch 24
-Train  Loss: 0.04181
+Train  Loss: 0.01658
 Train  Accuracy: 100.0%
-Test   Loss: 0.78525
-Test   Accuracy: 56.7%
+Valid  Loss: 0.51188
+Valid  Accuracy: 73.3%
 Epoch 25
-Train  Loss: 0.03730
+Train  Loss: 0.01572
 Train  Accuracy: 100.0%
-Test   Loss: 0.75642
-Test   Accuracy: 63.3%
+Valid  Loss: 0.51296
+Valid  Accuracy: 73.3%
 Epoch 26
-Train  Loss: 0.03549
+Train  Loss: 0.01505
 Train  Accuracy: 100.0%
-Test   Loss: 0.71706
-Test   Accuracy: 66.7%
+Valid  Loss: 0.51424
+Valid  Accuracy: 73.3%
 Epoch 27
-Train  Loss: 0.03415
+Train  Loss: 0.01454
 Train  Accuracy: 100.0%
-Test   Loss: 0.69795
-Test   Accuracy: 66.7%
+Valid  Loss: 0.51548
+Valid  Accuracy: 73.3%
 Epoch 28
-Train  Loss: 0.03205
+Train  Loss: 0.01416
 Train  Accuracy: 100.0%
-Test   Loss: 0.69323
-Test   Accuracy: 66.7%
+Valid  Loss: 0.51677
+Valid  Accuracy: 73.3%
 Epoch 29
-Train  Loss: 0.02805
+Train  Loss: 0.01388
 Train  Accuracy: 100.0%
-Test   Loss: 0.69241
-Test   Accuracy: 63.3%
+Valid  Loss: 0.51794
+Valid  Accuracy: 73.3%
 </pre></div></div>
 </div>
-<p>Eventually, we arrive at 63.3% accuracy, so 19 from 30 trials are
+<p>Eventually, we arrive at 73.3% accuracy, so 22 from 30 trials are
 correctly predicted. In the <a class="reference external" href="./Cropped_Decoding.html">Cropped Decoding
-Tutorial</a>, we can learn how to achieve
-higher accuracies using cropped training.</p>
+Tutorial</a>, we can learn do the same decoding
+using Cropped Decoding.</p>
+</div>
+<div class="section" id="Evaluation">
+<h2>Evaluation<a class="headerlink" href="#Evaluation" title="Permalink to this headline">¶</a></h2>
+<p>Once we have all our hyperparameters and architectural choices done, we
+can evaluate the accuracies to report in our publication by evaluating
+on the test set:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">test_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">70</span><span class="p">:],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="mi">70</span><span class="p">:])</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="c1"># Here, we will use the entire dataset at once, which is still possible</span>
+<span class="c1"># for such smaller datasets. Otherwise we would have to use batches.</span>
+<span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">test_set</span><span class="o">.</span><span class="n">X</span><span class="p">[:,:,:,</span><span class="kc">None</span><span class="p">])</span>
+<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+    <span class="n">net_in</span> <span class="o">=</span> <span class="n">net_in</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">net_target</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">test_set</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
+    <span class="n">net_target</span> <span class="o">=</span> <span class="n">net_target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">net_in</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">net_target</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Loss: </span><span class="si">{:.5f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">loss</span><span class="p">))))</span>
+<span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">var_to_np</span><span class="p">(</span><span class="n">outputs</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_set</span><span class="o">.</span><span class="n">y</span>  <span class="o">==</span> <span class="n">predicted_labels</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{:.1f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Test Loss: 0.22339
+Test Accuracy: 95.0%
+</pre></div></div>
+</div>
 <div class="admonition note">
 If you want to try cross-subject decoding, changing the loading code to
 the following will perform cross-subject decoding on imagined left vs
-right hand closing, with 50 training and 5 test subjects (Warning, might
-be very slow):</div>
+right hand closing, with 50 training and 5 validation subjects (Warning,
+might be very slow if you are on CPU):</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [ ]:
@@ -773,6 +848,7 @@ be very slow):</div>
 <span class="kn">from</span> <span class="nn">mne.io</span> <span class="k">import</span> <span class="n">concatenate_raws</span>
 <span class="kn">from</span> <span class="nn">braindecode.datautil.signal_target</span> <span class="k">import</span> <span class="n">SignalAndTarget</span>
 
+<span class="c1"># First 50 subjects as train</span>
 <span class="n">physionet_paths</span> <span class="o">=</span> <span class="p">[</span> <span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">51</span><span class="p">)]</span>
 <span class="n">physionet_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths</span><span class="p">)</span>
 <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
@@ -790,34 +866,35 @@ be very slow):</div>
 <span class="n">epoched</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
                 <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">physionet_paths_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">56</span><span class="p">)]</span>
-<span class="n">physionet_paths_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths_test</span><span class="p">)</span>
-<span class="n">parts_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths_test</span><span class="p">]</span>
-<span class="n">raw_test</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts_test</span><span class="p">)</span>
+<span class="c1"># 51-55 as validation subjects</span>
+<span class="n">physionet_paths_valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">56</span><span class="p">)]</span>
+<span class="n">physionet_paths_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths_valid</span><span class="p">)</span>
+<span class="n">parts_valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths_valid</span><span class="p">]</span>
+<span class="n">raw_valid</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts_valid</span><span class="p">)</span>
 
-<span class="n">picks_test</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw_test</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="n">picks_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw_valid</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                    <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
 
-<span class="n">events_test</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw_test</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+<span class="n">events_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw_valid</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
 
 <span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
 <span class="c1"># Testing will be done with a running classifier</span>
-<span class="n">epoched_test</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw_test</span><span class="p">,</span> <span class="n">events_test</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks_test</span><span class="p">,</span>
+<span class="n">epoched_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw_valid</span><span class="p">,</span> <span class="n">events_valid</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks_valid</span><span class="p">,</span>
                 <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">train_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="n">train_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
-<span class="n">test_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_test</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">test_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_test</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+<span class="n">valid_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_valid</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">valid_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_valid</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
 <span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">train_y</span><span class="p">)</span>
-<span class="n">test_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">test_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">test_y</span><span class="p">)</span>
+<span class="n">valid_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">valid_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">valid_y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Dataset-References">
-<h2>Dataset References<a class="headerlink" href="#Dataset-References" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Dataset-references">
+<h2>Dataset references<a class="headerlink" href="#Dataset-references" title="Permalink to this headline">¶</a></h2>
 <p>This dataset was created and contributed to PhysioNet by the developers
 of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a>
 instrumentation system, which they used in making these recordings. The
@@ -845,10 +922,10 @@ and further described in:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Cropped_Decoding.html" class="btn btn-neutral float-right" title="Cropped Decoding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Cropped_Manual_Training_Loop.html" class="btn btn-neutral float-right" title="Cropped Manual Training Loop" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Welcome to Braindecode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Cropped_Decoding.html" class="btn btn-neutral" title="Cropped Decoding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -857,7 +934,7 @@ and further described in:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister.
 
     </p>
   </div>
@@ -879,7 +956,7 @@ and further described in:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.3.2',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
