@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cropped Manual Training Loop &mdash; Braindecode 0.4.0 documentation</title>
+  <title>Cropped Manual Training Loop &mdash; Braindecode 0.4.3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.3 documentation" href="../index.html"/>
         <link rel="next" title="Amplitude Perturbation Visualization" href="visualization/Perturbation.html"/>
         <link rel="prev" title="Trialwise Manual Training Loop" href="Trialwise_Manual_Training_Loop.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.3
               </div>
             
           
@@ -589,7 +589,7 @@ the network.</p>
 <span class="k">for</span> <span class="n">i_epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="c1"># Set model to training mode</span>
     <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">batch_X</span><span class="p">,</span> <span class="n">batch_y</span> <span class="ow">in</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">batch_X</span><span class="p">,</span> <span class="n">batch_y</span> <span class="ow">in</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">net_in</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">batch_X</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
             <span class="n">net_in</span> <span class="o">=</span> <span class="n">net_in</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
@@ -654,109 +654,109 @@ the network.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch 0
-Train  Loss: 3.88829
+Train  Loss: 3.79010
 Train  Accuracy: 50.0%
-Valid  Loss: 3.18595
-Valid  Accuracy: 50.0%
+Valid  Loss: 3.12765
+Valid  Accuracy: 46.7%
 Epoch 1
-Train  Loss: 1.33431
-Train  Accuracy: 55.0%
-Valid  Loss: 0.96900
-Valid  Accuracy: 60.0%
+Train  Loss: 1.91778
+Train  Accuracy: 50.0%
+Valid  Loss: 1.52058
+Valid  Accuracy: 46.7%
 Epoch 2
-Train  Loss: 0.60838
-Train  Accuracy: 77.5%
-Valid  Loss: 0.55685
-Valid  Accuracy: 76.7%
+Train  Loss: 1.09943
+Train  Accuracy: 60.0%
+Valid  Loss: 0.99602
+Valid  Accuracy: 56.7%
 Epoch 3
-Train  Loss: 0.49553
-Train  Accuracy: 77.5%
-Valid  Loss: 0.57463
-Valid  Accuracy: 76.7%
+Train  Loss: 0.73015
+Train  Accuracy: 67.5%
+Valid  Loss: 0.82321
+Valid  Accuracy: 56.7%
 Epoch 4
-Train  Loss: 0.46749
-Train  Accuracy: 80.0%
-Valid  Loss: 0.62036
-Valid  Accuracy: 76.7%
+Train  Loss: 0.55965
+Train  Accuracy: 75.0%
+Valid  Loss: 0.77549
+Valid  Accuracy: 63.3%
 Epoch 5
-Train  Loss: 0.36088
-Train  Accuracy: 85.0%
-Valid  Loss: 0.59054
-Valid  Accuracy: 76.7%
+Train  Loss: 0.38075
+Train  Accuracy: 82.5%
+Valid  Loss: 0.65490
+Valid  Accuracy: 73.3%
 Epoch 6
-Train  Loss: 0.26471
+Train  Loss: 0.28886
 Train  Accuracy: 90.0%
-Valid  Loss: 0.55745
-Valid  Accuracy: 76.7%
+Valid  Loss: 0.59481
+Valid  Accuracy: 73.3%
 Epoch 7
-Train  Loss: 0.19023
-Train  Accuracy: 95.0%
-Valid  Loss: 0.53162
+Train  Loss: 0.21871
+Train  Accuracy: 97.5%
+Valid  Loss: 0.52357
 Valid  Accuracy: 83.3%
 Epoch 8
-Train  Loss: 0.13684
+Train  Loss: 0.16713
 Train  Accuracy: 97.5%
-Valid  Loss: 0.50510
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.44890
+Valid  Accuracy: 86.7%
 Epoch 9
-Train  Loss: 0.10682
+Train  Loss: 0.13149
 Train  Accuracy: 97.5%
-Valid  Loss: 0.47980
-Valid  Accuracy: 86.7%
+Valid  Loss: 0.40492
+Valid  Accuracy: 83.3%
 Epoch 10
-Train  Loss: 0.08165
+Train  Loss: 0.09581
 Train  Accuracy: 100.0%
-Valid  Loss: 0.45300
-Valid  Accuracy: 86.7%
+Valid  Loss: 0.36021
+Valid  Accuracy: 90.0%
 Epoch 11
-Train  Loss: 0.05927
+Train  Loss: 0.07818
 Train  Accuracy: 100.0%
-Valid  Loss: 0.43593
-Valid  Accuracy: 86.7%
+Valid  Loss: 0.34625
+Valid  Accuracy: 90.0%
 Epoch 12
-Train  Loss: 0.04447
+Train  Loss: 0.07454
 Train  Accuracy: 100.0%
-Valid  Loss: 0.43543
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.34489
+Valid  Accuracy: 90.0%
 Epoch 13
-Train  Loss: 0.03776
+Train  Loss: 0.06694
 Train  Accuracy: 100.0%
-Valid  Loss: 0.43941
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.33878
+Valid  Accuracy: 90.0%
 Epoch 14
-Train  Loss: 0.03341
+Train  Loss: 0.05971
 Train  Accuracy: 100.0%
-Valid  Loss: 0.43653
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.33128
+Valid  Accuracy: 90.0%
 Epoch 15
-Train  Loss: 0.02990
+Train  Loss: 0.05269
 Train  Accuracy: 100.0%
-Valid  Loss: 0.43027
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.32202
+Valid  Accuracy: 90.0%
 Epoch 16
-Train  Loss: 0.02713
+Train  Loss: 0.04354
 Train  Accuracy: 100.0%
-Valid  Loss: 0.42535
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.31063
+Valid  Accuracy: 90.0%
 Epoch 17
-Train  Loss: 0.02483
+Train  Loss: 0.03759
 Train  Accuracy: 100.0%
-Valid  Loss: 0.42535
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.30314
+Valid  Accuracy: 90.0%
 Epoch 18
-Train  Loss: 0.02301
+Train  Loss: 0.03401
 Train  Accuracy: 100.0%
-Valid  Loss: 0.42749
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.29997
+Valid  Accuracy: 90.0%
 Epoch 19
-Train  Loss: 0.02164
+Train  Loss: 0.03145
 Train  Accuracy: 100.0%
-Valid  Loss: 0.42855
-Valid  Accuracy: 86.7%
+Valid  Loss: 0.29764
+Valid  Accuracy: 90.0%
 </pre></div></div>
 </div>
-<p>Eventually, we arrive at 86.7% accuracy, so 26 from 30 trials are
-correctly predicted, 4 more than for the trialwise decoding method.</p>
+<p>Eventually, we arrive at 90.0% accuracy, so 27 from 30 trials are
+correctly predicted, 5 more than for the trialwise decoding method.</p>
 </div>
 <div class="section" id="Evaluation">
 <h2>Evaluation<a class="headerlink" href="#Evaluation" title="Permalink to this headline">¶</a></h2>
@@ -765,7 +765,7 @@ can evaluate the accuracies to report in our publication by evaluating
 on the test set:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -812,7 +812,7 @@ on the test set:</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test Loss: 0.43439
+Test Loss: 0.42105
 Test Accuracy: 85.0%
 </pre></div></div>
 </div>
@@ -880,7 +880,7 @@ and further described in:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.0',
+            VERSION:'0.4.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

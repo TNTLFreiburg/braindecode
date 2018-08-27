@@ -256,7 +256,9 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "metadata": {},
+   "metadata": {
+    "collapsed": true
+   },
    "outputs": [],
    "source": [
     "from braindecode.torch_ext.optimizers import AdamW\n",
