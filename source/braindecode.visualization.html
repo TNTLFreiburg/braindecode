@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.visualization package &mdash; Braindecode 0.4.3 documentation</title>
+  <title>braindecode.visualization package &mdash; Braindecode 0.4.5 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.3 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.5 documentation" href="../index.html"/>
         <link rel="prev" title="braindecode.torch_ext package" href="braindecode.torch_ext.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.4.3
+                0.4.5
               </div>
             
           
@@ -364,7 +364,7 @@ Second dimension consists of Input x Filter(1) x H x W indeces. Can only handle 
 <span id="braindecode-visualization-perturbation-module"></span><h2>braindecode.visualization.perturbation module<a class="headerlink" href="#module-braindecode.visualization.perturbation" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.phase_perturbation">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">phase_perturbation</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=&lt;mtrand.RandomState object&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L11-L45"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.phase_perturbation" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">phase_perturbation</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L11-L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.phase_perturbation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes amps and phases of BxCxF with B input, C channels, F frequencies
 Shifts spectral phases randomly U(-pi,pi) for input and frequencies, but same for all channels</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -374,7 +374,7 @@ Shifts spectral phases randomly U(-pi,pi) for input and frequencies, but same fo
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>amps</strong> (<em>numpy array</em>) – Spectral amplitude (not used)</li>
 <li><strong>phases</strong> (<em>numpy array</em>) – Spectral phases</li>
-<li><strong>rng</strong> (<em>object</em>) – Random Seed</li>
+<li><strong>rng</strong> (<em>object</em>) – Random Generator</li>
 </ul>
 </td>
 </tr>
@@ -392,7 +392,7 @@ Shifts spectral phases randomly U(-pi,pi) for input and frequencies, but same fo
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.amp_perturbation_additive">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amp_perturbation_additive</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=&lt;mtrand.RandomState object&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L47-L73"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amp_perturbation_additive" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amp_perturbation_additive</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L49-L77"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amp_perturbation_additive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes amplitudes and phases of BxCxF with B input, C channels, F frequencies
 Adds additive noise N(0,0.02) to amplitudes</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -420,7 +420,7 @@ Adds additive noise N(0,0.02) to amplitudes</p>
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.amp_perturbation_multiplicative">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amp_perturbation_multiplicative</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=&lt;mtrand.RandomState object&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L75-L100"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amp_perturbation_multiplicative" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">amp_perturbation_multiplicative</code><span class="sig-paren">(</span><em>amps</em>, <em>phases</em>, <em>rng=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L79-L106"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.amp_perturbation_multiplicative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes amplitude and phases of BxCxF with B input, C channels, F frequencies
 Adds multiplicative noise N(1,0.02) to amplitudes</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -448,7 +448,7 @@ Adds multiplicative noise N(1,0.02) to amplitudes</p>
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.correlate_feature_maps">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">correlate_feature_maps</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L102-L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.correlate_feature_maps" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">correlate_feature_maps</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L108-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.correlate_feature_maps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes two activation matrices of the form Bx[F]xT where B is batch size, F number of filters (optional) and T time points
 Returns correlations of the corresponding activations over T</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -469,7 +469,7 @@ Returns correlations of the corresponding activations over T</p>
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.mean_diff_feature_maps">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">mean_diff_feature_maps</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L137-L153"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.mean_diff_feature_maps" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">mean_diff_feature_maps</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L143-L159"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.mean_diff_feature_maps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes two activation matrices of the form BxFxT where B is batch size, F number of filters and T time points
 Returns mean difference between feature map activations</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -490,7 +490,7 @@ Returns mean difference between feature map activations</p>
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.spectral_perturbation_correlation">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">spectral_perturbation_correlation</code><span class="sig-paren">(</span><em>pert_fn</em>, <em>diff_fn</em>, <em>pred_fn</em>, <em>n_layers</em>, <em>inputs</em>, <em>n_iterations</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L155-L241"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.spectral_perturbation_correlation" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">spectral_perturbation_correlation</code><span class="sig-paren">(</span><em>pert_fn</em>, <em>diff_fn</em>, <em>pred_fn</em>, <em>n_layers</em>, <em>inputs</em>, <em>n_iterations</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L161-L247"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.spectral_perturbation_correlation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates perturbation correlations for layers in network by perturbing either amplitudes or phases</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -522,7 +522,7 @@ L  x  CxFrxFi (Channels,Frequencies,Filters)</p>
 
 <dl class="function">
 <dt id="braindecode.visualization.perturbation.compute_amplitude_prediction_correlations">
-<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">compute_amplitude_prediction_correlations</code><span class="sig-paren">(</span><em>pred_fn</em>, <em>examples</em>, <em>n_iterations</em>, <em>perturb_fn=&lt;function amp_perturbation_additive&gt;</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L244-L291"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.visualization.perturbation.</code><code class="descname">compute_amplitude_prediction_correlations</code><span class="sig-paren">(</span><em>pred_fn</em>, <em>examples</em>, <em>n_iterations</em>, <em>perturb_fn=&lt;function amp_perturbation_additive&gt;</em>, <em>batch_size=30</em>, <em>seed=(2017</em>, <em>7</em>, <em>10)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/visualization/perturbation.py#L250-L297"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perturb input amplitudes and compute correlation between amplitude
 perturbations and prediction changes when pushing perturbed input through
 the prediction function.</p>
@@ -720,7 +720,7 @@ Parameters are: Frequency,Amplitude,Phase,DCOffset</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.3',
+            VERSION:'0.4.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

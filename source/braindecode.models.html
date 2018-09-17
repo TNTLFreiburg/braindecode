@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.models package &mdash; Braindecode 0.4.3 documentation</title>
+  <title>braindecode.models package &mdash; Braindecode 0.4.5 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.3 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.5 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.torch_ext package" href="braindecode.torch_ext.html"/>
         <link rel="prev" title="braindecode.mne_ext package" href="braindecode.mne_ext.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.3
+                0.4.5
               </div>
             
           
@@ -220,22 +220,22 @@
 <span id="braindecode-models-base-module"></span><h2>braindecode.models.base module<a class="headerlink" href="#module-braindecode.models.base" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.models.base.find_optimizer">
-<code class="descclassname">braindecode.models.base.</code><code class="descname">find_optimizer</code><span class="sig-paren">(</span><em>optimizer_name</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L20-L30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.find_optimizer" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.models.base.</code><code class="descname">find_optimizer</code><span class="sig-paren">(</span><em>optimizer_name</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L23-L33"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.find_optimizer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="braindecode.models.base.BaseModel">
-<em class="property">class </em><code class="descclassname">braindecode.models.base.</code><code class="descname">BaseModel</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L33-L284"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.models.base.</code><code class="descname">BaseModel</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L36-L296"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="braindecode.models.base.BaseModel.cuda">
-<code class="descname">cuda</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L34-L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.cuda" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cuda</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L37-L44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.cuda" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move underlying model to GPU.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="braindecode.models.base.BaseModel.parameters">
-<code class="descname">parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L43-L52"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.parameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L46-L55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return parameters of underlying torch model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -251,7 +251,7 @@
 
 <dl class="method">
 <dt id="braindecode.models.base.BaseModel.compile">
-<code class="descname">compile</code><span class="sig-paren">(</span><em>loss</em>, <em>optimizer</em>, <em>extra_monitors=None</em>, <em>cropped=False</em>, <em>iterator_seed=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L60-L92"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.compile" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compile</code><span class="sig-paren">(</span><em>loss</em>, <em>optimizer</em>, <em>extra_monitors=None</em>, <em>cropped=False</em>, <em>iterator_seed=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L63-L102"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.compile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setup training for this model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -272,7 +272,7 @@
 
 <dl class="method">
 <dt id="braindecode.models.base.BaseModel.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>train_X</em>, <em>train_y</em>, <em>epochs</em>, <em>batch_size</em>, <em>input_time_length=None</em>, <em>validation_data=None</em>, <em>model_constraint=None</em>, <em>remember_best_column=None</em>, <em>scheduler=None</em>, <em>log_0_epoch=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L94-L207"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>train_X</em>, <em>train_y</em>, <em>epochs</em>, <em>batch_size</em>, <em>input_time_length=None</em>, <em>validation_data=None</em>, <em>model_constraint=None</em>, <em>remember_best_column=None</em>, <em>scheduler=None</em>, <em>log_0_epoch=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L104-L219"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model using the given training data.</p>
 <p>Will set <cite>epochs_df</cite> variable with a pandas dataframe to the history
 of the training process.</p>
@@ -309,7 +309,7 @@ determines the best epoch.</li>
 
 <dl class="method">
 <dt id="braindecode.models.base.BaseModel.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L209-L256"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.evaluate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L221-L268"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate, i.e., compute metrics on given inputs and targets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -333,7 +333,7 @@ determines the best epoch.</li>
 
 <dl class="method">
 <dt id="braindecode.models.base.BaseModel.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em>, <em>threshold_for_binary_case=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L258-L284"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em>, <em>threshold_for_binary_case=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/base.py#L270-L296"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.base.BaseModel.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict the labels for given input data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -402,15 +402,15 @@ Human Brain Mapping , Aug. 2017. Online: <a class="reference external" href="htt
 <dt id="braindecode.models.eegnet.EEGNetv4">
 <em class="property">class </em><code class="descclassname">braindecode.models.eegnet.</code><code class="descname">EEGNetv4</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>final_conv_length=’auto’</em>, <em>input_time_length=None</em>, <em>pool_mode=’mean’</em>, <em>F1=8</em>, <em>D=2</em>, <em>F2=16</em>, <em>kernel_length=64</em>, <em>third_kernel_size=(8</em>, <em>4)</em>, <em>drop_prob=0.25</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L22-L118"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNetv4" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#braindecode.models.base.BaseModel" title="braindecode.models.base.BaseModel"><code class="xref py py-class docutils literal"><span class="pre">braindecode.models.base.BaseModel</span></code></a></p>
-<p>EEGNet v4 model from <a class="reference internal" href="#id5" id="id3">[EEGNet]</a>.</p>
+<p>EEGNet v4 model from <a class="reference internal" href="#eegnet4" id="id3">[EEGNet4]</a>.</p>
 <p class="rubric">Notes</p>
 <p>This implementation is not guaranteed to be correct, has not been checked
 by original authors, only reimplemented from the paper description.</p>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="eegnet" rules="none">
+<table class="docutils citation" frame="void" id="eegnet4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[EEGNet]</td><td>Lawhern, V. J., Solon, A. J., Waytowich, N. R., Gordon,
+<tr><td class="label"><a class="fn-backref" href="#id3">[EEGNet4]</a></td><td>Lawhern, V. J., Solon, A. J., Waytowich, N. R., Gordon,
 S. M., Hung, C. P., &amp; Lance, B. J. (2018).
 EEGNet: A Compact Convolutional Network for EEG-based
 Brain-Computer Interfaces.
@@ -428,15 +428,15 @@ arXiv preprint arXiv:1611.08024.</td></tr>
 <dt id="braindecode.models.eegnet.EEGNet">
 <em class="property">class </em><code class="descclassname">braindecode.models.eegnet.</code><code class="descname">EEGNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>final_conv_length=’auto’</em>, <em>input_time_length=None</em>, <em>pool_mode=’max’</em>, <em>second_kernel_size=(2</em>, <em>32)</em>, <em>third_kernel_size=(8</em>, <em>4)</em>, <em>drop_prob=0.25</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/eegnet.py#L140-L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.eegnet.EEGNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>EEGNet model from <a class="reference internal" href="#id5" id="id4">[EEGNet]</a>.</p>
+<p>EEGNet model from <a class="reference internal" href="#eegnet" id="id4">[EEGNet]</a>.</p>
 <p class="rubric">Notes</p>
 <p>This implementation is not guaranteed to be correct, has not been checked
 by original authors, only reimplemented from the paper description.</p>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="id5" rules="none">
+<table class="docutils citation" frame="void" id="eegnet" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[EEGNet]</td><td>Lawhern, V. J., Solon, A. J., Waytowich, N. R., Gordon,
+<tr><td class="label"><a class="fn-backref" href="#id4">[EEGNet]</a></td><td>Lawhern, V. J., Solon, A. J., Waytowich, N. R., Gordon,
 S. M., Hung, C. P., &amp; Lance, B. J. (2016).
 EEGNet: A Compact Convolutional Network for EEG-based
 Brain-Computer Interfaces.
@@ -455,15 +455,27 @@ arXiv preprint arXiv:1611.08024.</td></tr>
 <span id="braindecode-models-hybrid-module"></span><h2>braindecode.models.hybrid module<a class="headerlink" href="#module-braindecode.models.hybrid" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.models.hybrid.HybridNet">
-<em class="property">class </em><code class="descclassname">braindecode.models.hybrid.</code><code class="descname">HybridNet</code><span class="sig-paren">(</span><em>n_chans</em>, <em>n_classes</em>, <em>input_time_length</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L11-L91"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">torch.nn.modules.module.Module</span></code>, <a class="reference internal" href="#braindecode.models.base.BaseModel" title="braindecode.models.base.BaseModel"><code class="xref py py-class docutils literal"><span class="pre">braindecode.models.base.BaseModel</span></code></a></p>
-<p>Hybrid ConvNet model from <a class="footnote-reference" href="#id7" id="id6">[3]</a>.</p>
+<em class="property">class </em><code class="descclassname">braindecode.models.hybrid.</code><code class="descname">HybridNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L11-L25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#braindecode.models.base.BaseModel" title="braindecode.models.base.BaseModel"><code class="xref py py-class docutils literal"><span class="pre">braindecode.models.base.BaseModel</span></code></a></p>
+<p>Wrapper for HybridNetModule</p>
+<dl class="method">
+<dt id="braindecode.models.hybrid.HybridNet.create_network">
+<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L20-L25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNet.create_network" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="braindecode.models.hybrid.HybridNetModule">
+<em class="property">class </em><code class="descclassname">braindecode.models.hybrid.</code><code class="descname">HybridNetModule</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L28-L108"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNetModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Hybrid ConvNet model from <a class="footnote-reference" href="#id6" id="id5">[3]</a>.</p>
 <p>Very hardcoded at the moment.</p>
 <p class="rubric">References</p>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
+<table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id6">[3]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
 Glasstetter, M., Eggensperger, K., Tangermann, M., Hutter, F. &amp; Ball, T. (2017).
 Deep learning with convolutional neural networks for EEG decoding and
 visualization.
@@ -471,13 +483,13 @@ Human Brain Mapping , Aug. 2017. Online: <a class="reference external" href="htt
 </tbody>
 </table>
 <dl class="method">
-<dt id="braindecode.models.hybrid.HybridNet.create_network">
-<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L71-L72"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNet.create_network" title="Permalink to this definition">¶</a></dt>
+<dt id="braindecode.models.hybrid.HybridNetModule.create_network">
+<code class="descname">create_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L88-L89"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNetModule.create_network" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="braindecode.models.hybrid.HybridNet.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L74-L91"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNet.forward" title="Permalink to this definition">¶</a></dt>
+<dt id="braindecode.models.hybrid.HybridNetModule.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/hybrid.py#L91-L108"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.hybrid.HybridNetModule.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -489,12 +501,12 @@ Human Brain Mapping , Aug. 2017. Online: <a class="reference external" href="htt
 <dt id="braindecode.models.shallow_fbcsp.ShallowFBCSPNet">
 <em class="property">class </em><code class="descclassname">braindecode.models.shallow_fbcsp.</code><code class="descname">ShallowFBCSPNet</code><span class="sig-paren">(</span><em>in_chans</em>, <em>n_classes</em>, <em>input_time_length=None</em>, <em>n_filters_time=40</em>, <em>filter_time_length=25</em>, <em>n_filters_spat=40</em>, <em>pool_time_length=75</em>, <em>pool_time_stride=15</em>, <em>final_conv_length=30</em>, <em>conv_nonlin=&lt;function square&gt;</em>, <em>pool_mode=’mean’</em>, <em>pool_nonlin=&lt;function safe_log&gt;</em>, <em>split_first_layer=True</em>, <em>batch_norm=True</em>, <em>batch_norm_alpha=0.1</em>, <em>drop_prob=0.5</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/models/shallow_fbcsp.py#L11-L104"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.models.shallow_fbcsp.ShallowFBCSPNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#braindecode.models.base.BaseModel" title="braindecode.models.base.BaseModel"><code class="xref py py-class docutils literal"><span class="pre">braindecode.models.base.BaseModel</span></code></a></p>
-<p>Shallow ConvNet model from <a class="footnote-reference" href="#id9" id="id8">[2]</a>.</p>
+<p>Shallow ConvNet model from <a class="footnote-reference" href="#id8" id="id7">[2]</a>.</p>
 <p class="rubric">References</p>
-<table class="docutils footnote" frame="void" id="id9" rules="none">
+<table class="docutils footnote" frame="void" id="id8" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id8">[2]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
+<tr><td class="label"><a class="fn-backref" href="#id7">[2]</a></td><td>Schirrmeister, R. T., Springenberg, J. T., Fiederer, L. D. J.,
 Glasstetter, M., Eggensperger, K., Tangermann, M., Hutter, F. &amp; Ball, T. (2017).
 Deep learning with convolutional neural networks for EEG decoding and
 visualization.
@@ -583,7 +595,7 @@ backwards one layer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.3',
+            VERSION:'0.4.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.experiments package &mdash; Braindecode 0.4.3 documentation</title>
+  <title>braindecode.experiments package &mdash; Braindecode 0.4.5 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.3 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.5 documentation" href="../index.html"/>
         <link rel="next" title="braindecode.mne_ext package" href="braindecode.mne_ext.html"/>
         <link rel="prev" title="braindecode.datautil package" href="braindecode.datautil.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.3
+                0.4.5
               </div>
             
           
@@ -280,7 +280,7 @@ after best epoch from epochs dataframe.</p>
 
 <dl class="class">
 <dt id="braindecode.experiments.experiment.Experiment">
-<em class="property">class </em><code class="descclassname">braindecode.experiments.experiment.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>model</em>, <em>train_set</em>, <em>valid_set</em>, <em>test_set</em>, <em>iterator</em>, <em>loss_function</em>, <em>optimizer</em>, <em>model_constraint</em>, <em>monitors</em>, <em>stop_criterion</em>, <em>remember_best_column</em>, <em>run_after_early_stop</em>, <em>model_loss_function=None</em>, <em>batch_modifier=None</em>, <em>cuda=True</em>, <em>pin_memory=False</em>, <em>do_early_stop=True</em>, <em>reset_after_second_run=False</em>, <em>log_0_epoch=True</em>, <em>loggers=(‘print’</em>, <em>)</em>, <em>seed=2382938</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L86-L451"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.experiments.experiment.</code><code class="descname">Experiment</code><span class="sig-paren">(</span><em>model</em>, <em>train_set</em>, <em>valid_set</em>, <em>test_set</em>, <em>iterator</em>, <em>loss_function</em>, <em>optimizer</em>, <em>model_constraint</em>, <em>monitors</em>, <em>stop_criterion</em>, <em>remember_best_column</em>, <em>run_after_early_stop</em>, <em>model_loss_function=None</em>, <em>batch_modifier=None</em>, <em>cuda=True</em>, <em>pin_memory=False</em>, <em>do_early_stop=True</em>, <em>reset_after_second_run=False</em>, <em>log_0_epoch=True</em>, <em>loggers=(‘print’</em>, <em>)</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L86-L446"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class that performs one experiment on training, validation and test set.</p>
 <p>It trains as follows:</p>
@@ -331,7 +331,6 @@ below or equal to the best train loss of first run.</li>
 <li><strong>log_0_epoch</strong> (<em>bool</em>) – Whether to compute monitor values and log them before the
 start of training.</li>
 <li><strong>loggers</strong> (list of <a class="reference internal" href="#braindecode.experiments.loggers.Logger" title="braindecode.experiments.loggers.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>) – How to show computed metrics.</li>
-<li><strong>seed</strong> (<em>int</em>) – Random seed for python random module numpy.random and torch.</li>
 </ul>
 </td>
 </tr>
@@ -342,27 +341,27 @@ start of training.</li>
 </table>
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L205-L229"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L201-L225"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run complete training.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.setup_training">
-<code class="descname">setup_training</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L231-L245"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.setup_training" title="Permalink to this definition">¶</a></dt>
-<dd><p>Setup training, i.e. set random seeds, transform model to cuda,
+<code class="descname">setup_training</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L227-L240"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.setup_training" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup training, i.e. transform model to cuda,
 initialize monitoring.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.run_until_first_stop">
-<code class="descname">run_until_first_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L247-L252"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_until_first_stop" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_until_first_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L242-L247"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_until_first_stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run training and evaluation using only training set for training
 until stop criterion is fulfilled.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.run_until_second_stop">
-<code class="descname">run_until_second_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L254-L267"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_until_second_stop" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_until_second_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L249-L262"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_until_second_stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run training and evaluation using combined training + validation set
 for training.</p>
 <p>Runs until loss on validation  set decreases below loss on training set
@@ -372,7 +371,7 @@ first stop.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.run_until_stop">
-<code class="descname">run_until_stop</code><span class="sig-paren">(</span><em>datasets</em>, <em>remember_best</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L269-L291"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_until_stop" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_until_stop</code><span class="sig-paren">(</span><em>datasets</em>, <em>remember_best</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L264-L286"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_until_stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run training and evaluation on given datasets until stop criterion is
 fulfilled.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -392,7 +391,7 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.run_one_epoch">
-<code class="descname">run_one_epoch</code><span class="sig-paren">(</span><em>datasets</em>, <em>remember_best</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L293-L323"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_one_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_one_epoch</code><span class="sig-paren">(</span><em>datasets</em>, <em>remember_best</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L288-L318"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.run_one_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run training and evaluation on given datasets for one epoch.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -411,7 +410,7 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.train_batch">
-<code class="descname">train_batch</code><span class="sig-paren">(</span><em>inputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L325-L348"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.train_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">train_batch</code><span class="sig-paren">(</span><em>inputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L320-L343"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.train_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Train on given inputs and targets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -429,7 +428,7 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.eval_on_batch">
-<code class="descname">eval_on_batch</code><span class="sig-paren">(</span><em>inputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L350-L380"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.eval_on_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">eval_on_batch</code><span class="sig-paren">(</span><em>inputs</em>, <em>targets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L345-L375"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.eval_on_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate given inputs and targets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -454,7 +453,7 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.monitor_epoch">
-<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><em>datasets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L382-L427"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.monitor_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">monitor_epoch</code><span class="sig-paren">(</span><em>datasets</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L377-L422"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.monitor_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate one epoch for given datasets.</p>
 <p>Stores results in <cite>epochs_df</cite></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -470,13 +469,13 @@ fulfilled.</p>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.log_epoch">
-<code class="descname">log_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L429-L434"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.log_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">log_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L424-L429"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.log_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print monitoring values for this epoch.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="braindecode.experiments.experiment.Experiment.setup_after_stop_training">
-<code class="descname">setup_after_stop_training</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L436-L451"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.setup_after_stop_training" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setup_after_stop_training</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/experiments/experiment.py#L431-L446"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.experiments.experiment.Experiment.setup_after_stop_training" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setup training after first stop.</p>
 <p>Resets parameters to best parameters and updates stop criterion.</p>
 </dd></dl>
@@ -927,7 +926,7 @@ only 10% decreases count as a decrease and reset the counter.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.3',
+            VERSION:'0.4.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
