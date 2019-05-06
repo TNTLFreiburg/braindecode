@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cropped Decoding &mdash; Braindecode 0.4.5 documentation</title>
+  <title>Cropped Decoding &mdash; Braindecode 0.4.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.5 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.8 documentation" href="../index.html"/>
         <link rel="next" title="Trialwise Manual Training Loop" href="Trialwise_Manual_Training_Loop.html"/>
         <link rel="prev" title="Trialwise Decoding" href="Trialwise_Decoding.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.5
+                0.4.8
               </div>
             
           
@@ -231,18 +231,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 8ex;
+    min-width: 5ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -282,9 +282,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -292,7 +292,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -336,7 +336,45 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 
 /* CSS overrides for sphinx_rtd_theme */
 
@@ -351,34 +389,22 @@ div.nboutput div.output_area.stderr {
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
 }
 </style>
 <div class="section" id="Cropped-Decoding">
 <h1>Cropped Decoding<a class="headerlink" href="#Cropped-Decoding" title="Permalink to this headline">¶</a></h1>
-<p>Now we will use cropped decoding. Cropped decoding means the ConvNet is
-trained on time windows/time crops within the trials. We will explain
-this visually by comparing trialwise to cropped decoding.</p>
+<p>Now we will use cropped decoding. Cropped decoding means the ConvNet is trained on time windows/time crops within the trials. We will explain this visually by comparing trialwise to cropped decoding.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="52%" />
-<col width="48%" />
+<col width="53%" />
+<col width="47%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Trialwise Decoding</th>
@@ -395,66 +421,39 @@ this visually by comparing trialwise to cropped decoding.</p>
 <ol class="arabic simple">
 <li>A complete trial is pushed through the network</li>
 <li>The network produces a prediction</li>
-<li>The prediction is compared to the target (label) for that trial to
-compute the loss</li>
+<li>The prediction is compared to the target (label) for that trial to compute the loss</li>
 </ol>
 <p>On the right, you see cropped decoding:</p>
 <ol class="arabic simple">
-<li>Instead of a complete trial, windows within the trial, here called
-<em>crops</em>, are pushed through the network</li>
-<li>For computational efficiency, multiple neighbouring crops are pushed
-through the network simultaneously (these neighbouring crops are
-called a <em>supercrop</em>)</li>
-<li>Therefore, the network produces multiple predictions (one per crop in
-the supercrop)</li>
-<li>The individual crop predictions are averaged before computing the
-loss function</li>
+<li>Instead of a complete trial, windows within the trial, here called <em>crops</em>, are pushed through the network</li>
+<li>For computational efficiency, multiple neighbouring crops are pushed through the network simultaneously (these neighbouring crops are called a <em>supercrop</em>)</li>
+<li>Therefore, the network produces multiple predictions (one per crop in the supercrop)</li>
+<li>The individual crop predictions are averaged before computing the loss function</li>
 </ol>
 <p>Notes:</p>
 <ul class="simple">
-<li>The network architecture implicitly defines the crop size (it is the
-receptive field size, i.e., the number of timesteps the network uses
-to make a single prediction)</li>
-<li>The supercrop size is a user-defined hyperparameter, called
-<code class="docutils literal"><span class="pre">input_time_length</span></code> in Braindecode. It mostly affects runtime
-(larger supercrop sizes should be faster). As a rule of thumb, you
-can set it to two times the crop size.</li>
-<li>Crop size and supercrop size together define how many predictions the
-network makes per supercrop:
-<span class="math">\(\mathrm{\#supercrop}-\mathrm{\#crop}+1=\mathrm{\#predictions}\)</span></li>
+<li>The network architecture implicitly defines the crop size (it is the receptive field size, i.e., the number of timesteps the network uses to make a single prediction)</li>
+<li>The supercrop size is a user-defined hyperparameter, called <code class="docutils literal"><span class="pre">input_time_length</span></code> in Braindecode. It mostly affects runtime (larger supercrop sizes should be faster). As a rule of thumb, you can set it to two times the crop size.</li>
+<li>Crop size and supercrop size together define how many predictions the network makes per supercrop: <span class="math">\(\mathrm{\#supercrop}-\mathrm{\#crop}+1=\mathrm{\#predictions}\)</span></li>
 </ul>
-<p>For cropped decoding, the above training setup is mathematically
-identical to sampling crops in your dataset, pushing them through the
-network and training directly on the individual crops. At the same time,
-the above training setup is much faster as it avoids redundant
-computations by using dilated convolutions, see our paper <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning
-with convolutional neural networks for EEG decoding and
-visualization</a>. However, the two
-setups are only mathematically identical in case (1) your network does
-not use any padding and (2) your loss function leads to the same
-gradients when using the averaged output. The first is true for our
-shallow and deep ConvNet models and the second is true for the
-log-softmax outputs and negative log likelihood loss that is typically
-used for classification in PyTorch.</p>
-<p>Most of the code for cropped decoding is identical to the <a class="reference external" href="Trialwise_Decoding.html">Trialwise
-Decoding Tutorial</a>, differences are
-explained in the text.</p>
+<p>For cropped decoding, the above training setup is mathematically identical to sampling crops in your dataset, pushing them through the network and training directly on the individual crops. At the same time, the above training setup is much faster as it avoids redundant computations by using dilated convolutions, see our paper <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural networks for EEG decoding and visualization</a>. However, the two setups are only mathematically
+identical in case (1) your network does not use any padding and (2) your loss function leads to the same gradients when using the averaged output. The first is true for our shallow and deep ConvNet models and the second is true for the log-softmax outputs and negative log likelihood loss that is typically used for classification in PyTorch.</p>
+<p>Most of the code for cropped decoding is identical to the <a class="reference external" href="Trialwise_Decoding.html">Trialwise Decoding Tutorial</a>, differences are explained in the text.</p>
 <div class="section" id="Enable-logging">
 <h2>Enable logging<a class="headerlink" href="#Enable-logging" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">importlib</span>
-<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span> <span class="c1"># see https://stackoverflow.com/a/21475297/1469195</span>
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
-<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span></span>import logging
+import importlib
+importlib.reload(logging) # see https://stackoverflow.com/a/21475297/1469195
+log = logging.getLogger()
+log.setLevel(&#39;INFO&#39;)
+import sys
+logging.basicConfig(format=&#39;%(asctime)s %(levelname)s : %(message)s&#39;,
+                     level=logging.INFO, stream=sys.stdout)
 </pre></div>
 </div>
 </div>
@@ -462,40 +461,39 @@ explained in the text.</p>
 <div class="section" id="Load-data">
 <h2>Load data<a class="headerlink" href="#Load-data" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">mne</span>
-<span class="kn">from</span> <span class="nn">mne.io</span> <span class="k">import</span> <span class="n">concatenate_raws</span>
+<span></span>import mne
+from mne.io import concatenate_raws
 
-<span class="c1"># 5,6,7,10,13,14 are codes for executed and imagined hands/feet</span>
-<span class="n">subject_id</span> <span class="o">=</span> <span class="mi">22</span>
-<span class="n">event_codes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">14</span><span class="p">]</span>
-<span class="c1">#event_codes = [3,4,5,6,7,8,9,10,11,12,13,14]</span>
+# 5,6,7,10,13,14 are codes for executed and imagined hands/feet
+subject_id = 22
+event_codes = [5,6,9,10,13,14]
+#event_codes = [3,4,5,6,7,8,9,10,11,12,13,14]
 
-<span class="c1"># This will download the files if you don&#39;t have them yet,</span>
-<span class="c1"># and then return the paths to the files.</span>
-<span class="n">physionet_paths</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">subject_id</span><span class="p">,</span> <span class="n">event_codes</span><span class="p">)</span>
+# This will download the files if you don&#39;t have them yet,
+# and then return the paths to the files.
+physionet_paths = mne.datasets.eegbci.load_data(subject_id, event_codes)
 
-<span class="c1"># Load each of the files</span>
-<span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;WARNING&#39;</span><span class="p">)</span>
-         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths</span><span class="p">]</span>
+# Load each of the files
+parts = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;, verbose=&#39;WARNING&#39;)
+         for path in physionet_paths]
 
-<span class="c1"># Concatenate them</span>
-<span class="n">raw</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+# Concatenate them
+raw = concatenate_raws(parts)
 
-<span class="c1"># Find the events in this dataset</span>
-<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+# Find the events in this dataset
+events = mne.find_events(raw, shortest_event=0, stim_channel=&#39;STI 014&#39;)
 
-<span class="c1"># Use only EEG channels</span>
-<span class="n">eeg_channel_inds</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+# Use only EEG channels
+eeg_channel_inds = mne.pick_types(raw.info, meg=False, eeg=True, stim=False, eog=False,
+                   exclude=&#39;bads&#39;)
 
-<span class="c1"># Extract trials, only using EEG channels</span>
-<span class="n">epoched</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands_or_left</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet_or_right</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">eeg_channel_inds</span><span class="p">,</span>
-                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Extract trials, only using EEG channels
+epoched = mne.Epochs(raw, events, dict(hands_or_left=2, feet_or_right=3), tmin=1, tmax=4.1, proj=False, picks=eeg_channel_inds,
+                baseline=None, preload=True)
 </pre></div>
 </div>
 </div>
@@ -503,29 +501,27 @@ explained in the text.</p>
 <div class="section" id="Convert-data-to-Braindecode-format">
 <h2>Convert data to Braindecode format<a class="headerlink" href="#Convert-data-to-Braindecode-format" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="c1"># Convert data from volt to millivolt</span>
-<span class="c1"># Pytorch expects float32 for input and int64 for labels.</span>
-<span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
+<span></span>import numpy as np
+# Convert data from volt to millivolt
+# Pytorch expects float32 for input and int64 for labels.
+X = (epoched.get_data() * 1e6).astype(np.float32)
+y = (epoched.events[:,2] - 2).astype(np.int64) #2,3 -&gt; 0,1
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.signal_target</span> <span class="k">import</span> <span class="n">SignalAndTarget</span>
+<span></span>from braindecode.datautil.signal_target import SignalAndTarget
 
-<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">40</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[:</span><span class="mi">40</span><span class="p">])</span>
-<span class="n">valid_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">70</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">70</span><span class="p">])</span>
+train_set = SignalAndTarget(X[:40], y=y[:40])
+valid_set = SignalAndTarget(X[40:70], y=y[40:70])
 
 </pre></div>
 </div>
@@ -534,71 +530,60 @@ explained in the text.</p>
 <div class="section" id="Create-the-model">
 <h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
-As in the trialwise decoding tutorial, we will use the Braindecode model
-class directly to perform the training in a few lines of code. If you
-instead want to use your own training loop, have a look at the <a class="reference external" href="./Cropped_Manual_Training_Loop.html">Cropped
-Manual Training Loop Tutorial</a>.</div>
-<p>For cropped decoding, we now transform the model into a model that
-outputs a dense time series of predictions. For this, we manually set
-the length of the final convolution layer to some length that makes the
-receptive field of the ConvNet smaller than the number of samples in a
-trial (see <code class="docutils literal"><span class="pre">final_conv_length=12</span></code> in the model definition).</p>
+As in the trialwise decoding tutorial, we will use the Braindecode model class directly to perform the training in a few lines of code. If you instead want to use your own training loop, have a look at the <a class="reference external" href="./Cropped_Manual_Training_Loop.html">Cropped Manual Training Loop Tutorial</a>.</div>
+<p>For cropped decoding, we now transform the model into a model that outputs a dense time series of predictions. For this, we manually set the length of the final convolution layer to some length that makes the receptive field of the ConvNet smaller than the number of samples in a trial (see <code class="docutils literal"><span class="pre">final_conv_length=12</span></code> in the model definition).</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.models.shallow_fbcsp</span> <span class="k">import</span> <span class="n">ShallowFBCSPNet</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">set_random_seeds</span>
+<span></span>from braindecode.models.shallow_fbcsp import ShallowFBCSPNet
+from torch import nn
+from braindecode.torch_ext.util import set_random_seeds
 
-<span class="c1"># Set if you want to use GPU</span>
-<span class="c1"># You can also use torch.cuda.is_available() to determine if cuda is available on your machine.</span>
-<span class="n">cuda</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">set_random_seeds</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">20170629</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
-<span class="n">n_classes</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">in_chans</span> <span class="o">=</span> <span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+# Set if you want to use GPU
+# You can also use torch.cuda.is_available() to determine if cuda is available on your machine.
+cuda = False
+set_random_seeds(seed=20170629, cuda=cuda)
+n_classes = 2
+in_chans = train_set.X.shape[1]
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">ShallowFBCSPNet</span><span class="p">(</span><span class="n">in_chans</span><span class="o">=</span><span class="n">in_chans</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
-                        <span class="n">input_time_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">final_conv_length</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+model = ShallowFBCSPNet(in_chans=in_chans, n_classes=n_classes,
+                        input_time_length=None,
+                        final_conv_length=12)
+if cuda:
+    model.cuda()
 
 </pre></div>
 </div>
 </div>
 <p>Now we supply <code class="docutils literal"><span class="pre">cropped=True</span></code> to our compile function</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.optimizers</span> <span class="k">import</span> <span class="n">AdamW</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="c1">#optimizer = AdamW(model.parameters(), lr=1*0.01, weight_decay=0.5*0.001) # these are good values for the deep model</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0625</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>  <span class="n">iterator_seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cropped</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span></span>from braindecode.torch_ext.optimizers import AdamW
+import torch.nn.functional as F
+#optimizer = AdamW(model.parameters(), lr=1*0.01, weight_decay=0.5*0.001) # these are good values for the deep model
+optimizer = AdamW(model.parameters(), lr=0.0625 * 0.01, weight_decay=0)
+model.compile(loss=F.nll_loss, optimizer=optimizer,  iterator_seed=1, cropped=True)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Run-the-training">
 <h2>Run the training<a class="headerlink" href="#Run-the-training" title="Permalink to this headline">¶</a></h2>
-<p>For fitting, we must supply the super crop size. Here, we it to 450 by
-setting <code class="docutils literal"><span class="pre">input_time_length</span> <span class="pre">=</span> <span class="pre">450</span></code>.</p>
+<p>For fitting, we must supply the super crop size. Here, we it to 450 by setting <code class="docutils literal"><span class="pre">input_time_length</span> <span class="pre">=</span> <span class="pre">450</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">input_time_length</span> <span class="o">=</span> <span class="mi">450</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">train_set</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">,</span>
-          <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
-         <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">valid_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">valid_set</span><span class="o">.</span><span class="n">y</span><span class="p">),)</span>
+<span></span>input_time_length = 450
+model.fit(train_set.X, train_set.y, epochs=30, batch_size=64, scheduler=&#39;cosine&#39;,
+          input_time_length=input_time_length,
+         validation_data=(valid_set.X, valid_set.y),)
 </pre></div>
 </div>
 </div>
@@ -607,275 +592,279 @@ setting <code class="docutils literal"><span class="pre">input_time_length</span
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2018-08-08 11:49:48,805 INFO : Run until first stop...
-2018-08-08 11:49:52,805 INFO : Time only for training updates: 3.99s
-2018-08-08 11:49:54,825 INFO : Epoch 0
-2018-08-08 11:49:54,826 INFO : train_loss                4.16812
-2018-08-08 11:49:54,830 INFO : valid_loss                3.39068
-2018-08-08 11:49:54,830 INFO : train_misclass            0.50000
-2018-08-08 11:49:54,831 INFO : valid_misclass            0.53333
-2018-08-08 11:49:54,833 INFO : runtime                   0.00000
-2018-08-08 11:49:54,835 INFO :
-2018-08-08 11:49:59,395 INFO : Time only for training updates: 4.55s
-2018-08-08 11:50:03,372 INFO : Epoch 1
-2018-08-08 11:50:03,379 INFO : train_loss                3.04388
-2018-08-08 11:50:03,384 INFO : valid_loss                2.38477
-2018-08-08 11:50:03,389 INFO : train_misclass            0.52500
-2018-08-08 11:50:03,394 INFO : valid_misclass            0.53333
-2018-08-08 11:50:03,398 INFO : runtime                   6.59494
-2018-08-08 11:50:03,403 INFO :
-2018-08-08 11:50:09,317 INFO : Time only for training updates: 5.90s
-2018-08-08 11:50:13,263 INFO : Epoch 2
-2018-08-08 11:50:13,268 INFO : train_loss                2.06639
-2018-08-08 11:50:13,273 INFO : valid_loss                1.61044
-2018-08-08 11:50:13,277 INFO : train_misclass            0.47500
-2018-08-08 11:50:13,281 INFO : valid_misclass            0.50000
-2018-08-08 11:50:13,285 INFO : runtime                   9.91786
-2018-08-08 11:50:13,289 INFO :
-2018-08-08 11:50:19,343 INFO : Time only for training updates: 6.03s
-2018-08-08 11:50:23,245 INFO : Epoch 3
-2018-08-08 11:50:23,251 INFO : train_loss                1.41936
-2018-08-08 11:50:23,255 INFO : valid_loss                1.18789
-2018-08-08 11:50:23,259 INFO : train_misclass            0.47500
-2018-08-08 11:50:23,263 INFO : valid_misclass            0.50000
-2018-08-08 11:50:23,267 INFO : runtime                   10.02883
-2018-08-08 11:50:23,271 INFO :
-2018-08-08 11:50:29,225 INFO : Time only for training updates: 5.94s
-2018-08-08 11:50:33,218 INFO : Epoch 4
-2018-08-08 11:50:33,223 INFO : train_loss                1.00751
-2018-08-08 11:50:33,227 INFO : valid_loss                0.95534
-2018-08-08 11:50:33,232 INFO : train_misclass            0.40000
-2018-08-08 11:50:33,236 INFO : valid_misclass            0.43333
-2018-08-08 11:50:33,242 INFO : runtime                   9.88115
-2018-08-08 11:50:33,248 INFO :
-2018-08-08 11:50:39,206 INFO : Time only for training updates: 5.94s
-2018-08-08 11:50:43,233 INFO : Epoch 5
-2018-08-08 11:50:43,237 INFO : train_loss                0.76304
-2018-08-08 11:50:43,240 INFO : valid_loss                0.83303
-2018-08-08 11:50:43,243 INFO : train_misclass            0.32500
-2018-08-08 11:50:43,247 INFO : valid_misclass            0.43333
-2018-08-08 11:50:43,250 INFO : runtime                   9.97928
-2018-08-08 11:50:43,255 INFO :
-2018-08-08 11:50:49,142 INFO : Time only for training updates: 5.87s
-2018-08-08 11:50:53,124 INFO : Epoch 6
-2018-08-08 11:50:53,130 INFO : train_loss                0.61960
-2018-08-08 11:50:53,134 INFO : valid_loss                0.78367
-2018-08-08 11:50:53,139 INFO : train_misclass            0.30000
-2018-08-08 11:50:53,143 INFO : valid_misclass            0.43333
-2018-08-08 11:50:53,148 INFO : runtime                   9.93809
-2018-08-08 11:50:53,152 INFO :
-2018-08-08 11:50:59,114 INFO : Time only for training updates: 5.95s
-2018-08-08 11:51:03,191 INFO : Epoch 7
-2018-08-08 11:51:03,197 INFO : train_loss                0.51544
-2018-08-08 11:51:03,202 INFO : valid_loss                0.75722
-2018-08-08 11:51:03,207 INFO : train_misclass            0.25000
-2018-08-08 11:51:03,211 INFO : valid_misclass            0.36667
-2018-08-08 11:51:03,215 INFO : runtime                   9.97154
-2018-08-08 11:51:03,220 INFO :
-2018-08-08 11:51:09,159 INFO : Time only for training updates: 5.92s
-2018-08-08 11:51:13,178 INFO : Epoch 8
-2018-08-08 11:51:13,183 INFO : train_loss                0.41659
-2018-08-08 11:51:13,187 INFO : valid_loss                0.70797
-2018-08-08 11:51:13,191 INFO : train_misclass            0.20000
-2018-08-08 11:51:13,194 INFO : valid_misclass            0.33333
-2018-08-08 11:51:13,197 INFO : runtime                   10.04526
-2018-08-08 11:51:13,201 INFO :
-2018-08-08 11:51:19,142 INFO : Time only for training updates: 5.93s
-2018-08-08 11:51:23,173 INFO : Epoch 9
-2018-08-08 11:51:23,195 INFO : train_loss                0.33328
-2018-08-08 11:51:23,197 INFO : valid_loss                0.65720
-2018-08-08 11:51:23,198 INFO : train_misclass            0.17500
-2018-08-08 11:51:23,199 INFO : valid_misclass            0.30000
-2018-08-08 11:51:23,200 INFO : runtime                   9.98219
-2018-08-08 11:51:23,201 INFO :
-2018-08-08 11:51:29,120 INFO : Time only for training updates: 5.89s
-2018-08-08 11:51:32,990 INFO : Epoch 10
-2018-08-08 11:51:32,995 INFO : train_loss                0.27232
-2018-08-08 11:51:32,999 INFO : valid_loss                0.62543
-2018-08-08 11:51:33,004 INFO : train_misclass            0.15000
-2018-08-08 11:51:33,008 INFO : valid_misclass            0.30000
-2018-08-08 11:51:33,012 INFO : runtime                   9.97608
-2018-08-08 11:51:33,015 INFO :
-2018-08-08 11:51:38,980 INFO : Time only for training updates: 5.95s
-2018-08-08 11:51:42,894 INFO : Epoch 11
-2018-08-08 11:51:42,899 INFO : train_loss                0.22401
-2018-08-08 11:51:42,903 INFO : valid_loss                0.59923
-2018-08-08 11:51:42,907 INFO : train_misclass            0.07500
-2018-08-08 11:51:42,911 INFO : valid_misclass            0.30000
-2018-08-08 11:51:42,914 INFO : runtime                   9.86210
-2018-08-08 11:51:42,918 INFO :
-2018-08-08 11:51:48,798 INFO : Time only for training updates: 5.87s
-2018-08-08 11:51:52,831 INFO : Epoch 12
-2018-08-08 11:51:52,835 INFO : train_loss                0.18465
-2018-08-08 11:51:52,839 INFO : valid_loss                0.56904
-2018-08-08 11:51:52,843 INFO : train_misclass            0.00000
-2018-08-08 11:51:52,847 INFO : valid_misclass            0.26667
-2018-08-08 11:51:52,850 INFO : runtime                   9.81899
-2018-08-08 11:51:52,854 INFO :
-2018-08-08 11:51:58,798 INFO : Time only for training updates: 5.93s
-2018-08-08 11:52:02,766 INFO : Epoch 13
-2018-08-08 11:52:02,771 INFO : train_loss                0.15289
-2018-08-08 11:52:02,775 INFO : valid_loss                0.53387
-2018-08-08 11:52:02,780 INFO : train_misclass            0.00000
-2018-08-08 11:52:02,784 INFO : valid_misclass            0.23333
-2018-08-08 11:52:02,788 INFO : runtime                   9.99905
-2018-08-08 11:52:02,793 INFO :
-2018-08-08 11:52:08,751 INFO : Time only for training updates: 5.94s
-2018-08-08 11:52:12,614 INFO : Epoch 14
-2018-08-08 11:52:12,620 INFO : train_loss                0.12854
-2018-08-08 11:52:12,627 INFO : valid_loss                0.49827
-2018-08-08 11:52:12,633 INFO : train_misclass            0.00000
-2018-08-08 11:52:12,637 INFO : valid_misclass            0.20000
-2018-08-08 11:52:12,642 INFO : runtime                   9.95297
-2018-08-08 11:52:12,644 INFO :
-2018-08-08 11:52:18,474 INFO : Time only for training updates: 5.82s
-2018-08-08 11:52:21,438 INFO : Epoch 15
-2018-08-08 11:52:21,439 INFO : train_loss                0.11070
-2018-08-08 11:52:21,440 INFO : valid_loss                0.46770
-2018-08-08 11:52:21,441 INFO : train_misclass            0.00000
-2018-08-08 11:52:21,443 INFO : valid_misclass            0.16667
-2018-08-08 11:52:21,444 INFO : runtime                   9.72386
-2018-08-08 11:52:21,445 INFO :
-2018-08-08 11:52:24,518 INFO : Time only for training updates: 3.06s
-2018-08-08 11:52:26,554 INFO : Epoch 16
-2018-08-08 11:52:26,556 INFO : train_loss                0.09734
-2018-08-08 11:52:26,557 INFO : valid_loss                0.44107
-2018-08-08 11:52:26,558 INFO : train_misclass            0.00000
-2018-08-08 11:52:26,559 INFO : valid_misclass            0.16667
-2018-08-08 11:52:26,560 INFO : runtime                   6.04018
-2018-08-08 11:52:26,561 INFO :
-2018-08-08 11:52:29,640 INFO : Time only for training updates: 3.07s
-2018-08-08 11:52:31,673 INFO : Epoch 17
-2018-08-08 11:52:31,674 INFO : train_loss                0.08650
-2018-08-08 11:52:31,678 INFO : valid_loss                0.41685
-2018-08-08 11:52:31,680 INFO : train_misclass            0.00000
-2018-08-08 11:52:31,681 INFO : valid_misclass            0.16667
-2018-08-08 11:52:31,682 INFO : runtime                   5.12189
-2018-08-08 11:52:31,683 INFO :
-2018-08-08 11:52:34,754 INFO : Time only for training updates: 3.06s
-2018-08-08 11:52:36,786 INFO : Epoch 18
-2018-08-08 11:52:36,787 INFO : train_loss                0.07784
-2018-08-08 11:52:36,791 INFO : valid_loss                0.39502
-2018-08-08 11:52:36,792 INFO : train_misclass            0.00000
-2018-08-08 11:52:36,793 INFO : valid_misclass            0.13333
-2018-08-08 11:52:36,794 INFO : runtime                   5.11526
-2018-08-08 11:52:36,796 INFO :
-2018-08-08 11:52:39,876 INFO : Time only for training updates: 3.07s
-2018-08-08 11:52:41,910 INFO : Epoch 19
-2018-08-08 11:52:41,911 INFO : train_loss                0.07096
-2018-08-08 11:52:41,915 INFO : valid_loss                0.37620
-2018-08-08 11:52:41,916 INFO : train_misclass            0.00000
-2018-08-08 11:52:41,920 INFO : valid_misclass            0.10000
-2018-08-08 11:52:41,921 INFO : runtime                   5.12150
-2018-08-08 11:52:41,923 INFO :
-2018-08-08 11:52:45,000 INFO : Time only for training updates: 3.07s
-2018-08-08 11:52:47,032 INFO : Epoch 20
-2018-08-08 11:52:47,033 INFO : train_loss                0.06583
-2018-08-08 11:52:47,037 INFO : valid_loss                0.36116
-2018-08-08 11:52:47,038 INFO : train_misclass            0.00000
-2018-08-08 11:52:47,040 INFO : valid_misclass            0.10000
-2018-08-08 11:52:47,042 INFO : runtime                   5.12370
-2018-08-08 11:52:47,045 INFO :
-2018-08-08 11:52:50,116 INFO : Time only for training updates: 3.06s
-2018-08-08 11:52:52,148 INFO : Epoch 21
-2018-08-08 11:52:52,149 INFO : train_loss                0.06186
-2018-08-08 11:52:52,151 INFO : valid_loss                0.34902
-2018-08-08 11:52:52,152 INFO : train_misclass            0.00000
-2018-08-08 11:52:52,153 INFO : valid_misclass            0.10000
-2018-08-08 11:52:52,154 INFO : runtime                   5.11570
-2018-08-08 11:52:52,156 INFO :
-2018-08-08 11:52:55,236 INFO : Time only for training updates: 3.07s
-2018-08-08 11:52:57,268 INFO : Epoch 22
-2018-08-08 11:52:57,269 INFO : train_loss                0.05873
-2018-08-08 11:52:57,273 INFO : valid_loss                0.33921
-2018-08-08 11:52:57,274 INFO : train_misclass            0.00000
-2018-08-08 11:52:57,278 INFO : valid_misclass            0.10000
-2018-08-08 11:52:57,279 INFO : runtime                   5.12058
-2018-08-08 11:52:57,282 INFO :
-2018-08-08 11:53:00,444 INFO : Time only for training updates: 3.15s
-2018-08-08 11:53:02,601 INFO : Epoch 23
-2018-08-08 11:53:02,602 INFO : train_loss                0.05626
-2018-08-08 11:53:02,606 INFO : valid_loss                0.33130
-2018-08-08 11:53:02,607 INFO : train_misclass            0.00000
-2018-08-08 11:53:02,607 INFO : valid_misclass            0.10000
-2018-08-08 11:53:02,610 INFO : runtime                   5.20754
-2018-08-08 11:53:02,612 INFO :
-2018-08-08 11:53:05,691 INFO : Time only for training updates: 3.07s
-2018-08-08 11:53:07,723 INFO : Epoch 24
-2018-08-08 11:53:07,724 INFO : train_loss                0.05439
-2018-08-08 11:53:07,727 INFO : valid_loss                0.32496
-2018-08-08 11:53:07,728 INFO : train_misclass            0.00000
-2018-08-08 11:53:07,729 INFO : valid_misclass            0.10000
-2018-08-08 11:53:07,730 INFO : runtime                   5.24707
-2018-08-08 11:53:07,731 INFO :
-2018-08-08 11:53:10,805 INFO : Time only for training updates: 3.06s
-2018-08-08 11:53:12,832 INFO : Epoch 25
-2018-08-08 11:53:12,833 INFO : train_loss                0.05298
-2018-08-08 11:53:12,835 INFO : valid_loss                0.31987
-2018-08-08 11:53:12,836 INFO : train_misclass            0.00000
-2018-08-08 11:53:12,837 INFO : valid_misclass            0.10000
-2018-08-08 11:53:12,838 INFO : runtime                   5.11422
-2018-08-08 11:53:12,839 INFO :
-2018-08-08 11:53:15,915 INFO : Time only for training updates: 3.06s
-2018-08-08 11:53:17,942 INFO : Epoch 26
-2018-08-08 11:53:17,943 INFO : train_loss                0.05193
-2018-08-08 11:53:17,947 INFO : valid_loss                0.31576
-2018-08-08 11:53:17,948 INFO : train_misclass            0.00000
-2018-08-08 11:53:17,949 INFO : valid_misclass            0.10000
-2018-08-08 11:53:17,950 INFO : runtime                   5.10983
-2018-08-08 11:53:17,951 INFO :
-2018-08-08 11:53:21,025 INFO : Time only for training updates: 3.06s
-2018-08-08 11:53:23,051 INFO : Epoch 27
-2018-08-08 11:53:23,052 INFO : train_loss                0.05121
-2018-08-08 11:53:23,055 INFO : valid_loss                0.31244
-2018-08-08 11:53:23,056 INFO : train_misclass            0.00000
-2018-08-08 11:53:23,057 INFO : valid_misclass            0.10000
-2018-08-08 11:53:23,058 INFO : runtime                   5.10984
-2018-08-08 11:53:23,060 INFO :
-2018-08-08 11:53:26,138 INFO : Time only for training updates: 3.07s
-2018-08-08 11:53:28,171 INFO : Epoch 28
-2018-08-08 11:53:28,172 INFO : train_loss                0.05073
-2018-08-08 11:53:28,175 INFO : valid_loss                0.30970
-2018-08-08 11:53:28,176 INFO : train_misclass            0.00000
-2018-08-08 11:53:28,177 INFO : valid_misclass            0.10000
-2018-08-08 11:53:28,179 INFO : runtime                   5.11324
-2018-08-08 11:53:28,180 INFO :
-2018-08-08 11:53:31,252 INFO : Time only for training updates: 3.06s
-2018-08-08 11:53:33,283 INFO : Epoch 29
-2018-08-08 11:53:33,284 INFO : train_loss                0.05041
-2018-08-08 11:53:33,287 INFO : valid_loss                0.30740
-2018-08-08 11:53:33,288 INFO : train_misclass            0.00000
-2018-08-08 11:53:33,289 INFO : valid_misclass            0.10000
-2018-08-08 11:53:33,290 INFO : runtime                   5.11368
-2018-08-08 11:53:33,292 INFO :
+2019-05-06 18:43:33,022 INFO : Run until first stop...
+2019-05-06 18:43:34,356 INFO : Epoch 0
+2019-05-06 18:43:34,358 INFO : train_loss                16.71894
+2019-05-06 18:43:34,360 INFO : valid_loss                16.03879
+2019-05-06 18:43:34,361 INFO : train_misclass            0.52500
+2019-05-06 18:43:34,363 INFO : valid_misclass            0.53333
+2019-05-06 18:43:34,364 INFO : runtime                   0.00000
+2019-05-06 18:43:34,366 INFO :
+2019-05-06 18:43:35,966 INFO : Time only for training updates: 1.59s
+2019-05-06 18:43:37,218 INFO : Epoch 1
+2019-05-06 18:43:37,221 INFO : train_loss                5.75667
+2019-05-06 18:43:37,222 INFO : valid_loss                5.05206
+2019-05-06 18:43:37,224 INFO : train_misclass            0.52500
+2019-05-06 18:43:37,225 INFO : valid_misclass            0.53333
+2019-05-06 18:43:37,227 INFO : runtime                   2.94392
+2019-05-06 18:43:37,229 INFO :
+2019-05-06 18:43:38,712 INFO : Time only for training updates: 1.48s
+2019-05-06 18:43:39,969 INFO : Epoch 2
+2019-05-06 18:43:39,972 INFO : train_loss                3.64768
+2019-05-06 18:43:39,973 INFO : valid_loss                3.01622
+2019-05-06 18:43:39,975 INFO : train_misclass            0.50000
+2019-05-06 18:43:39,976 INFO : valid_misclass            0.53333
+2019-05-06 18:43:39,978 INFO : runtime                   2.74518
+2019-05-06 18:43:39,979 INFO :
+2019-05-06 18:43:41,451 INFO : Time only for training updates: 1.47s
+2019-05-06 18:43:42,712 INFO : Epoch 3
+2019-05-06 18:43:42,714 INFO : train_loss                2.34256
+2019-05-06 18:43:42,716 INFO : valid_loss                1.90962
+2019-05-06 18:43:42,717 INFO : train_misclass            0.50000
+2019-05-06 18:43:42,719 INFO : valid_misclass            0.53333
+2019-05-06 18:43:42,720 INFO : runtime                   2.73884
+2019-05-06 18:43:42,722 INFO :
+2019-05-06 18:43:44,169 INFO : Time only for training updates: 1.44s
+2019-05-06 18:43:45,444 INFO : Epoch 4
+2019-05-06 18:43:45,446 INFO : train_loss                1.50676
+2019-05-06 18:43:45,448 INFO : valid_loss                1.29046
+2019-05-06 18:43:45,449 INFO : train_misclass            0.47500
+2019-05-06 18:43:45,451 INFO : valid_misclass            0.50000
+2019-05-06 18:43:45,452 INFO : runtime                   2.71939
+2019-05-06 18:43:45,454 INFO :
+2019-05-06 18:43:46,943 INFO : Time only for training updates: 1.48s
+2019-05-06 18:43:48,275 INFO : Epoch 5
+2019-05-06 18:43:48,277 INFO : train_loss                1.01924
+2019-05-06 18:43:48,279 INFO : valid_loss                0.96845
+2019-05-06 18:43:48,280 INFO : train_misclass            0.40000
+2019-05-06 18:43:48,282 INFO : valid_misclass            0.43333
+2019-05-06 18:43:48,283 INFO : runtime                   2.77173
+2019-05-06 18:43:48,285 INFO :
+2019-05-06 18:43:49,749 INFO : Time only for training updates: 1.46s
+2019-05-06 18:43:50,993 INFO : Epoch 6
+2019-05-06 18:43:50,996 INFO : train_loss                0.75856
+2019-05-06 18:43:50,998 INFO : valid_loss                0.82128
+2019-05-06 18:43:50,999 INFO : train_misclass            0.35000
+2019-05-06 18:43:51,001 INFO : valid_misclass            0.43333
+2019-05-06 18:43:51,002 INFO : runtime                   2.80694
+2019-05-06 18:43:51,004 INFO :
+2019-05-06 18:43:52,441 INFO : Time only for training updates: 1.43s
+2019-05-06 18:43:53,691 INFO : Epoch 7
+2019-05-06 18:43:53,693 INFO : train_loss                0.61156
+2019-05-06 18:43:53,695 INFO : valid_loss                0.75855
+2019-05-06 18:43:53,696 INFO : train_misclass            0.30000
+2019-05-06 18:43:53,698 INFO : valid_misclass            0.43333
+2019-05-06 18:43:53,700 INFO : runtime                   2.69271
+2019-05-06 18:43:53,701 INFO :
+2019-05-06 18:43:55,206 INFO : Time only for training updates: 1.50s
+2019-05-06 18:43:56,470 INFO : Epoch 8
+2019-05-06 18:43:56,472 INFO : train_loss                0.51892
+2019-05-06 18:43:56,474 INFO : valid_loss                0.74045
+2019-05-06 18:43:56,476 INFO : train_misclass            0.25000
+2019-05-06 18:43:56,477 INFO : valid_misclass            0.36667
+2019-05-06 18:43:56,479 INFO : runtime                   2.76417
+2019-05-06 18:43:56,480 INFO :
+2019-05-06 18:43:57,902 INFO : Time only for training updates: 1.42s
+2019-05-06 18:43:59,144 INFO : Epoch 9
+2019-05-06 18:43:59,147 INFO : train_loss                0.43383
+2019-05-06 18:43:59,148 INFO : valid_loss                0.71042
+2019-05-06 18:43:59,150 INFO : train_misclass            0.20000
+2019-05-06 18:43:59,151 INFO : valid_misclass            0.30000
+2019-05-06 18:43:59,153 INFO : runtime                   2.69646
+2019-05-06 18:43:59,154 INFO :
+2019-05-06 18:44:00,599 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:01,852 INFO : Epoch 10
+2019-05-06 18:44:01,854 INFO : train_loss                0.34278
+2019-05-06 18:44:01,856 INFO : valid_loss                0.65221
+2019-05-06 18:44:01,857 INFO : train_misclass            0.17500
+2019-05-06 18:44:01,859 INFO : valid_misclass            0.26667
+2019-05-06 18:44:01,860 INFO : runtime                   2.69681
+2019-05-06 18:44:01,862 INFO :
+2019-05-06 18:44:03,322 INFO : Time only for training updates: 1.45s
+2019-05-06 18:44:04,562 INFO : Epoch 11
+2019-05-06 18:44:04,564 INFO : train_loss                0.27082
+2019-05-06 18:44:04,566 INFO : valid_loss                0.60061
+2019-05-06 18:44:04,567 INFO : train_misclass            0.15000
+2019-05-06 18:44:04,569 INFO : valid_misclass            0.26667
+2019-05-06 18:44:04,570 INFO : runtime                   2.72283
+2019-05-06 18:44:04,572 INFO :
+2019-05-06 18:44:06,016 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:07,267 INFO : Epoch 12
+2019-05-06 18:44:07,270 INFO : train_loss                0.21861
+2019-05-06 18:44:07,271 INFO : valid_loss                0.56317
+2019-05-06 18:44:07,273 INFO : train_misclass            0.02500
+2019-05-06 18:44:07,274 INFO : valid_misclass            0.26667
+2019-05-06 18:44:07,276 INFO : runtime                   2.69385
+2019-05-06 18:44:07,278 INFO :
+2019-05-06 18:44:08,783 INFO : Time only for training updates: 1.50s
+2019-05-06 18:44:10,077 INFO : Epoch 13
+2019-05-06 18:44:10,080 INFO : train_loss                0.18199
+2019-05-06 18:44:10,081 INFO : valid_loss                0.53569
+2019-05-06 18:44:10,083 INFO : train_misclass            0.00000
+2019-05-06 18:44:10,084 INFO : valid_misclass            0.23333
+2019-05-06 18:44:10,086 INFO : runtime                   2.76789
+2019-05-06 18:44:10,088 INFO :
+2019-05-06 18:44:11,504 INFO : Time only for training updates: 1.41s
+2019-05-06 18:44:12,761 INFO : Epoch 14
+2019-05-06 18:44:12,764 INFO : train_loss                0.15484
+2019-05-06 18:44:12,765 INFO : valid_loss                0.50841
+2019-05-06 18:44:12,767 INFO : train_misclass            0.00000
+2019-05-06 18:44:12,768 INFO : valid_misclass            0.20000
+2019-05-06 18:44:12,770 INFO : runtime                   2.72054
+2019-05-06 18:44:12,771 INFO :
+2019-05-06 18:44:14,253 INFO : Time only for training updates: 1.48s
+2019-05-06 18:44:15,515 INFO : Epoch 15
+2019-05-06 18:44:15,517 INFO : train_loss                0.13389
+2019-05-06 18:44:15,519 INFO : valid_loss                0.48080
+2019-05-06 18:44:15,520 INFO : train_misclass            0.00000
+2019-05-06 18:44:15,522 INFO : valid_misclass            0.16667
+2019-05-06 18:44:15,524 INFO : runtime                   2.74884
+2019-05-06 18:44:15,525 INFO :
+2019-05-06 18:44:16,996 INFO : Time only for training updates: 1.47s
+2019-05-06 18:44:18,239 INFO : Epoch 16
+2019-05-06 18:44:18,242 INFO : train_loss                0.11739
+2019-05-06 18:44:18,244 INFO : valid_loss                0.45401
+2019-05-06 18:44:18,245 INFO : train_misclass            0.00000
+2019-05-06 18:44:18,247 INFO : valid_misclass            0.13333
+2019-05-06 18:44:18,248 INFO : runtime                   2.74341
+2019-05-06 18:44:18,250 INFO :
+2019-05-06 18:44:19,700 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:20,949 INFO : Epoch 17
+2019-05-06 18:44:20,951 INFO : train_loss                0.10472
+2019-05-06 18:44:20,953 INFO : valid_loss                0.43017
+2019-05-06 18:44:20,954 INFO : train_misclass            0.00000
+2019-05-06 18:44:20,956 INFO : valid_misclass            0.16667
+2019-05-06 18:44:20,957 INFO : runtime                   2.70337
+2019-05-06 18:44:20,959 INFO :
+2019-05-06 18:44:22,418 INFO : Time only for training updates: 1.45s
+2019-05-06 18:44:23,670 INFO : Epoch 18
+2019-05-06 18:44:23,672 INFO : train_loss                0.09406
+2019-05-06 18:44:23,674 INFO : valid_loss                0.40693
+2019-05-06 18:44:23,676 INFO : train_misclass            0.00000
+2019-05-06 18:44:23,677 INFO : valid_misclass            0.16667
+2019-05-06 18:44:23,679 INFO : runtime                   2.71854
+2019-05-06 18:44:23,680 INFO :
+2019-05-06 18:44:25,230 INFO : Time only for training updates: 1.54s
+2019-05-06 18:44:26,478 INFO : Epoch 19
+2019-05-06 18:44:26,481 INFO : train_loss                0.08521
+2019-05-06 18:44:26,483 INFO : valid_loss                0.38600
+2019-05-06 18:44:26,484 INFO : train_misclass            0.00000
+2019-05-06 18:44:26,486 INFO : valid_misclass            0.13333
+2019-05-06 18:44:26,487 INFO : runtime                   2.81249
+2019-05-06 18:44:26,489 INFO :
+2019-05-06 18:44:27,978 INFO : Time only for training updates: 1.48s
+2019-05-06 18:44:29,236 INFO : Epoch 20
+2019-05-06 18:44:29,239 INFO : train_loss                0.07795
+2019-05-06 18:44:29,240 INFO : valid_loss                0.36742
+2019-05-06 18:44:29,242 INFO : train_misclass            0.00000
+2019-05-06 18:44:29,244 INFO : valid_misclass            0.13333
+2019-05-06 18:44:29,245 INFO : runtime                   2.74756
+2019-05-06 18:44:29,247 INFO :
+2019-05-06 18:44:30,693 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:31,933 INFO : Epoch 21
+2019-05-06 18:44:31,935 INFO : train_loss                0.07171
+2019-05-06 18:44:31,937 INFO : valid_loss                0.35085
+2019-05-06 18:44:31,938 INFO : train_misclass            0.00000
+2019-05-06 18:44:31,940 INFO : valid_misclass            0.10000
+2019-05-06 18:44:31,941 INFO : runtime                   2.71460
+2019-05-06 18:44:31,943 INFO :
+2019-05-06 18:44:33,376 INFO : Time only for training updates: 1.43s
+2019-05-06 18:44:34,626 INFO : Epoch 22
+2019-05-06 18:44:34,629 INFO : train_loss                0.06681
+2019-05-06 18:44:34,630 INFO : valid_loss                0.33726
+2019-05-06 18:44:34,632 INFO : train_misclass            0.00000
+2019-05-06 18:44:34,633 INFO : valid_misclass            0.10000
+2019-05-06 18:44:34,635 INFO : runtime                   2.68363
+2019-05-06 18:44:34,637 INFO :
+2019-05-06 18:44:36,082 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:37,340 INFO : Epoch 23
+2019-05-06 18:44:37,342 INFO : train_loss                0.06289
+2019-05-06 18:44:37,344 INFO : valid_loss                0.32600
+2019-05-06 18:44:37,345 INFO : train_misclass            0.00000
+2019-05-06 18:44:37,347 INFO : valid_misclass            0.10000
+2019-05-06 18:44:37,349 INFO : runtime                   2.70583
+2019-05-06 18:44:37,350 INFO :
+2019-05-06 18:44:38,829 INFO : Time only for training updates: 1.47s
+2019-05-06 18:44:40,187 INFO : Epoch 24
+2019-05-06 18:44:40,189 INFO : train_loss                0.05999
+2019-05-06 18:44:40,190 INFO : valid_loss                0.31735
+2019-05-06 18:44:40,192 INFO : train_misclass            0.00000
+2019-05-06 18:44:40,193 INFO : valid_misclass            0.10000
+2019-05-06 18:44:40,195 INFO : runtime                   2.74651
+2019-05-06 18:44:40,197 INFO :
+2019-05-06 18:44:41,639 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:42,896 INFO : Epoch 25
+2019-05-06 18:44:42,899 INFO : train_loss                0.05785
+2019-05-06 18:44:42,900 INFO : valid_loss                0.31063
+2019-05-06 18:44:42,902 INFO : train_misclass            0.00000
+2019-05-06 18:44:42,903 INFO : valid_misclass            0.10000
+2019-05-06 18:44:42,905 INFO : runtime                   2.80972
+2019-05-06 18:44:42,906 INFO :
+2019-05-06 18:44:44,350 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:45,595 INFO : Epoch 26
+2019-05-06 18:44:45,598 INFO : train_loss                0.05635
+2019-05-06 18:44:45,599 INFO : valid_loss                0.30562
+2019-05-06 18:44:45,601 INFO : train_misclass            0.00000
+2019-05-06 18:44:45,603 INFO : valid_misclass            0.10000
+2019-05-06 18:44:45,604 INFO : runtime                   2.71147
+2019-05-06 18:44:45,606 INFO :
+2019-05-06 18:44:47,042 INFO : Time only for training updates: 1.43s
+2019-05-06 18:44:48,290 INFO : Epoch 27
+2019-05-06 18:44:48,293 INFO : train_loss                0.05532
+2019-05-06 18:44:48,294 INFO : valid_loss                0.30180
+2019-05-06 18:44:48,296 INFO : train_misclass            0.00000
+2019-05-06 18:44:48,297 INFO : valid_misclass            0.10000
+2019-05-06 18:44:48,299 INFO : runtime                   2.69155
+2019-05-06 18:44:48,300 INFO :
+2019-05-06 18:44:49,744 INFO : Time only for training updates: 1.44s
+2019-05-06 18:44:51,005 INFO : Epoch 28
+2019-05-06 18:44:51,007 INFO : train_loss                0.05461
+2019-05-06 18:44:51,009 INFO : valid_loss                0.29879
+2019-05-06 18:44:51,010 INFO : train_misclass            0.00000
+2019-05-06 18:44:51,012 INFO : valid_misclass            0.10000
+2019-05-06 18:44:51,013 INFO : runtime                   2.70213
+2019-05-06 18:44:51,015 INFO :
+2019-05-06 18:44:52,466 INFO : Time only for training updates: 1.45s
+2019-05-06 18:44:53,786 INFO : Epoch 29
+2019-05-06 18:44:53,789 INFO : train_loss                0.05415
+2019-05-06 18:44:53,790 INFO : valid_loss                0.29639
+2019-05-06 18:44:53,792 INFO : train_misclass            0.00000
+2019-05-06 18:44:53,793 INFO : valid_misclass            0.10000
+2019-05-06 18:44:53,795 INFO : runtime                   2.72244
+2019-05-06 18:44:53,796 INFO :
+2019-05-06 18:44:55,276 INFO : Time only for training updates: 1.47s
+2019-05-06 18:44:56,527 INFO : Epoch 30
+2019-05-06 18:44:56,530 INFO : train_loss                0.05384
+2019-05-06 18:44:56,531 INFO : valid_loss                0.29441
+2019-05-06 18:44:56,533 INFO : train_misclass            0.00000
+2019-05-06 18:44:56,534 INFO : valid_misclass            0.10000
+2019-05-06 18:44:56,536 INFO : runtime                   2.81010
+2019-05-06 18:44:56,537 INFO :
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;braindecode.experiments.experiment.Experiment at 0x7f75b82e8940&gt;
+<span></span>&lt;braindecode.experiments.experiment.Experiment at 0x7f58917954a8&gt;
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">model</span><span class="o">.</span><span class="n">epochs_df</span>
+<span></span>model.epochs_df
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
+<div class="output_area rendered_html docutils container">
 <div>
 <style>
     .dataframe thead tr:only-child th {
@@ -904,290 +893,294 @@ setting <code class="docutils literal"><span class="pre">input_time_length</span
   <tbody>
     <tr>
       <th>0</th>
-      <td>4.168118</td>
-      <td>3.390682</td>
-      <td>0.500</td>
+      <td>16.718943</td>
+      <td>16.038786</td>
+      <td>0.525</td>
       <td>0.533333</td>
       <td>0.000000</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>3.043880</td>
-      <td>2.384769</td>
+      <td>5.756667</td>
+      <td>5.052063</td>
       <td>0.525</td>
       <td>0.533333</td>
-      <td>6.594939</td>
+      <td>2.943918</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>2.066392</td>
-      <td>1.610444</td>
-      <td>0.475</td>
-      <td>0.500000</td>
-      <td>9.917859</td>
+      <td>3.647679</td>
+      <td>3.016216</td>
+      <td>0.500</td>
+      <td>0.533333</td>
+      <td>2.745180</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1.419359</td>
-      <td>1.187893</td>
-      <td>0.475</td>
-      <td>0.500000</td>
-      <td>10.028832</td>
+      <td>2.342562</td>
+      <td>1.909615</td>
+      <td>0.500</td>
+      <td>0.533333</td>
+      <td>2.738843</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>1.007514</td>
-      <td>0.955341</td>
-      <td>0.400</td>
-      <td>0.433333</td>
-      <td>9.881147</td>
+      <td>1.506760</td>
+      <td>1.290459</td>
+      <td>0.475</td>
+      <td>0.500000</td>
+      <td>2.719385</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>0.763041</td>
-      <td>0.833030</td>
-      <td>0.325</td>
+      <td>1.019238</td>
+      <td>0.968447</td>
+      <td>0.400</td>
       <td>0.433333</td>
-      <td>9.979284</td>
+      <td>2.771735</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>0.619604</td>
-      <td>0.783671</td>
-      <td>0.300</td>
+      <td>0.758563</td>
+      <td>0.821284</td>
+      <td>0.350</td>
       <td>0.433333</td>
-      <td>9.938087</td>
+      <td>2.806943</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>0.515436</td>
-      <td>0.757223</td>
-      <td>0.250</td>
-      <td>0.366667</td>
-      <td>9.971540</td>
+      <td>0.611558</td>
+      <td>0.758546</td>
+      <td>0.300</td>
+      <td>0.433333</td>
+      <td>2.692709</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>0.416595</td>
-      <td>0.707971</td>
-      <td>0.200</td>
-      <td>0.333333</td>
-      <td>10.045257</td>
+      <td>0.518918</td>
+      <td>0.740453</td>
+      <td>0.250</td>
+      <td>0.366667</td>
+      <td>2.764175</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>0.333283</td>
-      <td>0.657200</td>
-      <td>0.175</td>
+      <td>0.433833</td>
+      <td>0.710417</td>
+      <td>0.200</td>
       <td>0.300000</td>
-      <td>9.982185</td>
+      <td>2.696464</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>0.272317</td>
-      <td>0.625433</td>
-      <td>0.150</td>
-      <td>0.300000</td>
-      <td>9.976075</td>
+      <td>0.342783</td>
+      <td>0.652212</td>
+      <td>0.175</td>
+      <td>0.266667</td>
+      <td>2.696805</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>0.224010</td>
-      <td>0.599227</td>
-      <td>0.075</td>
-      <td>0.300000</td>
-      <td>9.862099</td>
+      <td>0.270822</td>
+      <td>0.600610</td>
+      <td>0.150</td>
+      <td>0.266667</td>
+      <td>2.722833</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>0.184646</td>
-      <td>0.569042</td>
-      <td>0.000</td>
+      <td>0.218610</td>
+      <td>0.563165</td>
+      <td>0.025</td>
       <td>0.266667</td>
-      <td>9.818995</td>
+      <td>2.693852</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>0.152886</td>
-      <td>0.533874</td>
+      <td>0.181991</td>
+      <td>0.535692</td>
       <td>0.000</td>
       <td>0.233333</td>
-      <td>9.999050</td>
+      <td>2.767891</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>0.128538</td>
-      <td>0.498271</td>
+      <td>0.154839</td>
+      <td>0.508406</td>
       <td>0.000</td>
       <td>0.200000</td>
-      <td>9.952966</td>
+      <td>2.720542</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>0.110699</td>
-      <td>0.467696</td>
+      <td>0.133887</td>
+      <td>0.480797</td>
       <td>0.000</td>
       <td>0.166667</td>
-      <td>9.723856</td>
+      <td>2.748844</td>
     </tr>
     <tr>
       <th>16</th>
-      <td>0.097337</td>
-      <td>0.441067</td>
+      <td>0.117387</td>
+      <td>0.454011</td>
       <td>0.000</td>
-      <td>0.166667</td>
-      <td>6.040177</td>
+      <td>0.133333</td>
+      <td>2.743407</td>
     </tr>
     <tr>
       <th>17</th>
-      <td>0.086503</td>
-      <td>0.416848</td>
+      <td>0.104724</td>
+      <td>0.430166</td>
       <td>0.000</td>
       <td>0.166667</td>
-      <td>5.121891</td>
+      <td>2.703368</td>
     </tr>
     <tr>
       <th>18</th>
-      <td>0.077835</td>
-      <td>0.395015</td>
+      <td>0.094065</td>
+      <td>0.406926</td>
       <td>0.000</td>
-      <td>0.133333</td>
-      <td>5.115263</td>
+      <td>0.166667</td>
+      <td>2.718539</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>0.070961</td>
-      <td>0.376196</td>
+      <td>0.085207</td>
+      <td>0.386002</td>
       <td>0.000</td>
-      <td>0.100000</td>
-      <td>5.121497</td>
+      <td>0.133333</td>
+      <td>2.812494</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>0.065832</td>
-      <td>0.361156</td>
+      <td>0.077945</td>
+      <td>0.367422</td>
       <td>0.000</td>
-      <td>0.100000</td>
-      <td>5.123702</td>
+      <td>0.133333</td>
+      <td>2.747559</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>0.061856</td>
-      <td>0.349016</td>
+      <td>0.071709</td>
+      <td>0.350847</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.115699</td>
+      <td>2.714596</td>
     </tr>
     <tr>
       <th>22</th>
-      <td>0.058733</td>
-      <td>0.339215</td>
+      <td>0.066811</td>
+      <td>0.337260</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.120580</td>
+      <td>2.683630</td>
     </tr>
     <tr>
       <th>23</th>
-      <td>0.056258</td>
-      <td>0.331300</td>
+      <td>0.062891</td>
+      <td>0.325995</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.207545</td>
+      <td>2.705835</td>
     </tr>
     <tr>
       <th>24</th>
-      <td>0.054392</td>
-      <td>0.324961</td>
+      <td>0.059994</td>
+      <td>0.317353</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.247069</td>
+      <td>2.746507</td>
     </tr>
     <tr>
       <th>25</th>
-      <td>0.052977</td>
-      <td>0.319866</td>
+      <td>0.057849</td>
+      <td>0.310632</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.114219</td>
+      <td>2.809724</td>
     </tr>
     <tr>
       <th>26</th>
-      <td>0.051933</td>
-      <td>0.315760</td>
+      <td>0.056350</td>
+      <td>0.305617</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.109835</td>
+      <td>2.711475</td>
     </tr>
     <tr>
       <th>27</th>
-      <td>0.051210</td>
-      <td>0.312438</td>
+      <td>0.055315</td>
+      <td>0.301796</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.109844</td>
+      <td>2.691547</td>
     </tr>
     <tr>
       <th>28</th>
-      <td>0.050732</td>
-      <td>0.309702</td>
+      <td>0.054613</td>
+      <td>0.298791</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.113238</td>
+      <td>2.702129</td>
     </tr>
     <tr>
       <th>29</th>
-      <td>0.050408</td>
-      <td>0.307397</td>
+      <td>0.054149</td>
+      <td>0.296388</td>
       <td>0.000</td>
       <td>0.100000</td>
-      <td>5.113682</td>
+      <td>2.722437</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>0.053844</td>
+      <td>0.294413</td>
+      <td>0.000</td>
+      <td>0.100000</td>
+      <td>2.810098</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
-<p>Eventually, we arrive at 90% accuracy, so 27 from 30 trials are
-correctly predicted.</p>
+<p>Eventually, we arrive at 90% accuracy, so 27 from 30 trials are correctly predicted.</p>
 </div>
 <div class="section" id="Evaluation">
 <h2>Evaluation<a class="headerlink" href="#Evaluation" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">test_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">70</span><span class="p">:],</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">[</span><span class="mi">70</span><span class="p">:])</span>
+<span></span>test_set = SignalAndTarget(X[70:], y=y[70:])
 
-<span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">test_set</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+model.evaluate(test_set.X, test_set.y)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>{&#39;loss&#39;: 0.4325282573699951,
+<span></span>{&#39;loss&#39;: 0.4238094687461853,
  &#39;misclass&#39;: 0.09999999999999998,
- &#39;runtime&#39;: 0.0004916191101074219}
+ &#39;runtime&#39;: 0.00026702880859375}
 </pre></div>
 </div>
 </div>
+<p>We can now predict entire trials as before or individual crops.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<span></span>model.predict_classes(test_set.X)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1195,20 +1188,125 @@ correctly predicted.</p>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>model.predict_outs(test_set.X)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[-1.2750865e+00, -4.7210652e-01],
+       [-6.4165719e-02, -3.2849991e+00],
+       [-1.2179435e+00, -9.6833688e-01],
+       [-9.6924156e-02, -2.7711747e+00],
+       [-1.5608802e-02, -4.4860401e+00],
+       [-3.0281646e-03, -6.5692310e+00],
+       [-3.3592203e+00, -9.9474512e-02],
+       [-5.2215439e-01, -1.3793348e+00],
+       [-7.2297260e-02, -3.2223539e+00],
+       [-1.8260285e-01, -2.6842418e+00],
+       [-1.1441526e+00, -5.1276684e-01],
+       [-2.6686611e+00, -2.3943919e-01],
+       [-3.9805856e-01, -1.4446516e+00],
+       [-8.5448843e-01, -5.9342843e-01],
+       [-4.0538993e-01, -1.5777971e+00],
+       [-1.4246066e+00, -4.7016898e-01],
+       [-1.7791642e+00, -3.6660710e-01],
+       [-1.0101255e+00, -6.9896650e-01],
+       [-2.7277714e-01, -2.1119561e+00],
+       [-1.4588635e+00, -4.5223123e-01]], dtype=float32)
+</pre></div>
+</div>
+</div>
+<p>For individual crops, provide <code class="docutils literal"><span class="pre">individual_crops=True</span></code>. This for example can be useful to plot accuracies over time:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>import matplotlib.pyplot as plt
+from matplotlib import cm
+import matplotlib
+%matplotlib inline
+matplotlib.style.use(&#39;seaborn&#39;)
+labels_per_trial_per_crop = model.predict_classes(test_set.X, individual_crops=True)
+accs_per_crop = [l == y for l,y in zip(labels_per_trial_per_crop, test_set.y)]
+accs_per_crop = np.mean(accs_per_crop, axis=0)
+plt.figure(figsize=(8,3))
+plt.plot(accs_per_crop * 100)
+plt.title(&quot;Accuracies per timestep&quot;, fontsize=16)
+plt.xlabel(&#39;Timestep in trial&#39;, fontsize=14)
+plt.ylabel(&#39;Accuracy [%]&#39;, fontsize=14)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>Text(0, 0.5, &#39;Accuracy [%]&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Cropped_Decoding_33_1.png" src="../_images/notebooks_Cropped_Decoding_33_1.png" />
+</div>
+</div>
+<p>Raw outputs could be used to visualize a prediction probability across a trial. Here we look at the first trial.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span>cropped_outs = model.predict_outs(test_set.X, individual_crops=True)
+i_trial = 0
+# log-softmax outputs need to be exponentiated to get probabilities
+cropped_probs = np.exp(cropped_outs[i_trial])
+plt.figure(figsize=(8,3))
+plt.plot(cropped_probs.T)
+plt.title(&quot;Network probabilities for trial {:d} of class {:d}&quot;.format(
+    i_trial, test_set.y[i_trial]), fontsize=16)
+plt.legend((&quot;Class 0&quot;, &quot;Class 1&quot;), fontsize=12)
+plt.xlabel(&quot;Timestep within trial&quot;, fontsize=14)
+plt.ylabel(&quot;Probabilities&quot;, fontsize=14)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>Text(0, 0.5, &#39;Probabilities&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Cropped_Decoding_35_1.png" src="../_images/notebooks_Cropped_Decoding_35_1.png" />
+</div>
+</div>
 </div>
 <div class="section" id="Dataset-references">
 <h2>Dataset references<a class="headerlink" href="#Dataset-references" title="Permalink to this headline">¶</a></h2>
-<p>This dataset was created and contributed to PhysioNet by the developers
-of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a>
-instrumentation system, which they used in making these recordings. The
-system is described in:</p>
+<p>This dataset was created and contributed to PhysioNet by the developers of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a> instrumentation system, which they used in making these recordings. The system is described in:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Schalk</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="p">,</span> <span class="n">McFarland</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">J</span><span class="o">.</span><span class="p">,</span> <span class="n">Hinterberger</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="p">,</span> <span class="n">Birbaumer</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="p">,</span> <span class="n">Wolpaw</span><span class="p">,</span> <span class="n">J</span><span class="o">.</span><span class="n">R</span><span class="o">.</span> <span class="p">(</span><span class="mi">2004</span><span class="p">)</span> <span class="n">BCI2000</span><span class="p">:</span> <span class="n">A</span> <span class="n">General</span><span class="o">-</span><span class="n">Purpose</span> <span class="n">Brain</span><span class="o">-</span><span class="n">Computer</span> <span class="n">Interface</span> <span class="p">(</span><span class="n">BCI</span><span class="p">)</span> <span class="n">System</span><span class="o">.</span> <span class="n">IEEE</span> <span class="n">TBME</span> <span class="mi">51</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span><span class="mi">1034</span><span class="o">-</span><span class="mf">1043.</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://physionet.org/physiobank/">PhysioBank</a> is a large and
-growing archive of well-characterized digital recordings of physiologic
-signals and related data for use by the biomedical research community
-and further described in:</p>
+<p><a class="reference external" href="https://physionet.org/physiobank/">PhysioBank</a> is a large and growing archive of well-characterized digital recordings of physiologic signals and related data for use by the biomedical research community and further described in:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Goldberger</span> <span class="n">AL</span><span class="p">,</span> <span class="n">Amaral</span> <span class="n">LAN</span><span class="p">,</span> <span class="n">Glass</span> <span class="n">L</span><span class="p">,</span> <span class="n">Hausdorff</span> <span class="n">JM</span><span class="p">,</span> <span class="n">Ivanov</span> <span class="n">PCh</span><span class="p">,</span> <span class="n">Mark</span> <span class="n">RG</span><span class="p">,</span> <span class="n">Mietus</span> <span class="n">JE</span><span class="p">,</span> <span class="n">Moody</span> <span class="n">GB</span><span class="p">,</span> <span class="n">Peng</span> <span class="n">C</span><span class="o">-</span><span class="n">K</span><span class="p">,</span> <span class="n">Stanley</span> <span class="n">HE</span><span class="o">.</span> <span class="p">(</span><span class="mi">2000</span><span class="p">)</span> <span class="n">PhysioBank</span><span class="p">,</span> <span class="n">PhysioToolkit</span><span class="p">,</span> <span class="ow">and</span> <span class="n">PhysioNet</span><span class="p">:</span> <span class="n">Components</span> <span class="n">of</span> <span class="n">a</span> <span class="n">New</span> <span class="n">Research</span> <span class="n">Resource</span> <span class="k">for</span> <span class="n">Complex</span> <span class="n">Physiologic</span> <span class="n">Signals</span><span class="o">.</span> <span class="n">Circulation</span> <span class="mi">101</span><span class="p">(</span><span class="mi">23</span><span class="p">):</span><span class="n">e215</span><span class="o">-</span><span class="n">e220</span><span class="o">.</span>
 </pre></div>
 </div>
@@ -1259,7 +1357,7 @@ and further described in:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.5',
+            VERSION:'0.4.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1269,7 +1367,7 @@ and further described in:</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

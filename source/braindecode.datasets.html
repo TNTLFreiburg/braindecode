@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.datasets package &mdash; Braindecode 0.4.5 documentation</title>
+  <title>braindecode.datasets package &mdash; Braindecode 0.4.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.5 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.4.8 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.4.5
+                0.4.8
               </div>
             
           
@@ -180,23 +180,13 @@
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
 }
 </style>
 <div class="section" id="module-braindecode.datasets">
@@ -209,7 +199,7 @@
 <span id="braindecode-datasets-bbci-module"></span><h2>braindecode.datasets.bbci module<a class="headerlink" href="#module-braindecode.datasets.bbci" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.datasets.bbci.BBCIDataset">
-<em class="property">class </em><code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">BBCIDataset</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>check_class_names=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L13-L181"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">BBCIDataset</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>check_class_names=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L13-L190"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Loader class for files created by saving BBCI files in matlab (make
 sure to save with ‘-v7.3’ in matlab, see
@@ -232,12 +222,12 @@ Translational NeuroTechnology Lab, AG Ball, Freiburg, Germany.</li>
 </table>
 <dl class="method">
 <dt id="braindecode.datasets.bbci.BBCIDataset.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L34-L37"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.load" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L35-L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="braindecode.datasets.bbci.BBCIDataset.get_all_sensors">
-<em class="property">static </em><code class="descname">get_all_sensors</code><span class="sig-paren">(</span><em>filename</em>, <em>pattern=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L111-L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.get_all_sensors" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">get_all_sensors</code><span class="sig-paren">(</span><em>filename</em>, <em>pattern=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L116-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.get_all_sensors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all sensors that exist in the given file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -263,7 +253,7 @@ Translational NeuroTechnology Lab, AG Ball, Freiburg, Germany.</li>
 
 <dl class="function">
 <dt id="braindecode.datasets.bbci.load_bbci_sets_from_folder">
-<code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">load_bbci_sets_from_folder</code><span class="sig-paren">(</span><em>folder</em>, <em>runs=’all’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L369-L399"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.load_bbci_sets_from_folder" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">load_bbci_sets_from_folder</code><span class="sig-paren">(</span><em>folder</em>, <em>runs='all'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L563-L595"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.load_bbci_sets_from_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load bbci datasets from files in given folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -286,7 +276,7 @@ Tries to match this regex: <code class="docutils literal"><span class="pre">'S[0
 <span id="braindecode-datasets-bcic-iv-2a-module"></span><h2>braindecode.datasets.bcic_iv_2a module<a class="headerlink" href="#module-braindecode.datasets.bcic_iv_2a" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A">
-<em class="property">class </em><code class="descclassname">braindecode.datasets.bcic_iv_2a.</code><code class="descname">BCICompetition4Set2A</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>labels_filename=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L5-L79"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datasets.bcic_iv_2a.</code><code class="descname">BCICompetition4Set2A</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>labels_filename=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L6-L75"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.load">
@@ -295,13 +285,45 @@ Tries to match this regex: <code class="docutils literal"><span class="pre">'S[0
 
 <dl class="method">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_data">
-<code class="descname">extract_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L19-L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extract_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L19-L39"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_events">
-<code class="descname">extract_events</code><span class="sig-paren">(</span><em>raw_edf</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L42-L79"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_events" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extract_events</code><span class="sig-paren">(</span><em>raw_edf</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L41-L75"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_events" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-braindecode.datasets.lazy_dataset">
+<span id="braindecode-datasets-lazy-dataset-module"></span><h2>braindecode.datasets.lazy_dataset module<a class="headerlink" href="#module-braindecode.datasets.lazy_dataset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="braindecode.datasets.lazy_dataset.LazyDataset">
+<em class="property">class </em><code class="descclassname">braindecode.datasets.lazy_dataset.</code><code class="descname">LazyDataset</code><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/lazy_dataset.py#L4-L48"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.lazy_dataset.LazyDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">abc.ABC</span></code></p>
+<p>Class implementing an abstract lazy data set. Custom lazy data sets
+have to override file_paths, X and y as well as the load_lazy function to
+load trials or crops.</p>
+<dl class="method">
+<dt id="braindecode.datasets.lazy_dataset.LazyDataset.load_lazy">
+<code class="descname">load_lazy</code><span class="sig-paren">(</span><em>path</em>, <em>start_i</em>, <em>stop_i</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/lazy_dataset.py#L17-L31"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.lazy_dataset.LazyDataset.load_lazy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loading procedure that gets a file path, start and stop indices.
+Is supposed to return a trial / crop together with its target</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>str</em>) – file path</li>
+<li><strong>start_i</strong> (<em>int</em>) – start index of signal crop</li>
+<li><strong>stop_i</strong> (<em>int</em>) – stop index of signal crop</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -310,7 +332,7 @@ Tries to match this regex: <code class="docutils literal"><span class="pre">'S[0
 <span id="braindecode-datasets-multiple-module"></span><h2>braindecode.datasets.multiple module<a class="headerlink" href="#module-braindecode.datasets.multiple" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.datasets.multiple.MultipleSetLoader">
-<em class="property">class </em><code class="descclassname">braindecode.datasets.multiple.</code><code class="descname">MultipleSetLoader</code><span class="sig-paren">(</span><em>set_loaders</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L9-L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datasets.multiple.</code><code class="descname">MultipleSetLoader</code><span class="sig-paren">(</span><em>set_loaders</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L8-L46"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class to load multiple sets.</p>
 <p>Resamples individual sets down to lowest common sampling frequency,
@@ -325,7 +347,7 @@ if necessary.</p>
 </table>
 <dl class="method">
 <dt id="braindecode.datasets.multiple.MultipleSetLoader.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L25-L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader.load" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L24-L46"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader.load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -335,12 +357,12 @@ if necessary.</p>
 <span id="braindecode-datasets-sensor-positions-module"></span><h2>braindecode.datasets.sensor_positions module<a class="headerlink" href="#module-braindecode.datasets.sensor_positions" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="braindecode.datasets.sensor_positions.get_channelpos">
-<code class="descclassname">braindecode.datasets.sensor_positions.</code><code class="descname">get_channelpos</code><span class="sig-paren">(</span><em>channame</em>, <em>chan_pos_list</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/sensor_positions.py#L142-L154"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.sensor_positions.get_channelpos" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datasets.sensor_positions.</code><code class="descname">get_channelpos</code><span class="sig-paren">(</span><em>channame</em>, <em>chan_pos_list</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/sensor_positions.py#L143-L156"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.sensor_positions.get_channelpos" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="braindecode.datasets.sensor_positions.get_channelpos_from_angle">
-<code class="descclassname">braindecode.datasets.sensor_positions.</code><code class="descname">get_channelpos_from_angle</code><span class="sig-paren">(</span><em>channame</em>, <em>chan_pos_list=(‘angle’</em>, <em>(‘Fpz’</em>, <em>(0.0</em>, <em>4.0))</em>, <em>(‘Fp1’</em>, <em>(-3.5</em>, <em>3.5))</em>, <em>(‘Fp2’</em>, <em>(3.5</em>, <em>3.5))</em>, <em>(‘AFp3h’</em>, <em>(-1.0</em>, <em>3.5))</em>, <em>(‘AFp4h’</em>, <em>(1.0</em>, <em>3.5))</em>, <em>(‘AF7’</em>, <em>(-4.0</em>, <em>3.0))</em>, <em>(‘AF3’</em>, <em>(-2.0</em>, <em>3.0))</em>, <em>(‘AFz’</em>, <em>(0.0</em>, <em>3.0))</em>, <em>(‘AF4’</em>, <em>(2.0</em>, <em>3.0))</em>, <em>(‘AF8’</em>, <em>(4.0</em>, <em>3.0))</em>, <em>(‘AFF5h’</em>, <em>(-2.5</em>, <em>2.5))</em>, <em>(‘AFF1’</em>, <em>(-0.5</em>, <em>2.5))</em>, <em>(‘AFF2’</em>, <em>(0.5</em>, <em>2.5))</em>, <em>(‘AFF6h’</em>, <em>(2.5</em>, <em>2.5))</em>, <em>(‘F7’</em>, <em>(-4.0</em>, <em>2.0))</em>, <em>(‘F5’</em>, <em>(-3.0</em>, <em>2.0))</em>, <em>(‘F3’</em>, <em>(-2.0</em>, <em>2.0))</em>, <em>(‘F1’</em>, <em>(-1.0</em>, <em>2.0))</em>, <em>(‘Fz’</em>, <em>(0.0</em>, <em>2.0))</em>, <em>(‘F2’</em>, <em>(1.0</em>, <em>2.0))</em>, <em>(‘F4’</em>, <em>(2.0</em>, <em>2.0))</em>, <em>(‘F6’</em>, <em>(3.0</em>, <em>2.0))</em>, <em>(‘F8’</em>, <em>(4.0</em>, <em>2.0))</em>, <em>(‘FFT7h’</em>, <em>(-3.5</em>, <em>1.5))</em>, <em>(‘FFC5h’</em>, <em>(-2.5</em>, <em>1.5))</em>, <em>(‘FFC3h’</em>, <em>(-1.5</em>, <em>1.5))</em>, <em>(‘FFC1h’</em>, <em>(-0.5</em>, <em>1.5))</em>, <em>(‘FFC2h’</em>, <em>(0.5</em>, <em>1.5))</em>, <em>(‘FFC4h’</em>, <em>(1.5</em>, <em>1.5))</em>, <em>(‘FFC6h’</em>, <em>(2.5</em>, <em>1.5))</em>, <em>(‘FFT8h’</em>, <em>(3.5</em>, <em>1.5))</em>, <em>(‘FT9’</em>, <em>(-5.0</em>, <em>1.0))</em>, <em>(‘FT7’</em>, <em>(-4.0</em>, <em>1.0))</em>, <em>(‘FC5’</em>, <em>(-3.0</em>, <em>1.0))</em>, <em>(‘FC3’</em>, <em>(-2.0</em>, <em>1.0))</em>, <em>(‘FC1’</em>, <em>(-1.0</em>, <em>1.0))</em>, <em>(‘FCz’</em>, <em>(0.0</em>, <em>1.0))</em>, <em>(‘FC2’</em>, <em>(1.0</em>, <em>1.0))</em>, <em>(‘FC4’</em>, <em>(2.0</em>, <em>1.0))</em>, <em>(‘FC6’</em>, <em>(3.0</em>, <em>1.0))</em>, <em>(‘FT8’</em>, <em>(4.0</em>, <em>1.0))</em>, <em>(‘FT10’</em>, <em>(5.0</em>, <em>1.0))</em>, <em>(‘FTT9h’</em>, <em>(-4.5</em>, <em>0.5))</em>, <em>(‘FTT7h’</em>, <em>(-3.5</em>, <em>0.5))</em>, <em>(‘FCC5h’</em>, <em>(-2.5</em>, <em>0.5))</em>, <em>(‘FCC3h’</em>, <em>(-1.5</em>, <em>0.5))</em>, <em>(‘FCC1h’</em>, <em>(-0.5</em>, <em>0.5))</em>, <em>(‘FCC2h’</em>, <em>(0.5</em>, <em>0.5))</em>, <em>(‘FCC4h’</em>, <em>(1.5</em>, <em>0.5))</em>, <em>(‘FCC6h’</em>, <em>(2.5</em>, <em>0.5))</em>, <em>(‘FTT8h’</em>, <em>(3.5</em>, <em>0.5))</em>, <em>(‘FTT10h’</em>, <em>(4.5</em>, <em>0.5))</em>, <em>(‘M1’</em>, <em>(-5.0</em>, <em>0.0))</em>, <em>(‘T9’</em>, <em>(-4.5</em>, <em>0.0))</em>, <em>(‘T7’</em>, <em>(-4.0</em>, <em>0.0))</em>, <em>(‘C5’</em>, <em>(-3.0</em>, <em>0.0))</em>, <em>(‘C3’</em>, <em>(-2.0</em>, <em>0.0))</em>, <em>(‘C1’</em>, <em>(-1.0</em>, <em>0.0))</em>, <em>(‘Cz’</em>, <em>(0.0</em>, <em>0.0))</em>, <em>(‘C2’</em>, <em>(1.0</em>, <em>0.0))</em>, <em>(‘C4’</em>, <em>(2.0</em>, <em>0.0))</em>, <em>(‘C6’</em>, <em>(3.0</em>, <em>0.0))</em>, <em>(‘T8’</em>, <em>(4.0</em>, <em>0.0))</em>, <em>(‘T10’</em>, <em>(4.5</em>, <em>0.0))</em>, <em>(‘M2’</em>, <em>(5.0</em>, <em>0.0))</em>, <em>(‘TTP7h’</em>, <em>(-3.5</em>, <em>-0.5))</em>, <em>(‘CCP5h’</em>, <em>(-2.5</em>, <em>-0.5))</em>, <em>(‘CCP3h’</em>, <em>(-1.5</em>, <em>-0.5))</em>, <em>(‘CCP1h’</em>, <em>(-0.5</em>, <em>-0.5))</em>, <em>(‘CCP2h’</em>, <em>(0.5</em>, <em>-0.5))</em>, <em>(‘CCP4h’</em>, <em>(1.5</em>, <em>-0.5))</em>, <em>(‘CCP6h’</em>, <em>(2.5</em>, <em>-0.5))</em>, <em>(‘TTP8h’</em>, <em>(3.5</em>, <em>-0.5))</em>, <em>(‘TP7’</em>, <em>(-4.0</em>, <em>-1.0))</em>, <em>(‘CP5’</em>, <em>(-3.0</em>, <em>-1.0))</em>, <em>(‘CP3’</em>, <em>(-2.0</em>, <em>-1.0))</em>, <em>(‘CP1’</em>, <em>(-1.0</em>, <em>-1.0))</em>, <em>(‘CPz’</em>, <em>(0.0</em>, <em>-1.0))</em>, <em>(‘CP2’</em>, <em>(1.0</em>, <em>-1.0))</em>, <em>(‘CP4’</em>, <em>(2.0</em>, <em>-1.0))</em>, <em>(‘CP6’</em>, <em>(3.0</em>, <em>-1.0))</em>, <em>(‘TP8’</em>, <em>(4.0</em>, <em>-1.0))</em>, <em>(‘TPP9h’</em>, <em>(-4.5</em>, <em>-1.5))</em>, <em>(‘TPP7h’</em>, <em>(-3.5</em>, <em>-1.5))</em>, <em>(‘CPP5h’</em>, <em>(-2.5</em>, <em>-1.5))</em>, <em>(‘CPP3h’</em>, <em>(-1.5</em>, <em>-1.5))</em>, <em>(‘CPP1h’</em>, <em>(-0.5</em>, <em>-1.5))</em>, <em>(‘CPP2h’</em>, <em>(0.5</em>, <em>-1.5))</em>, <em>(‘CPP4h’</em>, <em>(1.5</em>, <em>-1.5))</em>, <em>(‘CPP6h’</em>, <em>(2.5</em>, <em>-1.5))</em>, <em>(‘TPP8h’</em>, <em>(3.5</em>, <em>-1.5))</em>, <em>(‘TPP10h’</em>, <em>(4.5</em>, <em>-1.5))</em>, <em>(‘P9’</em>, <em>(-5.0</em>, <em>-2.0))</em>, <em>(‘P7’</em>, <em>(-4.0</em>, <em>-2.0))</em>, <em>(‘P5’</em>, <em>(-3.0</em>, <em>-2.0))</em>, <em>(‘P3’</em>, <em>(-2.0</em>, <em>-2.0))</em>, <em>(‘P1’</em>, <em>(-1.0</em>, <em>-2.0))</em>, <em>(‘Pz’</em>, <em>(0.0</em>, <em>-2.0))</em>, <em>(‘P2’</em>, <em>(1.0</em>, <em>-2.0))</em>, <em>(‘P4’</em>, <em>(2.0</em>, <em>-2.0))</em>, <em>(‘P6’</em>, <em>(3.0</em>, <em>-2.0))</em>, <em>(‘P8’</em>, <em>(4.0</em>, <em>-2.0))</em>, <em>(‘P10’</em>, <em>(5.0</em>, <em>-2.0))</em>, <em>(‘PPO9h’</em>, <em>(-4.5</em>, <em>-2.5))</em>, <em>(‘PPO5h’</em>, <em>(-3.0</em>, <em>-2.5))</em>, <em>(‘PPO1’</em>, <em>(-0.65</em>, <em>-2.5))</em>, <em>(‘PPO2’</em>, <em>(0.65</em>, <em>-2.5))</em>, <em>(‘PPO6h’</em>, <em>(3.0</em>, <em>-2.5))</em>, <em>(‘PPO10h’</em>, <em>(4.5</em>, <em>-2.5))</em>, <em>(‘PO9’</em>, <em>(-5.0</em>, <em>-3.0))</em>, <em>(‘PO7’</em>, <em>(-4.0</em>, <em>-3.0))</em>, <em>(‘PO5’</em>, <em>(-3.0</em>, <em>-3.0))</em>, <em>(‘PO3’</em>, <em>(-2.0</em>, <em>-3.0))</em>, <em>(‘PO1’</em>, <em>(-1.0</em>, <em>-3.0))</em>, <em>(‘POz’</em>, <em>(0.0</em>, <em>-3.0))</em>, <em>(‘PO2’</em>, <em>(1.0</em>, <em>-3.0))</em>, <em>(‘PO4’</em>, <em>(2.0</em>, <em>-3.0))</em>, <em>(‘PO6’</em>, <em>(3.0</em>, <em>-3.0))</em>, <em>(‘PO8’</em>, <em>(4.0</em>, <em>-3.0))</em>, <em>(‘PO10’</em>, <em>(5.0</em>, <em>-3.0))</em>, <em>(‘POO9h’</em>, <em>(-4.5</em>, <em>-3.25))</em>, <em>(‘POO3h’</em>, <em>(-2.0</em>, <em>-3.25))</em>, <em>(‘POO4h’</em>, <em>(2.0</em>, <em>-3.25))</em>, <em>(‘POO10h’</em>, <em>(4.5</em>, <em>-3.25))</em>, <em>(‘O1’</em>, <em>(-2.5</em>, <em>-3.75))</em>, <em>(‘Oz’</em>, <em>(0.0</em>, <em>-3.75))</em>, <em>(‘O2’</em>, <em>(2.5</em>, <em>-3.75))</em>, <em>(‘OI1h’</em>, <em>(1.5</em>, <em>-4.25))</em>, <em>(‘OI2h’</em>, <em>(-1.5</em>, <em>-4.25))</em>, <em>(‘I1’</em>, <em>(1.0</em>, <em>-4.5))</em>, <em>(‘Iz’</em>, <em>(0.0</em>, <em>-4.5))</em>, <em>(‘I2’</em>, <em>(-1.0</em>, <em>-4.5)))</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/sensor_positions.py#L157-L197"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.sensor_positions.get_channelpos_from_angle" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datasets.sensor_positions.</code><code class="descname">get_channelpos_from_angle</code><span class="sig-paren">(</span><em>channame</em>, <em>chan_pos_list=('angle'</em>, <em>('Fpz'</em>, <em>(0.0</em>, <em>4.0))</em>, <em>('Fp1'</em>, <em>(-3.5</em>, <em>3.5))</em>, <em>('Fp2'</em>, <em>(3.5</em>, <em>3.5))</em>, <em>('AFp3h'</em>, <em>(-1.0</em>, <em>3.5))</em>, <em>('AFp4h'</em>, <em>(1.0</em>, <em>3.5))</em>, <em>('AF7'</em>, <em>(-4.0</em>, <em>3.0))</em>, <em>('AF3'</em>, <em>(-2.0</em>, <em>3.0))</em>, <em>('AFz'</em>, <em>(0.0</em>, <em>3.0))</em>, <em>('AF4'</em>, <em>(2.0</em>, <em>3.0))</em>, <em>('AF8'</em>, <em>(4.0</em>, <em>3.0))</em>, <em>('AFF5h'</em>, <em>(-2.5</em>, <em>2.5))</em>, <em>('AFF1'</em>, <em>(-0.5</em>, <em>2.5))</em>, <em>('AFF2'</em>, <em>(0.5</em>, <em>2.5))</em>, <em>('AFF6h'</em>, <em>(2.5</em>, <em>2.5))</em>, <em>('F7'</em>, <em>(-4.0</em>, <em>2.0))</em>, <em>('F5'</em>, <em>(-3.0</em>, <em>2.0))</em>, <em>('F3'</em>, <em>(-2.0</em>, <em>2.0))</em>, <em>('F1'</em>, <em>(-1.0</em>, <em>2.0))</em>, <em>('Fz'</em>, <em>(0.0</em>, <em>2.0))</em>, <em>('F2'</em>, <em>(1.0</em>, <em>2.0))</em>, <em>('F4'</em>, <em>(2.0</em>, <em>2.0))</em>, <em>('F6'</em>, <em>(3.0</em>, <em>2.0))</em>, <em>('F8'</em>, <em>(4.0</em>, <em>2.0))</em>, <em>('FFT7h'</em>, <em>(-3.5</em>, <em>1.5))</em>, <em>('FFC5h'</em>, <em>(-2.5</em>, <em>1.5))</em>, <em>('FFC3h'</em>, <em>(-1.5</em>, <em>1.5))</em>, <em>('FFC1h'</em>, <em>(-0.5</em>, <em>1.5))</em>, <em>('FFC2h'</em>, <em>(0.5</em>, <em>1.5))</em>, <em>('FFC4h'</em>, <em>(1.5</em>, <em>1.5))</em>, <em>('FFC6h'</em>, <em>(2.5</em>, <em>1.5))</em>, <em>('FFT8h'</em>, <em>(3.5</em>, <em>1.5))</em>, <em>('FT9'</em>, <em>(-5.0</em>, <em>1.0))</em>, <em>('FT7'</em>, <em>(-4.0</em>, <em>1.0))</em>, <em>('FC5'</em>, <em>(-3.0</em>, <em>1.0))</em>, <em>('FC3'</em>, <em>(-2.0</em>, <em>1.0))</em>, <em>('FC1'</em>, <em>(-1.0</em>, <em>1.0))</em>, <em>('FCz'</em>, <em>(0.0</em>, <em>1.0))</em>, <em>('FC2'</em>, <em>(1.0</em>, <em>1.0))</em>, <em>('FC4'</em>, <em>(2.0</em>, <em>1.0))</em>, <em>('FC6'</em>, <em>(3.0</em>, <em>1.0))</em>, <em>('FT8'</em>, <em>(4.0</em>, <em>1.0))</em>, <em>('FT10'</em>, <em>(5.0</em>, <em>1.0))</em>, <em>('FTT9h'</em>, <em>(-4.5</em>, <em>0.5))</em>, <em>('FTT7h'</em>, <em>(-3.5</em>, <em>0.5))</em>, <em>('FCC5h'</em>, <em>(-2.5</em>, <em>0.5))</em>, <em>('FCC3h'</em>, <em>(-1.5</em>, <em>0.5))</em>, <em>('FCC1h'</em>, <em>(-0.5</em>, <em>0.5))</em>, <em>('FCC2h'</em>, <em>(0.5</em>, <em>0.5))</em>, <em>('FCC4h'</em>, <em>(1.5</em>, <em>0.5))</em>, <em>('FCC6h'</em>, <em>(2.5</em>, <em>0.5))</em>, <em>('FTT8h'</em>, <em>(3.5</em>, <em>0.5))</em>, <em>('FTT10h'</em>, <em>(4.5</em>, <em>0.5))</em>, <em>('M1'</em>, <em>(-5.0</em>, <em>0.0))</em>, <em>('T9'</em>, <em>(-4.5</em>, <em>0.0))</em>, <em>('T7'</em>, <em>(-4.0</em>, <em>0.0))</em>, <em>('C5'</em>, <em>(-3.0</em>, <em>0.0))</em>, <em>('C3'</em>, <em>(-2.0</em>, <em>0.0))</em>, <em>('C1'</em>, <em>(-1.0</em>, <em>0.0))</em>, <em>('Cz'</em>, <em>(0.0</em>, <em>0.0))</em>, <em>('C2'</em>, <em>(1.0</em>, <em>0.0))</em>, <em>('C4'</em>, <em>(2.0</em>, <em>0.0))</em>, <em>('C6'</em>, <em>(3.0</em>, <em>0.0))</em>, <em>('T8'</em>, <em>(4.0</em>, <em>0.0))</em>, <em>('T10'</em>, <em>(4.5</em>, <em>0.0))</em>, <em>('M2'</em>, <em>(5.0</em>, <em>0.0))</em>, <em>('TTP7h'</em>, <em>(-3.5</em>, <em>-0.5))</em>, <em>('CCP5h'</em>, <em>(-2.5</em>, <em>-0.5))</em>, <em>('CCP3h'</em>, <em>(-1.5</em>, <em>-0.5))</em>, <em>('CCP1h'</em>, <em>(-0.5</em>, <em>-0.5))</em>, <em>('CCP2h'</em>, <em>(0.5</em>, <em>-0.5))</em>, <em>('CCP4h'</em>, <em>(1.5</em>, <em>-0.5))</em>, <em>('CCP6h'</em>, <em>(2.5</em>, <em>-0.5))</em>, <em>('TTP8h'</em>, <em>(3.5</em>, <em>-0.5))</em>, <em>('TP7'</em>, <em>(-4.0</em>, <em>-1.0))</em>, <em>('CP5'</em>, <em>(-3.0</em>, <em>-1.0))</em>, <em>('CP3'</em>, <em>(-2.0</em>, <em>-1.0))</em>, <em>('CP1'</em>, <em>(-1.0</em>, <em>-1.0))</em>, <em>('CPz'</em>, <em>(0.0</em>, <em>-1.0))</em>, <em>('CP2'</em>, <em>(1.0</em>, <em>-1.0))</em>, <em>('CP4'</em>, <em>(2.0</em>, <em>-1.0))</em>, <em>('CP6'</em>, <em>(3.0</em>, <em>-1.0))</em>, <em>('TP8'</em>, <em>(4.0</em>, <em>-1.0))</em>, <em>('TPP9h'</em>, <em>(-4.5</em>, <em>-1.5))</em>, <em>('TPP7h'</em>, <em>(-3.5</em>, <em>-1.5))</em>, <em>('CPP5h'</em>, <em>(-2.5</em>, <em>-1.5))</em>, <em>('CPP3h'</em>, <em>(-1.5</em>, <em>-1.5))</em>, <em>('CPP1h'</em>, <em>(-0.5</em>, <em>-1.5))</em>, <em>('CPP2h'</em>, <em>(0.5</em>, <em>-1.5))</em>, <em>('CPP4h'</em>, <em>(1.5</em>, <em>-1.5))</em>, <em>('CPP6h'</em>, <em>(2.5</em>, <em>-1.5))</em>, <em>('TPP8h'</em>, <em>(3.5</em>, <em>-1.5))</em>, <em>('TPP10h'</em>, <em>(4.5</em>, <em>-1.5))</em>, <em>('P9'</em>, <em>(-5.0</em>, <em>-2.0))</em>, <em>('P7'</em>, <em>(-4.0</em>, <em>-2.0))</em>, <em>('P5'</em>, <em>(-3.0</em>, <em>-2.0))</em>, <em>('P3'</em>, <em>(-2.0</em>, <em>-2.0))</em>, <em>('P1'</em>, <em>(-1.0</em>, <em>-2.0))</em>, <em>('Pz'</em>, <em>(0.0</em>, <em>-2.0))</em>, <em>('P2'</em>, <em>(1.0</em>, <em>-2.0))</em>, <em>('P4'</em>, <em>(2.0</em>, <em>-2.0))</em>, <em>('P6'</em>, <em>(3.0</em>, <em>-2.0))</em>, <em>('P8'</em>, <em>(4.0</em>, <em>-2.0))</em>, <em>('P10'</em>, <em>(5.0</em>, <em>-2.0))</em>, <em>('PPO9h'</em>, <em>(-4.5</em>, <em>-2.5))</em>, <em>('PPO5h'</em>, <em>(-3.0</em>, <em>-2.5))</em>, <em>('PPO1'</em>, <em>(-0.65</em>, <em>-2.5))</em>, <em>('PPO2'</em>, <em>(0.65</em>, <em>-2.5))</em>, <em>('PPO6h'</em>, <em>(3.0</em>, <em>-2.5))</em>, <em>('PPO10h'</em>, <em>(4.5</em>, <em>-2.5))</em>, <em>('PO9'</em>, <em>(-5.0</em>, <em>-3.0))</em>, <em>('PO7'</em>, <em>(-4.0</em>, <em>-3.0))</em>, <em>('PO5'</em>, <em>(-3.0</em>, <em>-3.0))</em>, <em>('PO3'</em>, <em>(-2.0</em>, <em>-3.0))</em>, <em>('PO1'</em>, <em>(-1.0</em>, <em>-3.0))</em>, <em>('POz'</em>, <em>(0.0</em>, <em>-3.0))</em>, <em>('PO2'</em>, <em>(1.0</em>, <em>-3.0))</em>, <em>('PO4'</em>, <em>(2.0</em>, <em>-3.0))</em>, <em>('PO6'</em>, <em>(3.0</em>, <em>-3.0))</em>, <em>('PO8'</em>, <em>(4.0</em>, <em>-3.0))</em>, <em>('PO10'</em>, <em>(5.0</em>, <em>-3.0))</em>, <em>('POO9h'</em>, <em>(-4.5</em>, <em>-3.25))</em>, <em>('POO3h'</em>, <em>(-2.0</em>, <em>-3.25))</em>, <em>('POO4h'</em>, <em>(2.0</em>, <em>-3.25))</em>, <em>('POO10h'</em>, <em>(4.5</em>, <em>-3.25))</em>, <em>('O1'</em>, <em>(-2.5</em>, <em>-3.75))</em>, <em>('Oz'</em>, <em>(0.0</em>, <em>-3.75))</em>, <em>('O2'</em>, <em>(2.5</em>, <em>-3.75))</em>, <em>('OI1h'</em>, <em>(1.5</em>, <em>-4.25))</em>, <em>('OI2h'</em>, <em>(-1.5</em>, <em>-4.25))</em>, <em>('I1'</em>, <em>(1.0</em>, <em>-4.5))</em>, <em>('Iz'</em>, <em>(0.0</em>, <em>-4.5))</em>, <em>('I2'</em>, <em>(-1.0</em>, <em>-4.5)))</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/sensor_positions.py#L159-L199"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.sensor_positions.get_channelpos_from_angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the x/y position of a channel.</p>
 <p>This method calculates the stereographic projection of a channel
 from <code class="docutils literal"><span class="pre">CHANNEL_10_20</span></code>, suitable for a scalp plot.</p>
@@ -415,7 +437,7 @@ otherwise <code class="docutils literal"><span class="pre">None</span></code></p
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.5',
+            VERSION:'0.4.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -425,7 +447,7 @@ otherwise <code class="docutils literal"><span class="pre">None</span></code></p
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

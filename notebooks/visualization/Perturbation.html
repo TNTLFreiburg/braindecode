@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Amplitude Perturbation Visualization &mdash; Braindecode 0.4.5 documentation</title>
+  <title>Amplitude Perturbation Visualization &mdash; Braindecode 0.4.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Braindecode 0.4.5 documentation" href="../../index.html"/>
+    <link rel="top" title="Braindecode 0.4.8 documentation" href="../../index.html"/>
         <link rel="next" title="braindecode.datautil package" href="../../source/braindecode.datautil.html"/>
         <link rel="prev" title="Cropped Manual Training Loop" href="../Cropped_Manual_Training_Loop.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.5
+                0.4.8
               </div>
             
           
@@ -235,18 +235,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 8ex;
+    min-width: 5ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -286,9 +286,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -296,7 +296,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -340,7 +340,45 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 
 /* CSS overrides for sphinx_rtd_theme */
 
@@ -355,54 +393,36 @@ div.nboutput div.output_area.stderr {
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
 }
 </style>
 <div class="section" id="Amplitude-Perturbation-Visualization">
 <h1>Amplitude Perturbation Visualization<a class="headerlink" href="#Amplitude-Perturbation-Visualization" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial, we show how to use perturbations of the input
-amplitudes to learn something about the trained convolutional networks.
-For more background, see <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural
-networks for EEG decoding and
-visualization</a>, Section A.5.2.</p>
-<p>First we will do some cross-subject decoding, again using the
-<a class="reference external" href="https://www.physionet.org/physiobank/database/eegmmidb/">Physiobank EEG Motor Movement/Imagery
-Dataset</a>,
-this time to decode imagined left hand vs. imagined right hand movement.</p>
+<p>In this tutorial, we show how to use perturbations of the input amplitudes to learn something about the trained convolutional networks. For more background, see <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural networks for EEG decoding and visualization</a>, Section A.5.2.</p>
+<p>First we will do some cross-subject decoding, again using the <a class="reference external" href="https://www.physionet.org/physiobank/database/eegmmidb/">Physiobank EEG Motor Movement/Imagery Dataset</a>, this time to decode imagined left hand vs.&nbsp;imagined right hand movement.</p>
 <div class="admonition warning">
 This tutorial might be very slow if you are not using a GPU.</div>
 <div class="section" id="Enable-logging">
 <h2>Enable logging<a class="headerlink" href="#Enable-logging" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">importlib</span>
-<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span> <span class="c1"># see https://stackoverflow.com/a/21475297/1469195</span>
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
-<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span></span>import logging
+import importlib
+importlib.reload(logging) # see https://stackoverflow.com/a/21475297/1469195
+log = logging.getLogger()
+log.setLevel(&#39;INFO&#39;)
+import sys
+logging.basicConfig(format=&#39;%(asctime)s %(levelname)s : %(message)s&#39;,
+                     level=logging.INFO, stream=sys.stdout)
 </pre></div>
 </div>
 </div>
@@ -410,105 +430,100 @@ This tutorial might be very slow if you are not using a GPU.</div>
 <div class="section" id="Load-data">
 <h2>Load data<a class="headerlink" href="#Load-data" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">mne</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">mne.io</span> <span class="k">import</span> <span class="n">concatenate_raws</span>
-<span class="kn">from</span> <span class="nn">braindecode.datautil.signal_target</span> <span class="k">import</span> <span class="n">SignalAndTarget</span>
+<span></span>import mne
+import numpy as np
+from mne.io import concatenate_raws
+from braindecode.datautil.signal_target import SignalAndTarget
 
-<span class="c1"># First 50 subjects as train</span>
-<span class="n">physionet_paths</span> <span class="o">=</span> <span class="p">[</span> <span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">51</span><span class="p">)]</span>
-<span class="n">physionet_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths</span><span class="p">)</span>
-<span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths</span><span class="p">]</span>
+# First 50 subjects as train
+physionet_paths = [ mne.datasets.eegbci.load_data(sub_id,[4,8,12,]) for sub_id in range(1,51)]
+physionet_paths = np.concatenate(physionet_paths)
+parts = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;)
+         for path in physionet_paths]
 
-<span class="n">raw</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+raw = concatenate_raws(parts)
 
-<span class="n">picks</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+picks = mne.pick_types(raw.info, meg=False, eeg=True, stim=False, eog=False,
+                   exclude=&#39;bads&#39;)
 
-<span class="n">events</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+events = mne.find_events(raw, shortest_event=0, stim_channel=&#39;STI 014&#39;)
 
-<span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
-<span class="c1"># Testing will be done with a running classifier</span>
-<span class="n">epoched</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span>
-                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Read epochs (train will be done only between 1 and 2s)
+# Testing will be done with a running classifier
+epoched = mne.Epochs(raw, events, dict(hands=2, feet=3), tmin=1, tmax=4.1, proj=False, picks=picks,
+                baseline=None, preload=True)
 
-<span class="c1"># 51-55 as validation subjects</span>
-<span class="n">physionet_paths_valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">eegbci</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">sub_id</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,])</span> <span class="k">for</span> <span class="n">sub_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">51</span><span class="p">,</span><span class="mi">56</span><span class="p">)]</span>
-<span class="n">physionet_paths_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">physionet_paths_valid</span><span class="p">)</span>
-<span class="n">parts_valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">physionet_paths_valid</span><span class="p">]</span>
-<span class="n">raw_valid</span> <span class="o">=</span> <span class="n">concatenate_raws</span><span class="p">(</span><span class="n">parts_valid</span><span class="p">)</span>
+# 51-55 as validation subjects
+physionet_paths_valid = [mne.datasets.eegbci.load_data(sub_id,[4,8,12,]) for sub_id in range(51,56)]
+physionet_paths_valid = np.concatenate(physionet_paths_valid)
+parts_valid = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;)
+         for path in physionet_paths_valid]
+raw_valid = concatenate_raws(parts_valid)
 
-<span class="n">picks_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">pick_types</span><span class="p">(</span><span class="n">raw_valid</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">meg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eeg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eog</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;bads&#39;</span><span class="p">)</span>
+picks_valid = mne.pick_types(raw_valid.info, meg=False, eeg=True, stim=False, eog=False,
+                   exclude=&#39;bads&#39;)
 
-<span class="n">events_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">find_events</span><span class="p">(</span><span class="n">raw_valid</span><span class="p">,</span> <span class="n">shortest_event</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stim_channel</span><span class="o">=</span><span class="s1">&#39;STI 014&#39;</span><span class="p">)</span>
+events_valid = mne.find_events(raw_valid, shortest_event=0, stim_channel=&#39;STI 014&#39;)
 
-<span class="c1"># Read epochs (train will be done only between 1 and 2s)</span>
-<span class="c1"># Testing will be done with a running classifier</span>
-<span class="n">epoched_valid</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw_valid</span><span class="p">,</span> <span class="n">events_valid</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">hands</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">feet</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">tmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">4.1</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks_valid</span><span class="p">,</span>
-                <span class="n">baseline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+# Read epochs (train will be done only between 1 and 2s)
+# Testing will be done with a running classifier
+epoched_valid = mne.Epochs(raw_valid, events_valid, dict(hands=2, feet=3), tmin=1, tmax=4.1, proj=False, picks=picks_valid,
+                baseline=None, preload=True)
 
-<span class="n">train_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">train_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
-<span class="n">valid_X</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_valid</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">valid_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoched_valid</span><span class="o">.</span><span class="n">events</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="c1">#2,3 -&gt; 0,1</span>
-<span class="n">train_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">train_y</span><span class="p">)</span>
-<span class="n">valid_set</span> <span class="o">=</span> <span class="n">SignalAndTarget</span><span class="p">(</span><span class="n">valid_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">valid_y</span><span class="p">)</span>
+train_X = (epoched.get_data() * 1e6).astype(np.float32)
+train_y = (epoched.events[:,2] - 2).astype(np.int64) #2,3 -&gt; 0,1
+valid_X = (epoched_valid.get_data() * 1e6).astype(np.float32)
+valid_y = (epoched_valid.events[:,2] - 2).astype(np.int64) #2,3 -&gt; 0,1
+train_set = SignalAndTarget(train_X, y=train_y)
+valid_set = SignalAndTarget(valid_X, y=valid_y)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Create-the-model">
 <h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
-<p>We use the deep ConvNet from <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural
-networks for EEG decoding and
-visualization</a> (Section 2.4.2).</p>
+<p>We use the deep ConvNet from <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural networks for EEG decoding and visualization</a> (Section 2.4.2).</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.models.deep4</span> <span class="k">import</span> <span class="n">Deep4Net</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">set_random_seeds</span>
-<span class="kn">from</span> <span class="nn">braindecode.models.util</span> <span class="k">import</span> <span class="n">to_dense_prediction_model</span>
+<span></span>from braindecode.models.deep4 import Deep4Net
+from torch import nn
+from braindecode.torch_ext.util import set_random_seeds
+from braindecode.models.util import to_dense_prediction_model
 
-<span class="c1"># Set if you want to use GPU</span>
-<span class="c1"># You can also use torch.cuda.is_available() to determine if cuda is available on your machine.</span>
-<span class="n">cuda</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">set_random_seeds</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">20170629</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
+# Set if you want to use GPU
+# You can also use torch.cuda.is_available() to determine if cuda is available on your machine.
+cuda = True
+set_random_seeds(seed=20170629, cuda=cuda)
 
-<span class="c1"># This will determine how many crops are processed in parallel</span>
-<span class="n">input_time_length</span> <span class="o">=</span> <span class="mi">450</span>
-<span class="c1"># final_conv_length determines the size of the receptive field of the ConvNet</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">Deep4Net</span><span class="p">(</span><span class="n">in_chans</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
-                 <span class="n">filter_length_3</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">filter_length_4</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                 <span class="n">pool_time_stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">stride_before_pool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                        <span class="n">final_conv_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+# This will determine how many crops are processed in parallel
+input_time_length = 450
+# final_conv_length determines the size of the receptive field of the ConvNet
+model = Deep4Net(in_chans=64, n_classes=2, input_time_length=input_time_length,
+                 filter_length_3=5, filter_length_4=5,
+                 pool_time_stride=2,
+                 stride_before_pool=True,
+                        final_conv_length=1)
+if cuda:
+    model.cuda()
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.torch_ext.optimizers</span> <span class="k">import</span> <span class="n">AdamW</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">0.001</span><span class="p">)</span> <span class="c1"># these are good values for the deep model</span>
-<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>  <span class="n">iterator_seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cropped</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span></span>from braindecode.torch_ext.optimizers import AdamW
+import torch.nn.functional as F
+optimizer = AdamW(model.parameters(), lr=1*0.01, weight_decay=0.5*0.001) # these are good values for the deep model
+model.compile(loss=F.nll_loss, optimizer=optimizer,  iterator_seed=1, cropped=True)
 </pre></div>
 </div>
 </div>
@@ -516,15 +531,14 @@ visualization</a> (Section 2.4.2).</p>
 <div class="section" id="Run-the-training">
 <h2>Run the training<a class="headerlink" href="#Run-the-training" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">input_time_length</span> <span class="o">=</span> <span class="mi">450</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">train_set</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">scheduler</span><span class="o">=</span><span class="s1">&#39;cosine&#39;</span><span class="p">,</span>
-          <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
-         <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">valid_set</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">valid_set</span><span class="o">.</span><span class="n">y</span><span class="p">),)</span>
+<span></span>input_time_length = 450
+model.fit(train_set.X, train_set.y, epochs=30, batch_size=64, scheduler=&#39;cosine&#39;,
+          input_time_length=input_time_length,
+         validation_data=(valid_set.X, valid_set.y),)
 </pre></div>
 </div>
 </div>
@@ -784,8 +798,7 @@ visualization</a> (Section 2.4.2).</p>
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[6]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -796,63 +809,56 @@ visualization</a> (Section 2.4.2).</p>
 </div>
 <div class="section" id="Compute-correlation:-amplitude-perturbation---prediction-change">
 <h2>Compute correlation: amplitude perturbation - prediction change<a class="headerlink" href="#Compute-correlation:-amplitude-perturbation---prediction-change" title="Permalink to this headline">¶</a></h2>
-<p>First collect all batches and concatenate them into one array of
-examples:</p>
+<p>First collect all batches and concatenate them into one array of examples:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">CropsFromTrialsIterator</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">np_to_var</span>
-<span class="n">test_input</span> <span class="o">=</span> <span class="n">np_to_var</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">input_time_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-    <span class="n">test_input</span> <span class="o">=</span> <span class="n">test_input</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">network</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>
-<span class="n">n_preds_per_input</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">iterator</span> <span class="o">=</span> <span class="n">CropsFromTrialsIterator</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span><span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
-                                  <span class="n">n_preds_per_input</span><span class="o">=</span><span class="n">n_preds_per_input</span><span class="p">)</span>
+<span></span>from braindecode.datautil.iterators import CropsFromTrialsIterator
+from braindecode.torch_ext.util import np_to_var
+test_input = np_to_var(np.ones((2, 64, input_time_length, 1), dtype=np.float32))
+if cuda:
+    test_input = test_input.cuda()
+out = model.network(test_input)
+n_preds_per_input = out.cpu().data.numpy().shape[2]
+iterator = CropsFromTrialsIterator(batch_size=32,input_time_length=input_time_length,
+                                  n_preds_per_input=n_preds_per_input)
 
-<span class="n">train_batches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">get_batches</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="n">train_X_batches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">train_batches</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+train_batches = list(iterator.get_batches(train_set, shuffle=False))
+train_X_batches = np.concatenate(list(zip(*train_batches))[0])
 </pre></div>
 </div>
 </div>
-<p>Next, create a prediction function that wraps the model prediction
-function and returns the predictions as numpy arrays. We use the
-predition before the softmax, so we create a new module with all the
-layers of the old until before the softmax.</p>
+<p>Next, create a prediction function that wraps the model prediction function and returns the predictions as numpy arrays. We use the predition before the softmax, so we create a new module with all the layers of the old until before the softmax.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">var_to_np</span>
-<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
-<span class="n">new_model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;softmax&#39;</span><span class="p">:</span> <span class="k">break</span>
-    <span class="n">new_model</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span></span>from torch import nn
+from braindecode.torch_ext.util import var_to_np
+import torch as th
+new_model = nn.Sequential()
+for name, module in model.network.named_children():
+    if name == &#39;softmax&#39;: break
+    new_model.add_module(name, module)
 
-<span class="n">new_model</span><span class="o">.</span><span class="n">eval</span><span class="p">();</span>
-<span class="n">pred_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">var_to_np</span><span class="p">(</span><span class="n">th</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">new_model</span><span class="p">(</span><span class="n">np_to_var</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">())[:,:,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+new_model.eval();
+pred_fn = lambda x: var_to_np(th.mean(new_model(np_to_var(x).cuda())[:,:,:,0], dim=2, keepdim=False))
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.visualization.perturbation</span> <span class="k">import</span> <span class="n">compute_amplitude_prediction_correlations</span>
+<span></span>from braindecode.visualization.perturbation import compute_amplitude_prediction_correlations
 
 
-<span class="n">amp_pred_corrs</span> <span class="o">=</span> <span class="n">compute_amplitude_prediction_correlations</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">,</span> <span class="n">train_X_batches</span><span class="p">,</span> <span class="n">n_iterations</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-                                         <span class="n">batch_size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+amp_pred_corrs = compute_amplitude_prediction_correlations(pred_fn, train_X_batches, n_iterations=12,
+                                         batch_size=30)
 </pre></div>
 </div>
 </div>
@@ -963,21 +969,18 @@ layers of the old until before the softmax.</p>
 </div>
 <div class="section" id="Plot-correlations">
 <h2>Plot correlations<a class="headerlink" href="#Plot-correlations" title="Permalink to this headline">¶</a></h2>
-<p>Pick out one frequency range and mean correlations within that frequency
-range to make a scalp plot. Here we use the alpha frequency range.</p>
+<p>Pick out one frequency range and mean correlations within that frequency range to make a scalp plot. Here we use the alpha frequency range.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">amp_pred_corrs</span><span class="o">.</span><span class="n">shape</span>
+<span></span>amp_pred_corrs.shape
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -986,68 +989,64 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 
-<span></span><span class="n">fs</span> <span class="o">=</span> <span class="n">epoched</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]</span>
-<span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">train_X_batches</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">d</span><span class="o">=</span><span class="mf">1.0</span><span class="o">/</span><span class="n">fs</span><span class="p">)</span>
-<span class="n">start_freq</span> <span class="o">=</span> <span class="mi">7</span>
-<span class="n">stop_freq</span> <span class="o">=</span> <span class="mi">14</span>
+<span></span>fs = epoched.info[&#39;sfreq&#39;]
+freqs = np.fft.rfftfreq(train_X_batches.shape[2], d=1.0/fs)
+start_freq = 7
+stop_freq = 14
 
-<span class="n">i_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span><span class="n">start_freq</span><span class="p">)</span>
-<span class="n">i_stop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">stop_freq</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+i_start = np.searchsorted(freqs,start_freq)
+i_stop = np.searchsorted(freqs, stop_freq) + 1
 
-<span class="n">freq_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">amp_pred_corrs</span><span class="p">[:,</span><span class="n">i_start</span><span class="p">:</span><span class="n">i_stop</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+freq_corr = np.mean(amp_pred_corrs[:,i_start:i_stop], axis=1)
 </pre></div>
 </div>
 </div>
 <p>Now get approximate positions of the channels in the 10-20 system.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datasets.sensor_positions</span> <span class="k">import</span> <span class="n">get_channelpos</span><span class="p">,</span> <span class="n">CHANNEL_10_20_APPROX</span>
+<span></span>from braindecode.datasets.sensor_positions import get_channelpos, CHANNEL_10_20_APPROX
 
-<span class="n">ch_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">epoched</span><span class="o">.</span><span class="n">ch_names</span><span class="p">]</span>
-<span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_channelpos</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">CHANNEL_10_20_APPROX</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ch_names</span><span class="p">]</span>
-<span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+ch_names = [s.strip(&#39;.&#39;) for s in epoched.ch_names]
+positions = [get_channelpos(name, CHANNEL_10_20_APPROX) for name in ch_names]
+positions = np.array(positions)
 </pre></div>
 </div>
 </div>
 <div class="section" id="Plot-with-MNE">
 <h3>Plot with MNE<a class="headerlink" href="#Plot-with-MNE" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">cm</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">max_abs_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">freq_corr</span><span class="p">))</span>
+<span></span>import matplotlib.pyplot as plt
+from matplotlib import cm
+%matplotlib inline
+max_abs_val = np.max(np.abs(freq_corr))
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Left Hand&#39;</span><span class="p">,</span> <span class="s1">&#39;Right Hand&#39;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i_class</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i_class</span><span class="p">]</span>
-    <span class="n">mne</span><span class="o">.</span><span class="n">viz</span><span class="o">.</span><span class="n">plot_topomap</span><span class="p">(</span><span class="n">freq_corr</span><span class="p">[:,</span><span class="n">i_class</span><span class="p">],</span> <span class="n">positions</span><span class="p">,</span>
-                     <span class="n">vmin</span><span class="o">=-</span><span class="n">max_abs_val</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">max_abs_val</span><span class="p">,</span> <span class="n">contours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                    <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">class_names</span><span class="p">[</span><span class="n">i_class</span><span class="p">])</span>
+<span></span>fig, axes = plt.subplots(1, 2)
+class_names = [&#39;Left Hand&#39;, &#39;Right Hand&#39;]
+for i_class in range(2):
+    ax = axes[i_class]
+    mne.viz.plot_topomap(freq_corr[:,i_class], positions,
+                     vmin=-max_abs_val, vmax=max_abs_val, contours=0,
+                    cmap=cm.coolwarm, axes=ax, show=False);
+    ax.set_title(class_names[i_class])
 </pre></div>
 </div>
 </div>
@@ -1062,20 +1061,19 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <div class="section" id="Plot-with-Braindecode">
 <h3>Plot with Braindecode<a class="headerlink" href="#Plot-with-Braindecode" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.visualization.plot</span> <span class="k">import</span> <span class="n">ax_scalp</span>
+<span></span>from braindecode.visualization.plot import ax_scalp
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Left Hand&#39;</span><span class="p">,</span> <span class="s1">&#39;Right Hand&#39;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i_class</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i_class</span><span class="p">]</span>
-    <span class="n">ax_scalp</span><span class="p">(</span><span class="n">freq_corr</span><span class="p">[:,</span><span class="n">i_class</span><span class="p">],</span> <span class="n">ch_names</span><span class="p">,</span> <span class="n">chan_pos_list</span><span class="o">=</span><span class="n">CHANNEL_10_20_APPROX</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
-            <span class="n">vmin</span><span class="o">=-</span><span class="n">max_abs_val</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">max_abs_val</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">class_names</span><span class="p">[</span><span class="n">i_class</span><span class="p">])</span>
+fig, axes = plt.subplots(1, 2)
+class_names = [&#39;Left Hand&#39;, &#39;Right Hand&#39;]
+for i_class in range(2):
+    ax = axes[i_class]
+    ax_scalp(freq_corr[:,i_class], ch_names, chan_pos_list=CHANNEL_10_20_APPROX, cmap=cm.coolwarm,
+            vmin=-max_abs_val, vmax=max_abs_val, ax=ax)
+    ax.set_title(class_names[i_class])
 </pre></div>
 </div>
 </div>
@@ -1086,28 +1084,16 @@ range to make a scalp plot. Here we use the alpha frequency range.</p>
 <img alt="../../_images/notebooks_visualization_Perturbation_29_0.png" src="../../_images/notebooks_visualization_Perturbation_29_0.png" />
 </div>
 </div>
-<p>From these plots we can see the ConvNet clearly learned to use the
-lateralized response in the alpha band. Note that the positive
-correlations for the left hand on the left side do not imply an increase
-of alpha activity for the left hand in the data, see <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with
-convolutional neural networks for EEG decoding and
-visualization</a> Result 12 for some
-notes on interpretability.</p>
+<p>From these plots we can see the ConvNet clearly learned to use the lateralized response in the alpha band. Note that the positive correlations for the left hand on the left side do not imply an increase of alpha activity for the left hand in the data, see <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural networks for EEG decoding and visualization</a> Result 12 for some notes on interpretability.</p>
 </div>
 </div>
 <div class="section" id="Dataset-references">
 <h2>Dataset references<a class="headerlink" href="#Dataset-references" title="Permalink to this headline">¶</a></h2>
-<p>This dataset was created and contributed to PhysioNet by the developers
-of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a>
-instrumentation system, which they used in making these recordings. The
-system is described in:</p>
+<p>This dataset was created and contributed to PhysioNet by the developers of the <a class="reference external" href="http://www.schalklab.org/research/bci2000">BCI2000</a> instrumentation system, which they used in making these recordings. The system is described in:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Schalk</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="p">,</span> <span class="n">McFarland</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">J</span><span class="o">.</span><span class="p">,</span> <span class="n">Hinterberger</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="p">,</span> <span class="n">Birbaumer</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="p">,</span> <span class="n">Wolpaw</span><span class="p">,</span> <span class="n">J</span><span class="o">.</span><span class="n">R</span><span class="o">.</span> <span class="p">(</span><span class="mi">2004</span><span class="p">)</span> <span class="n">BCI2000</span><span class="p">:</span> <span class="n">A</span> <span class="n">General</span><span class="o">-</span><span class="n">Purpose</span> <span class="n">Brain</span><span class="o">-</span><span class="n">Computer</span> <span class="n">Interface</span> <span class="p">(</span><span class="n">BCI</span><span class="p">)</span> <span class="n">System</span><span class="o">.</span> <span class="n">IEEE</span> <span class="n">TBME</span> <span class="mi">51</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span><span class="mi">1034</span><span class="o">-</span><span class="mf">1043.</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://physionet.org/physiobank/">PhysioBank</a> is a large and
-growing archive of well-characterized digital recordings of physiologic
-signals and related data for use by the biomedical research community
-and further described in:</p>
+<p><a class="reference external" href="https://physionet.org/physiobank/">PhysioBank</a> is a large and growing archive of well-characterized digital recordings of physiologic signals and related data for use by the biomedical research community and further described in:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Goldberger</span> <span class="n">AL</span><span class="p">,</span> <span class="n">Amaral</span> <span class="n">LAN</span><span class="p">,</span> <span class="n">Glass</span> <span class="n">L</span><span class="p">,</span> <span class="n">Hausdorff</span> <span class="n">JM</span><span class="p">,</span> <span class="n">Ivanov</span> <span class="n">PCh</span><span class="p">,</span> <span class="n">Mark</span> <span class="n">RG</span><span class="p">,</span> <span class="n">Mietus</span> <span class="n">JE</span><span class="p">,</span> <span class="n">Moody</span> <span class="n">GB</span><span class="p">,</span> <span class="n">Peng</span> <span class="n">C</span><span class="o">-</span><span class="n">K</span><span class="p">,</span> <span class="n">Stanley</span> <span class="n">HE</span><span class="o">.</span> <span class="p">(</span><span class="mi">2000</span><span class="p">)</span> <span class="n">PhysioBank</span><span class="p">,</span> <span class="n">PhysioToolkit</span><span class="p">,</span> <span class="ow">and</span> <span class="n">PhysioNet</span><span class="p">:</span> <span class="n">Components</span> <span class="n">of</span> <span class="n">a</span> <span class="n">New</span> <span class="n">Research</span> <span class="n">Resource</span> <span class="k">for</span> <span class="n">Complex</span> <span class="n">Physiologic</span> <span class="n">Signals</span><span class="o">.</span> <span class="n">Circulation</span> <span class="mi">101</span><span class="p">(</span><span class="mi">23</span><span class="p">):</span><span class="n">e215</span><span class="o">-</span><span class="n">e220</span><span class="o">.</span>
 </pre></div>
 </div>
@@ -1158,7 +1144,7 @@ and further described in:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.4.5',
+            VERSION:'0.4.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1168,7 +1154,7 @@ and further described in:</p>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

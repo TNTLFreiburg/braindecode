@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read and Decode BBCI Data &mdash; Braindecode 0.4.5 documentation</title>
+  <title>Read and Decode BBCI Data &mdash; Braindecode 0.4.8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.5 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.4.8 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.4.5
+                0.4.8
               </div>
             
           
@@ -220,18 +220,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 8ex;
+    min-width: 5ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -271,9 +271,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -281,7 +281,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -325,7 +325,45 @@ div.nboutput div.output_area.stderr {
 .ansi-white-intense-fg { color: #A1A6B2; }
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
 .ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 
 /* CSS overrides for sphinx_rtd_theme */
 
@@ -340,23 +378,13 @@ div.nboutput div.output_area.stderr {
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
 }
 </style>
 <div class="section" id="Read-and-Decode-BBCI-Data">
@@ -365,16 +393,15 @@ div.nboutput div.output_area.stderr {
 <div class="section" id="Setup-logging-to-see-outputs">
 <h2>Setup logging to see outputs<a class="headerlink" href="#Setup-logging-to-see-outputs" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                     <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span></span>import logging
+import sys
+logging.basicConfig(format=&#39;%(asctime)s %(levelname)s : %(message)s&#39;,
+                     level=logging.DEBUG, stream=sys.stdout)
+log = logging.getLogger()
 </pre></div>
 </div>
 </div>
@@ -385,17 +412,15 @@ div.nboutput div.output_area.stderr {
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">load_sensor_names</span><span class="o">=</span><span class="bp">None</span>
 </pre></div>
 </div>
-<p>or just remove the parameter from the function call, all sensors will be
-loaded.</p>
+<p>or just remove the parameter from the function call, all sensors will be loaded.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datasets.bbci</span> <span class="k">import</span> <span class="n">BBCIDataset</span>
-<span class="n">train_filename</span> <span class="o">=</span> <span class="s1">&#39;/home/schirrmr/data/BBCI-without-last-runs/BhNoMoSc1S001R01_ds10_1-12.BBCI.mat&#39;</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">BBCIDataset</span><span class="p">(</span><span class="n">train_filename</span><span class="p">,</span> <span class="n">load_sensor_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="s1">&#39;CPz&#39;</span><span class="p">,</span> <span class="s1">&#39;C4&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span></span>from braindecode.datasets.bbci import BBCIDataset
+train_filename = &#39;/home/schirrmr/data/BBCI-without-last-runs/BhNoMoSc1S001R01_ds10_1-12.BBCI.mat&#39;
+cnt = BBCIDataset(train_filename, load_sensor_names=[&#39;C3&#39;, &#39;CPz&#39;, &#39;C4&#39;]).load()
 </pre></div>
 </div>
 </div>
@@ -411,34 +436,28 @@ Ready.
 </div>
 <div class="section" id="Preprocessing-on-continous-data">
 <h3>Preprocessing on continous data<a class="headerlink" href="#Preprocessing-on-continous-data" title="Permalink to this headline">¶</a></h3>
-<p>First remove the stimulus channel, than apply any preprocessing you
-like. There are some very few directions available from Braindecode,
-such as resample_cnt. But you can apply any function on the chan x time
-matrix of the mne raw object (<code class="docutils literal"><span class="pre">cnt</span></code> in the code) by calling
-<code class="docutils literal"><span class="pre">mne_apply</span></code> with two arguments:</p>
+<p>First remove the stimulus channel, than apply any preprocessing you like. There are some very few directions available from Braindecode, such as resample_cnt. But you can apply any function on the chan x time matrix of the mne raw object (<code class="docutils literal"><span class="pre">cnt</span></code> in the code) by calling <code class="docutils literal"><span class="pre">mne_apply</span></code> with two arguments:</p>
 <ol class="arabic simple">
-<li>Your function (2d-array-&gt; 2darray), that transforms the channel x
-timesteps data array</li>
+<li>Your function (2d-array-&gt; 2darray), that transforms the channel x timesteps data array</li>
 <li>the Raw data object from mne itself</li>
 </ol>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.mne_ext.signalproc</span> <span class="k">import</span> <span class="n">resample_cnt</span><span class="p">,</span> <span class="n">mne_apply</span>
-<span class="kn">from</span> <span class="nn">braindecode.datautil.signalproc</span> <span class="k">import</span> <span class="n">exponential_running_standardize</span>
-<span class="c1"># Remove stimulus channel</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">drop_channels</span><span class="p">([</span><span class="s1">&#39;STI 014&#39;</span><span class="p">])</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">resample_cnt</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
-<span class="c1"># mne apply will apply the function to the data (a 2d-numpy-array)</span>
-<span class="c1"># have to transpose data back and forth, since</span>
-<span class="c1"># exponential_running_standardize expects time x chans order</span>
-<span class="c1"># while mne object has chans x time order</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">mne_apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">exponential_running_standardize</span><span class="p">(</span>
-    <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">init_block_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">factor_new</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-    <span class="n">cnt</span><span class="p">)</span>
+<span></span>from braindecode.mne_ext.signalproc import resample_cnt, mne_apply
+from braindecode.datautil.signalproc import exponential_running_standardize
+# Remove stimulus channel
+cnt = cnt.drop_channels([&#39;STI 014&#39;])
+cnt = resample_cnt(cnt, 250)
+# mne apply will apply the function to the data (a 2d-numpy-array)
+# have to transpose data back and forth, since
+# exponential_running_standardize expects time x chans order
+# while mne object has chans x time order
+cnt = mne_apply(lambda a: exponential_running_standardize(
+    a.T, init_block_size=1000,factor_new=0.001, eps=1e-4).T,
+    cnt)
 </pre></div>
 </div>
 </div>
@@ -458,24 +477,19 @@ Ready.
 </div>
 <div class="section" id="Transform-to-epoched-dataset">
 <h2>Transform to epoched dataset<a class="headerlink" href="#Transform-to-epoched-dataset" title="Permalink to this headline">¶</a></h2>
-<p>Braindecode supplies the <code class="docutils literal"><span class="pre">create_signal_target_from_raw_mne</span></code> function,
-which will transform the mne raw object into a <code class="docutils literal"><span class="pre">SignalAndTarget</span></code>
-object for use in Braindecode. <code class="docutils literal"><span class="pre">name_to_code</span></code> should be an
-<code class="docutils literal"><span class="pre">OrderedDict</span></code> that maps class names to either one or a list of marker
-codes for that class.</p>
+<p>Braindecode supplies the <code class="docutils literal"><span class="pre">create_signal_target_from_raw_mne</span></code> function, which will transform the mne raw object into a <code class="docutils literal"><span class="pre">SignalAndTarget</span></code> object for use in Braindecode. <code class="docutils literal"><span class="pre">name_to_code</span></code> should be an <code class="docutils literal"><span class="pre">OrderedDict</span></code> that maps class names to either one or a list of marker codes for that class.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.trial_segment</span> <span class="k">import</span> <span class="n">create_signal_target_from_raw_mne</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
-<span class="c1"># can also give lists of marker codes in case a class has multiple marker codes...</span>
-<span class="n">name_to_code</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="s1">&#39;Right&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Left&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Rest&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Feet&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="n">segment_ival_ms</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">500</span><span class="p">,</span><span class="mi">4000</span><span class="p">]</span>
+<span></span>from braindecode.datautil.trial_segment import create_signal_target_from_raw_mne
+from collections import OrderedDict
+# can also give lists of marker codes in case a class has multiple marker codes...
+name_to_code = OrderedDict([(&#39;Right&#39;, 1), (&#39;Left&#39;, 2), (&#39;Rest&#39;, 3), (&#39;Feet&#39;, 4)])
+segment_ival_ms = [-500,4000]
 
-<span class="n">train_set</span> <span class="o">=</span> <span class="n">create_signal_target_from_raw_mne</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_code</span><span class="p">,</span> <span class="n">segment_ival_ms</span><span class="p">)</span>
+train_set = create_signal_target_from_raw_mne(cnt, name_to_code, segment_ival_ms)
 </pre></div>
 </div>
 </div>
@@ -492,20 +506,19 @@ Counter({&#39;Feet&#39;: 225, &#39;Right&#39;: 224, &#39;Rest&#39;: 224, &#39;Le
 <div class="section" id="Same-for-test-set">
 <h2>Same for test set<a class="headerlink" href="#Same-for-test-set" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">test_filename</span> <span class="o">=</span> <span class="s1">&#39;/home/schirrmr/data/BBCI-only-last-runs/BhNoMoSc1S001R13_ds10_1-2BBCI.mat&#39;</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">BBCIDataset</span><span class="p">(</span><span class="n">test_filename</span><span class="p">,</span> <span class="n">load_sensor_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="s1">&#39;CPz&#39;</span><span class="p">,</span> <span class="s1">&#39;C4&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-<span class="c1"># Remove stimulus channel</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span><span class="o">.</span><span class="n">drop_channels</span><span class="p">([</span><span class="s1">&#39;STI 014&#39;</span><span class="p">])</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">resample_cnt</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
-<span class="n">cnt</span> <span class="o">=</span> <span class="n">mne_apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">exponential_running_standardize</span><span class="p">(</span>
-    <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">init_block_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">factor_new</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-    <span class="n">cnt</span><span class="p">)</span>
-<span class="n">test_set</span> <span class="o">=</span> <span class="n">create_signal_target_from_raw_mne</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name_to_code</span><span class="p">,</span> <span class="n">segment_ival_ms</span><span class="p">)</span>
+<span></span>test_filename = &#39;/home/schirrmr/data/BBCI-only-last-runs/BhNoMoSc1S001R13_ds10_1-2BBCI.mat&#39;
+cnt = BBCIDataset(test_filename, load_sensor_names=[&#39;C3&#39;, &#39;CPz&#39;, &#39;C4&#39;]).load()
+# Remove stimulus channel
+cnt = cnt.drop_channels([&#39;STI 014&#39;])
+cnt = resample_cnt(cnt, 250)
+cnt = mne_apply(lambda a: exponential_running_standardize(
+    a.T, init_block_size=1000,factor_new=0.001, eps=1e-4).T,
+    cnt)
+test_set = create_signal_target_from_raw_mne(cnt, name_to_code, segment_ival_ms)
 </pre></div>
 </div>
 </div>
@@ -527,21 +540,16 @@ Counter({&#39;Feet&#39;: 40, &#39;Left&#39;: 40, &#39;Rest&#39;: 40, &#39;Right&
 </pre></div></div>
 </div>
 <div class="admonition note">
-In case of start and stop markers, provide a <code class="docutils literal"><span class="pre">name_to_stop_codes</span></code>
-dictionary (same as for the start codes in this example) as a final
-argument to <code class="docutils literal"><span class="pre">create_signal_target_from_raw_mne</span></code>. See <a class="reference external" href="BBCI_Data_Start_Stop.html">Read and Decode
-BBCI Data with Start-Stop-Markers
-Tutorial</a></div>
+In case of start and stop markers, provide a <code class="docutils literal"><span class="pre">name_to_stop_codes</span></code> dictionary (same as for the start codes in this example) as a final argument to <code class="docutils literal"><span class="pre">create_signal_target_from_raw_mne</span></code>. See <a class="reference external" href="BBCI_Data_Start_Stop.html">Read and Decode BBCI Data with Start-Stop-Markers Tutorial</a></div>
 <p>Split off a validation set.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.datautil.splitters</span> <span class="k">import</span> <span class="n">split_into_two_sets</span>
+<span></span>from braindecode.datautil.splitters import split_into_two_sets
 
-<span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span> <span class="o">=</span> <span class="n">split_into_two_sets</span><span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">first_set_fraction</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+train_set, valid_set = split_into_two_sets(train_set, first_set_fraction=0.8)
 
 </pre></div>
 </div>
@@ -550,31 +558,30 @@ Tutorial</a></div>
 <div class="section" id="Create-the-model">
 <h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.models.shallow_fbcsp</span> <span class="k">import</span> <span class="n">ShallowFBCSPNet</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.util</span> <span class="k">import</span> <span class="n">set_random_seeds</span>
+<span></span>from braindecode.models.shallow_fbcsp import ShallowFBCSPNet
+from torch import nn
+from braindecode.torch_ext.util import set_random_seeds
 
-<span class="c1"># Set if you want to use GPU</span>
-<span class="c1"># You can also use torch.cuda.is_available() to determine if cuda is available on your machine.</span>
-<span class="n">cuda</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">set_random_seeds</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">20170629</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
+# Set if you want to use GPU
+# You can also use torch.cuda.is_available() to determine if cuda is available on your machine.
+cuda = True
+set_random_seeds(seed=20170629, cuda=cuda)
 
 
-<span class="c1"># This will determine how many crops are processed in parallel</span>
-<span class="n">input_time_length</span> <span class="o">=</span> <span class="n">train_set</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">in_chans</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">n_classes</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="c1"># final_conv_length determines the size of the receptive field of the ConvNet</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">ShallowFBCSPNet</span><span class="p">(</span><span class="n">in_chans</span><span class="o">=</span><span class="n">in_chans</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">input_time_length</span><span class="o">=</span><span class="n">input_time_length</span><span class="p">,</span>
-                        <span class="n">final_conv_length</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">create_network</span><span class="p">()</span>
+# This will determine how many crops are processed in parallel
+input_time_length = train_set.X.shape[2]
+in_chans = 3
+n_classes = 4
+# final_conv_length determines the size of the receptive field of the ConvNet
+model = ShallowFBCSPNet(in_chans=in_chans, n_classes=n_classes, input_time_length=input_time_length,
+                        final_conv_length=&#39;auto&#39;).create_network()
 
-<span class="k">if</span> <span class="n">cuda</span><span class="p">:</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+if cuda:
+    model.cuda()
 </pre></div>
 </div>
 </div>
@@ -582,19 +589,18 @@ Tutorial</a></div>
 <div class="section" id="Setup-optimizer-and-iterator">
 <h2>Setup optimizer and iterator<a class="headerlink" href="#Setup-optimizer-and-iterator" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">optim</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span>from torch import optim
+import numpy as np
 
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+optimizer = optim.Adam(model.parameters())
 
 
-<span class="kn">from</span> <span class="nn">braindecode.datautil.iterators</span> <span class="k">import</span> <span class="n">BalancedBatchSizeIterator</span>
-<span class="n">iterator</span> <span class="o">=</span> <span class="n">BalancedBatchSizeIterator</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+from braindecode.datautil.iterators import BalancedBatchSizeIterator
+iterator = BalancedBatchSizeIterator(batch_size=32)
 
 </pre></div>
 </div>
@@ -603,28 +609,27 @@ Tutorial</a></div>
 <div class="section" id="Setup-Monitors,-Loss-function,-Stop-Criteria">
 <h2>Setup Monitors, Loss function, Stop Criteria<a class="headerlink" href="#Setup-Monitors,-Loss-function,-Stop-Criteria" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">braindecode.experiments.experiment</span> <span class="k">import</span> <span class="n">Experiment</span>
-<span class="kn">from</span> <span class="nn">braindecode.experiments.monitors</span> <span class="k">import</span> <span class="n">RuntimeMonitor</span><span class="p">,</span> <span class="n">LossMonitor</span><span class="p">,</span> <span class="n">CroppedTrialMisclassMonitor</span><span class="p">,</span> <span class="n">MisclassMonitor</span>
-<span class="kn">from</span> <span class="nn">braindecode.experiments.stopcriteria</span> <span class="k">import</span> <span class="n">MaxEpochs</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">th</span>
-<span class="kn">from</span> <span class="nn">braindecode.torch_ext.modules</span> <span class="k">import</span> <span class="n">Expression</span>
+<span></span>from braindecode.experiments.experiment import Experiment
+from braindecode.experiments.monitors import RuntimeMonitor, LossMonitor, CroppedTrialMisclassMonitor, MisclassMonitor
+from braindecode.experiments.stopcriteria import MaxEpochs
+import torch.nn.functional as F
+import torch as th
+from braindecode.torch_ext.modules import Expression
 
 
-<span class="n">loss_function</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span>
+loss_function = F.nll_loss
 
-<span class="n">model_constraint</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">monitors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LossMonitor</span><span class="p">(),</span> <span class="n">MisclassMonitor</span><span class="p">(</span><span class="n">col_suffix</span><span class="o">=</span><span class="s1">&#39;misclass&#39;</span><span class="p">),</span>
-            <span class="n">RuntimeMonitor</span><span class="p">(),]</span>
-<span class="n">stop_criterion</span> <span class="o">=</span> <span class="n">MaxEpochs</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_set</span><span class="p">,</span> <span class="n">valid_set</span><span class="p">,</span> <span class="n">test_set</span><span class="p">,</span> <span class="n">iterator</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">model_constraint</span><span class="p">,</span>
-          <span class="n">monitors</span><span class="p">,</span> <span class="n">stop_criterion</span><span class="p">,</span> <span class="n">remember_best_column</span><span class="o">=</span><span class="s1">&#39;valid_misclass&#39;</span><span class="p">,</span>
-          <span class="n">run_after_early_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_modifier</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cuda</span><span class="o">=</span><span class="n">cuda</span><span class="p">)</span>
+model_constraint = None
+monitors = [LossMonitor(), MisclassMonitor(col_suffix=&#39;misclass&#39;),
+            RuntimeMonitor(),]
+stop_criterion = MaxEpochs(20)
+exp = Experiment(model, train_set, valid_set, test_set, iterator, loss_function, optimizer, model_constraint,
+          monitors, stop_criterion, remember_best_column=&#39;valid_misclass&#39;,
+          run_after_early_stop=True, batch_modifier=None, cuda=cuda)
 </pre></div>
 </div>
 </div>
@@ -632,12 +637,11 @@ Tutorial</a></div>
 <div class="section" id="Run-experiment">
 <h2>Run experiment<a class="headerlink" href="#Run-experiment" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">exp</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span></span>exp.run()
 </pre></div>
 </div>
 </div>
@@ -981,7 +985,7 @@ Tutorial</a></div>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.5',
+            VERSION:'0.4.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -991,7 +995,7 @@ Tutorial</a></div>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

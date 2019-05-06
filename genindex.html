@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; Braindecode 0.4.5 documentation</title>
+  <title>Index &mdash; Braindecode 0.4.8 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Braindecode 0.4.5 documentation" href="index.html"/> 
+    <link rel="top" title="Braindecode 0.4.8 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.4.5
+                0.4.8
               </div>
             
           
@@ -247,6 +247,8 @@
 </li>
       <li><a href="source/braindecode.datasets.html#module-braindecode.datasets.bcic_iv_2a">braindecode.datasets.bcic_iv_2a (module)</a>
 </li>
+      <li><a href="source/braindecode.datasets.html#module-braindecode.datasets.lazy_dataset">braindecode.datasets.lazy_dataset (module)</a>
+</li>
       <li><a href="source/braindecode.datasets.html#module-braindecode.datasets.multiple">braindecode.datasets.multiple (module)</a>
 </li>
       <li><a href="source/braindecode.datasets.html#module-braindecode.datasets.sensor_positions">braindecode.datasets.sensor_positions (module)</a>
@@ -254,6 +256,8 @@
       <li><a href="source/braindecode.datautil.html#module-braindecode.datautil">braindecode.datautil (module)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#module-braindecode.datautil.iterators">braindecode.datautil.iterators (module)</a>
+</li>
+      <li><a href="source/braindecode.datautil.html#module-braindecode.datautil.lazy_iterators">braindecode.datautil.lazy_iterators (module)</a>
 </li>
       <li><a href="source/braindecode.datautil.html#module-braindecode.datautil.signal_target">braindecode.datautil.signal_target (module)</a>
 </li>
@@ -275,10 +279,10 @@
 </li>
       <li><a href="source/braindecode.experiments.html#module-braindecode.experiments.stopcriteria">braindecode.experiments.stopcriteria (module)</a>
 </li>
-      <li><a href="source/braindecode.mne_ext.html#module-braindecode.mne_ext">braindecode.mne_ext (module)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.mne_ext.html#module-braindecode.mne_ext">braindecode.mne_ext (module)</a>
+</li>
       <li><a href="source/braindecode.mne_ext.html#module-braindecode.mne_ext.signalproc">braindecode.mne_ext.signalproc (module)</a>
 </li>
       <li><a href="source/braindecode.models.html#module-braindecode.models">braindecode.models (module)</a>
@@ -345,6 +349,8 @@
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.stopcriteria.ColumnBelow">ColumnBelow (class in braindecode.experiments.stopcriteria)</a>
 </li>
+      <li><a href="source/braindecode.mne_ext.html#braindecode.mne_ext.signalproc.common_average_reference_cnt">common_average_reference_cnt() (in module braindecode.mne_ext.signalproc)</a>
+</li>
       <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.compile">compile() (braindecode.models.base.BaseModel method)</a>
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.perturbation.compute_amplitude_prediction_correlations">compute_amplitude_prediction_correlations() (in module braindecode.visualization.perturbation)</a>
@@ -404,6 +410,8 @@
       <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.CropsFromTrialsIterator">CropsFromTrialsIterator (class in braindecode.datautil.iterators)</a>
 </li>
       <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.cuda">cuda() (braindecode.models.base.BaseModel method)</a>
+</li>
+      <li><a href="source/braindecode.datautil.html#braindecode.datautil.lazy_iterators.custom_collate">custom_collate() (in module braindecode.datautil.lazy_iterators)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -502,11 +510,13 @@
 </li>
         <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.CropsFromTrialsIterator.get_batches">(braindecode.datautil.iterators.CropsFromTrialsIterator method)</a>
 </li>
-      </ul></li>
-      <li><a href="source/braindecode.datasets.html#braindecode.datasets.sensor_positions.get_channelpos">get_channelpos() (in module braindecode.datasets.sensor_positions)</a>
+        <li><a href="source/braindecode.datautil.html#braindecode.datautil.lazy_iterators.LazyCropsFromTrialsIterator.get_batches">(braindecode.datautil.lazy_iterators.LazyCropsFromTrialsIterator method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/braindecode.datasets.html#braindecode.datasets.sensor_positions.get_channelpos">get_channelpos() (in module braindecode.datasets.sensor_positions)</a>
+</li>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.sensor_positions.get_channelpos_from_angle">get_channelpos_from_angle() (in module braindecode.datasets.sensor_positions)</a>
 </li>
       <li><a href="source/braindecode.visualization.html#braindecode.visualization.input_windows.get_input_windows_from_units_2d">get_input_windows_from_units_2d() (in module braindecode.visualization.input_windows)</a>
@@ -555,6 +565,10 @@
 </li>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.losses.l2_loss">l2_loss() (in module braindecode.torch_ext.losses)</a>
 </li>
+      <li><a href="source/braindecode.datautil.html#braindecode.datautil.lazy_iterators.LazyCropsFromTrialsIterator">LazyCropsFromTrialsIterator (class in braindecode.datautil.lazy_iterators)</a>
+</li>
+      <li><a href="source/braindecode.datasets.html#braindecode.datasets.lazy_dataset.LazyDataset">LazyDataset (class in braindecode.datasets.lazy_dataset)</a>
+</li>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.bbci.BBCIDataset.load">load() (braindecode.datasets.bbci.BBCIDataset method)</a>
 
       <ul>
@@ -565,12 +579,14 @@
       </ul></li>
       <li><a href="source/braindecode.datasets.html#braindecode.datasets.bbci.load_bbci_sets_from_folder">load_bbci_sets_from_folder() (in module braindecode.datasets.bbci)</a>
 </li>
+      <li><a href="source/braindecode.datasets.html#braindecode.datasets.lazy_dataset.LazyDataset.load_lazy">load_lazy() (braindecode.datasets.lazy_dataset.LazyDataset method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.schedulers.ScheduledOptimizer.load_state_dict">load_state_dict() (braindecode.torch_ext.schedulers.ScheduledOptimizer method)</a>
 </li>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.losses.log_categorical_crossentropy">log_categorical_crossentropy() (in module braindecode.torch_ext.losses)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="source/braindecode.torch_ext.html#braindecode.torch_ext.losses.log_categorical_crossentropy_1_hot">log_categorical_crossentropy_1_hot() (in module braindecode.torch_ext.losses)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.experiment.Experiment.log_epoch">log_epoch() (braindecode.experiments.experiment.Experiment method)</a>
@@ -675,7 +691,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.predict">predict() (braindecode.models.base.BaseModel method)</a>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.predict_classes">predict_classes() (braindecode.models.base.BaseModel method)</a>
+</li>
+      <li><a href="source/braindecode.models.html#braindecode.models.base.BaseModel.predict_outs">predict_outs() (braindecode.models.base.BaseModel method)</a>
 </li>
       <li><a href="source/braindecode.experiments.html#braindecode.experiments.loggers.Printer">Printer (class in braindecode.experiments.loggers)</a>
 </li>
@@ -697,6 +715,8 @@
         <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.ClassBalancedBatchSizeIterator.reset_rng">(braindecode.datautil.iterators.ClassBalancedBatchSizeIterator method)</a>
 </li>
         <li><a href="source/braindecode.datautil.html#braindecode.datautil.iterators.CropsFromTrialsIterator.reset_rng">(braindecode.datautil.iterators.CropsFromTrialsIterator method)</a>
+</li>
+        <li><a href="source/braindecode.datautil.html#braindecode.datautil.lazy_iterators.LazyCropsFromTrialsIterator.reset_rng">(braindecode.datautil.lazy_iterators.LazyCropsFromTrialsIterator method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -864,7 +884,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.5',
+            VERSION:'0.4.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -874,7 +894,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
