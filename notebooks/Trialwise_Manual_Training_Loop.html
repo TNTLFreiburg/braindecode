@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Trialwise Manual Training Loop &mdash; Braindecode 0.4.8 documentation</title>
+  <title>Trialwise Manual Training Loop &mdash; Braindecode 0.4.85 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.8 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.85 documentation" href="../index.html"/>
         <link rel="next" title="Cropped Manual Training Loop" href="Cropped_Manual_Training_Loop.html"/>
         <link rel="prev" title="Cropped Decoding" href="Cropped_Decoding.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.8
+                0.4.85
               </div>
             
           
@@ -434,7 +434,7 @@ logging.basicConfig(format=&#39;%(asctime)s %(levelname)s : %(message)s&#39;,
 <p>You can load and preprocess your EEG dataset in any way, Braindecode only expects a 3darray (trials, channels, timesteps) of input signals <code class="docutils literal"><span class="pre">X</span></code> and a vector of labels <code class="docutils literal"><span class="pre">y</span></code> later (see below). In this tutorial, we will use the <a class="reference external" href="https://www.martinos.org/mne/stable/index.html">MNE</a> library to load an EEG motor imagery/motor execution dataset. For a tutorial from MNE using Common Spatial Patterns to decode this data, see
 <a class="reference external" href="http://martinos.org/mne/stable/auto_examples/decoding/plot_decoding_csp_eeg.html">here</a>. For another library useful for loading EEG data, take a look at <a class="reference external" href="https://pythonhosted.org/neo/io.html">Neo IO</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -457,7 +457,7 @@ parts = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;, ver
 raw = concatenate_raws(parts)
 
 # Find the events in this dataset
-events = mne.find_events(raw, shortest_event=0, stim_channel=&#39;STI 014&#39;)
+events, _ = mne.events_from_annotations(raw)
 
 # Use only EEG channels
 eeg_channel_inds = mne.pick_types(raw.info, meg=False, eeg=True, stim=False, eog=False,
@@ -474,7 +474,7 @@ epoched = mne.Epochs(raw, events, dict(hands=2, feet=3), tmin=1, tmax=4.1, proj=
 <h2>Convert data to Braindecode format<a class="headerlink" href="#Convert-data-to-Braindecode-format" title="Permalink to this headline">¶</a></h2>
 <p>Braindecode has a minimalistic <code class="docutils literal"><span class="pre">SignalAndTarget</span></code> class, with attributes <code class="docutils literal"><span class="pre">X</span></code> for the signal and <code class="docutils literal"><span class="pre">y</span></code> for the labels. <code class="docutils literal"><span class="pre">X</span></code> should have these dimensions: trials x channels x timesteps. <code class="docutils literal"><span class="pre">y</span></code> should have one label per trial.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -488,7 +488,7 @@ y = (epoched.events[:,2] - 2).astype(np.int64) #2,3 -&gt; 0,1
 </div>
 <p>We use the first 40 trials for training and the next 30 trials for validation. The validation accuracies can be used to tune hyperparameters such as learning rate etc. The final 20 trials are split apart so we have a final hold-out evaluation set that is not part of any hyperparameter optimization. As mentioned before, this dataset is dangerously small to get any meaningful results and only used here for quick demonstration purposes.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -505,7 +505,7 @@ valid_set = SignalAndTarget(X[40:70], y=y[40:70])
 <h2>Create the model<a class="headerlink" href="#Create-the-model" title="Permalink to this headline">¶</a></h2>
 <p>Braindecode comes with some predefined convolutional neural network architectures for raw time-domain EEG. Here, we use the shallow ConvNet model from <a class="reference external" href="https://arxiv.org/abs/1703.05051">Deep learning with convolutional neural networks for EEG decoding and visualization</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -530,7 +530,7 @@ if cuda:
 </div>
 <p>We use <a class="reference external" href="https://arxiv.org/abs/1711.05101">AdamW</a> to optimize the parameters of our network together with <a class="reference external" href="https://arxiv.org/abs/1608.03983">Cosine Annealing</a> of the learning rate. We supply some default parameters that we have found to work well for motor decoding, however we strongly encourage you to perform your own hyperparameter optimization using cross validation on your training data.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -562,7 +562,7 @@ optimizer = ScheduledOptimizer(scheduler, optimizer, schedule_weight_decay=True)
 <li>After iterating through all batches of your dataset, report some statistics like mean accuracy and mean loss.</li>
 </ol>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -623,164 +623,164 @@ for i_epoch in range(n_epochs):
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch 0
-Train  Loss: 1.38360
-Train  Accuracy: 47.5%
-Valid  Loss: 1.41585
-Valid  Accuracy: 50.0%
+Train  Loss: 0.73690
+Train  Accuracy: 62.5%
+Valid  Loss: 1.13041
+Valid  Accuracy: 53.3%
 Epoch 1
-Train  Loss: 0.88988
-Train  Accuracy: 60.0%
-Valid  Loss: 1.03939
-Valid  Accuracy: 56.7%
+Train  Loss: 1.17932
+Train  Accuracy: 57.5%
+Valid  Loss: 1.35246
+Valid  Accuracy: 50.0%
 Epoch 2
-Train  Loss: 0.67633
-Train  Accuracy: 67.5%
-Valid  Loss: 0.94319
-Valid  Accuracy: 60.0%
+Train  Loss: 0.81899
+Train  Accuracy: 65.0%
+Valid  Loss: 0.96027
+Valid  Accuracy: 56.7%
 Epoch 3
-Train  Loss: 0.41825
-Train  Accuracy: 80.0%
-Valid  Loss: 0.75822
-Valid  Accuracy: 63.3%
-Epoch 4
-Train  Loss: 0.22624
-Train  Accuracy: 90.0%
-Valid  Loss: 0.67704
+Train  Loss: 0.53547
+Train  Accuracy: 75.0%
+Valid  Loss: 0.77725
 Valid  Accuracy: 66.7%
+Epoch 4
+Train  Loss: 0.30195
+Train  Accuracy: 85.0%
+Valid  Loss: 0.60807
+Valid  Accuracy: 73.3%
 Epoch 5
-Train  Loss: 0.13072
-Train  Accuracy: 97.5%
-Valid  Loss: 0.62466
-Valid  Accuracy: 73.3%
+Train  Loss: 0.18695
+Train  Accuracy: 90.0%
+Valid  Loss: 0.54184
+Valid  Accuracy: 76.7%
 Epoch 6
-Train  Loss: 0.10054
-Train  Accuracy: 97.5%
-Valid  Loss: 0.62027
-Valid  Accuracy: 73.3%
+Train  Loss: 0.13377
+Train  Accuracy: 95.0%
+Valid  Loss: 0.50131
+Valid  Accuracy: 80.0%
 Epoch 7
-Train  Loss: 0.08371
-Train  Accuracy: 97.5%
-Valid  Loss: 0.62787
-Valid  Accuracy: 73.3%
+Train  Loss: 0.11521
+Train  Accuracy: 95.0%
+Valid  Loss: 0.47909
+Valid  Accuracy: 80.0%
 Epoch 8
-Train  Loss: 0.07234
+Train  Loss: 0.09841
 Train  Accuracy: 97.5%
-Valid  Loss: 0.62938
-Valid  Accuracy: 70.0%
+Valid  Loss: 0.47807
+Valid  Accuracy: 80.0%
 Epoch 9
-Train  Loss: 0.06713
+Train  Loss: 0.08487
 Train  Accuracy: 97.5%
-Valid  Loss: 0.63169
-Valid  Accuracy: 70.0%
+Valid  Loss: 0.47951
+Valid  Accuracy: 80.0%
 Epoch 10
-Train  Loss: 0.06175
+Train  Loss: 0.07319
 Train  Accuracy: 97.5%
-Valid  Loss: 0.63279
-Valid  Accuracy: 70.0%
+Valid  Loss: 0.48485
+Valid  Accuracy: 80.0%
 Epoch 11
-Train  Loss: 0.05743
-Train  Accuracy: 97.5%
-Valid  Loss: 0.62944
-Valid  Accuracy: 70.0%
+Train  Loss: 0.06363
+Train  Accuracy: 100.0%
+Valid  Loss: 0.49065
+Valid  Accuracy: 80.0%
 Epoch 12
-Train  Loss: 0.05303
-Train  Accuracy: 97.5%
-Valid  Loss: 0.62220
-Valid  Accuracy: 70.0%
+Train  Loss: 0.05509
+Train  Accuracy: 100.0%
+Valid  Loss: 0.49882
+Valid  Accuracy: 76.7%
 Epoch 13
-Train  Loss: 0.04724
-Train  Accuracy: 97.5%
-Valid  Loss: 0.61127
-Valid  Accuracy: 70.0%
+Train  Loss: 0.04861
+Train  Accuracy: 100.0%
+Valid  Loss: 0.50564
+Valid  Accuracy: 80.0%
 Epoch 14
-Train  Loss: 0.04223
+Train  Loss: 0.04340
 Train  Accuracy: 100.0%
-Valid  Loss: 0.59926
-Valid  Accuracy: 70.0%
+Valid  Loss: 0.51243
+Valid  Accuracy: 80.0%
 Epoch 15
-Train  Loss: 0.03736
+Train  Loss: 0.03985
 Train  Accuracy: 100.0%
-Valid  Loss: 0.58510
-Valid  Accuracy: 70.0%
+Valid  Loss: 0.51889
+Valid  Accuracy: 83.3%
 Epoch 16
-Train  Loss: 0.03282
+Train  Loss: 0.03644
 Train  Accuracy: 100.0%
-Valid  Loss: 0.56685
-Valid  Accuracy: 70.0%
+Valid  Loss: 0.52753
+Valid  Accuracy: 83.3%
 Epoch 17
-Train  Loss: 0.02917
+Train  Loss: 0.03371
 Train  Accuracy: 100.0%
-Valid  Loss: 0.54962
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.53611
+Valid  Accuracy: 83.3%
 Epoch 18
-Train  Loss: 0.02635
+Train  Loss: 0.03111
 Train  Accuracy: 100.0%
-Valid  Loss: 0.53484
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.54486
+Valid  Accuracy: 83.3%
 Epoch 19
-Train  Loss: 0.02404
+Train  Loss: 0.02891
 Train  Accuracy: 100.0%
-Valid  Loss: 0.52472
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.55211
+Valid  Accuracy: 83.3%
 Epoch 20
-Train  Loss: 0.02188
+Train  Loss: 0.02694
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51820
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.55715
+Valid  Accuracy: 83.3%
 Epoch 21
-Train  Loss: 0.02015
+Train  Loss: 0.02522
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51563
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.56237
+Valid  Accuracy: 80.0%
 Epoch 22
-Train  Loss: 0.01874
+Train  Loss: 0.02372
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51309
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.56693
+Valid  Accuracy: 80.0%
 Epoch 23
-Train  Loss: 0.01756
+Train  Loss: 0.02254
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51196
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57061
+Valid  Accuracy: 80.0%
 Epoch 24
-Train  Loss: 0.01658
+Train  Loss: 0.02160
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51188
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57319
+Valid  Accuracy: 80.0%
 Epoch 25
-Train  Loss: 0.01572
+Train  Loss: 0.02083
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51296
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57516
+Valid  Accuracy: 80.0%
 Epoch 26
-Train  Loss: 0.01505
+Train  Loss: 0.02021
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51424
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57674
+Valid  Accuracy: 80.0%
 Epoch 27
-Train  Loss: 0.01454
+Train  Loss: 0.01972
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51548
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57793
+Valid  Accuracy: 80.0%
 Epoch 28
-Train  Loss: 0.01416
+Train  Loss: 0.01934
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51677
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57883
+Valid  Accuracy: 80.0%
 Epoch 29
-Train  Loss: 0.01388
+Train  Loss: 0.01903
 Train  Accuracy: 100.0%
-Valid  Loss: 0.51794
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.57959
+Valid  Accuracy: 80.0%
 </pre></div></div>
 </div>
-<p>Eventually, we arrive at 73.3% accuracy, so 22 from 30 trials are correctly predicted. In the <a class="reference external" href="./Cropped_Decoding.html">Cropped Decoding Tutorial</a>, we can learn do the same decoding using Cropped Decoding.</p>
+<p>Eventually, we arrive at 80.0% accuracy, so 24 from 30 trials are correctly predicted. In the <a class="reference external" href="./Cropped_Decoding.html">Cropped Decoding Tutorial</a>, we can learn do the same decoding using Cropped Decoding.</p>
 </div>
 <div class="section" id="Evaluation">
 <h2>Evaluation<a class="headerlink" href="#Evaluation" title="Permalink to this headline">¶</a></h2>
 <p>Once we have all our hyperparameters and architectural choices done, we can evaluate the accuracies to report in our publication by evaluating on the test set:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -809,8 +809,8 @@ print(&quot;Test Accuracy: {:.1f}%&quot;.format(accuracy * 100))
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test Loss: 0.22339
-Test Accuracy: 95.0%
+Test Loss: 0.31152
+Test Accuracy: 80.0%
 </pre></div></div>
 </div>
 <div class="admonition note">
@@ -836,7 +836,7 @@ raw = concatenate_raws(parts)
 picks = mne.pick_types(raw.info, meg=False, eeg=True, stim=False, eog=False,
                    exclude=&#39;bads&#39;)
 
-events = mne.find_events(raw, shortest_event=0, stim_channel=&#39;STI 014&#39;)
+events, _ = mne.events_from_annotations(raw)
 
 # Read epochs (train will be done only between 1 and 2s)
 # Testing will be done with a running classifier
@@ -927,7 +927,7 @@ valid_set = SignalAndTarget(valid_X, y=valid_y)
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.8',
+            VERSION:'0.4.85',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

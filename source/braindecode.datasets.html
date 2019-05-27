@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>braindecode.datasets package &mdash; Braindecode 0.4.8 documentation</title>
+  <title>braindecode.datasets package &mdash; Braindecode 0.4.85 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.8 documentation" href="../index.html"/> 
+    <link rel="top" title="Braindecode 0.4.85 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.4.8
+                0.4.85
               </div>
             
           
@@ -199,7 +199,7 @@
 <span id="braindecode-datasets-bbci-module"></span><h2>braindecode.datasets.bbci module<a class="headerlink" href="#module-braindecode.datasets.bbci" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.datasets.bbci.BBCIDataset">
-<em class="property">class </em><code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">BBCIDataset</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>check_class_names=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L13-L190"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">BBCIDataset</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>check_class_names=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L13-L211"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Loader class for files created by saving BBCI files in matlab (make
 sure to save with ‘-v7.3’ in matlab, see
@@ -222,12 +222,12 @@ Translational NeuroTechnology Lab, AG Ball, Freiburg, Germany.</li>
 </table>
 <dl class="method">
 <dt id="braindecode.datasets.bbci.BBCIDataset.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L35-L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.load" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L37-L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="braindecode.datasets.bbci.BBCIDataset.get_all_sensors">
-<em class="property">static </em><code class="descname">get_all_sensors</code><span class="sig-paren">(</span><em>filename</em>, <em>pattern=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L116-L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.get_all_sensors" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">get_all_sensors</code><span class="sig-paren">(</span><em>filename</em>, <em>pattern=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L130-L155"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.BBCIDataset.get_all_sensors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all sensors that exist in the given file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -253,7 +253,7 @@ Translational NeuroTechnology Lab, AG Ball, Freiburg, Germany.</li>
 
 <dl class="function">
 <dt id="braindecode.datasets.bbci.load_bbci_sets_from_folder">
-<code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">load_bbci_sets_from_folder</code><span class="sig-paren">(</span><em>folder</em>, <em>runs='all'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L563-L595"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.load_bbci_sets_from_folder" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">braindecode.datasets.bbci.</code><code class="descname">load_bbci_sets_from_folder</code><span class="sig-paren">(</span><em>folder</em>, <em>runs='all'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bbci.py#L636-L668"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bbci.load_bbci_sets_from_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load bbci datasets from files in given folder.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -276,7 +276,7 @@ Tries to match this regex: <code class="docutils literal"><span class="pre">'S[0
 <span id="braindecode-datasets-bcic-iv-2a-module"></span><h2>braindecode.datasets.bcic_iv_2a module<a class="headerlink" href="#module-braindecode.datasets.bcic_iv_2a" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A">
-<em class="property">class </em><code class="descclassname">braindecode.datasets.bcic_iv_2a.</code><code class="descname">BCICompetition4Set2A</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>labels_filename=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L6-L75"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datasets.bcic_iv_2a.</code><code class="descname">BCICompetition4Set2A</code><span class="sig-paren">(</span><em>filename</em>, <em>load_sensor_names=None</em>, <em>labels_filename=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L6-L89"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.load">
@@ -285,12 +285,12 @@ Tries to match this regex: <code class="docutils literal"><span class="pre">'S[0
 
 <dl class="method">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_data">
-<code class="descname">extract_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L19-L39"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extract_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L19-L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_events">
-<code class="descname">extract_events</code><span class="sig-paren">(</span><em>raw_edf</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L41-L75"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_events" title="Permalink to this definition">¶</a></dt>
+<code class="descname">extract_events</code><span class="sig-paren">(</span><em>raw_gdf</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/bcic_iv_2a.py#L42-L89"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.bcic_iv_2a.BCICompetition4Set2A.extract_events" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -332,7 +332,7 @@ Is supposed to return a trial / crop together with its target</p>
 <span id="braindecode-datasets-multiple-module"></span><h2>braindecode.datasets.multiple module<a class="headerlink" href="#module-braindecode.datasets.multiple" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="braindecode.datasets.multiple.MultipleSetLoader">
-<em class="property">class </em><code class="descclassname">braindecode.datasets.multiple.</code><code class="descname">MultipleSetLoader</code><span class="sig-paren">(</span><em>set_loaders</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L8-L46"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">braindecode.datasets.multiple.</code><code class="descname">MultipleSetLoader</code><span class="sig-paren">(</span><em>set_loaders</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L11-L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class to load multiple sets.</p>
 <p>Resamples individual sets down to lowest common sampling frequency,
@@ -347,7 +347,7 @@ if necessary.</p>
 </table>
 <dl class="method">
 <dt id="braindecode.datasets.multiple.MultipleSetLoader.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L24-L46"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader.load" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/robintibor/braindecode/blob/master/braindecode/datasets/multiple.py#L27-L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#braindecode.datasets.multiple.MultipleSetLoader.load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -437,7 +437,7 @@ otherwise <code class="docutils literal"><span class="pre">None</span></code></p
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.8',
+            VERSION:'0.4.85',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

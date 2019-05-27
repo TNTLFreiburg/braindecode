@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cropped Manual Training Loop &mdash; Braindecode 0.4.8 documentation</title>
+  <title>Cropped Manual Training Loop &mdash; Braindecode 0.4.85 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Braindecode 0.4.8 documentation" href="../index.html"/>
+    <link rel="top" title="Braindecode 0.4.85 documentation" href="../index.html"/>
         <link rel="next" title="Amplitude Perturbation Visualization" href="visualization/Perturbation.html"/>
         <link rel="prev" title="Trialwise Manual Training Loop" href="Trialwise_Manual_Training_Loop.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.4.8
+                0.4.85
               </div>
             
           
@@ -429,7 +429,7 @@ parts = [mne.io.read_raw_edf(path, preload=True,stim_channel=&#39;auto&#39;, ver
 raw = concatenate_raws(parts)
 
 # Find the events in this dataset
-events = mne.find_events(raw, shortest_event=0, stim_channel=&#39;STI 014&#39;)
+events, _ = mne.events_from_annotations(raw)
 
 # Use only EEG channels
 eeg_channel_inds = mne.pick_types(raw.info, meg=False, eeg=True, stim=False, eog=False,
@@ -645,104 +645,104 @@ for i_epoch in range(20):
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch 0
-Train  Loss: 3.79010
+Train  Loss: 3.82019
 Train  Accuracy: 50.0%
-Valid  Loss: 3.12765
+Valid  Loss: 3.16695
 Valid  Accuracy: 46.7%
 Epoch 1
-Train  Loss: 1.91778
+Train  Loss: 1.88180
 Train  Accuracy: 50.0%
-Valid  Loss: 1.52058
-Valid  Accuracy: 46.7%
+Valid  Loss: 1.52698
+Valid  Accuracy: 50.0%
 Epoch 2
-Train  Loss: 1.09943
+Train  Loss: 1.01281
 Train  Accuracy: 60.0%
-Valid  Loss: 0.99602
+Valid  Loss: 0.95791
 Valid  Accuracy: 56.7%
 Epoch 3
-Train  Loss: 0.73015
+Train  Loss: 0.72270
 Train  Accuracy: 67.5%
-Valid  Loss: 0.82321
+Valid  Loss: 0.85744
 Valid  Accuracy: 56.7%
 Epoch 4
-Train  Loss: 0.55965
-Train  Accuracy: 75.0%
-Valid  Loss: 0.77549
+Train  Loss: 0.56512
+Train  Accuracy: 72.5%
+Valid  Loss: 0.79851
 Valid  Accuracy: 63.3%
 Epoch 5
-Train  Loss: 0.38075
+Train  Loss: 0.34636
 Train  Accuracy: 82.5%
-Valid  Loss: 0.65490
+Valid  Loss: 0.61648
 Valid  Accuracy: 73.3%
 Epoch 6
-Train  Loss: 0.28886
+Train  Loss: 0.25957
 Train  Accuracy: 90.0%
-Valid  Loss: 0.59481
-Valid  Accuracy: 73.3%
+Valid  Loss: 0.55787
+Valid  Accuracy: 83.3%
 Epoch 7
-Train  Loss: 0.21871
-Train  Accuracy: 97.5%
-Valid  Loss: 0.52357
+Train  Loss: 0.20769
+Train  Accuracy: 95.0%
+Valid  Loss: 0.51277
 Valid  Accuracy: 83.3%
 Epoch 8
-Train  Loss: 0.16713
+Train  Loss: 0.17177
 Train  Accuracy: 97.5%
-Valid  Loss: 0.44890
+Valid  Loss: 0.45372
 Valid  Accuracy: 86.7%
 Epoch 9
-Train  Loss: 0.13149
+Train  Loss: 0.14081
 Train  Accuracy: 97.5%
-Valid  Loss: 0.40492
-Valid  Accuracy: 83.3%
+Valid  Loss: 0.40558
+Valid  Accuracy: 86.7%
 Epoch 10
-Train  Loss: 0.09581
+Train  Loss: 0.10214
 Train  Accuracy: 100.0%
-Valid  Loss: 0.36021
-Valid  Accuracy: 90.0%
+Valid  Loss: 0.36364
+Valid  Accuracy: 86.7%
 Epoch 11
-Train  Loss: 0.07818
+Train  Loss: 0.07835
 Train  Accuracy: 100.0%
-Valid  Loss: 0.34625
+Valid  Loss: 0.35407
 Valid  Accuracy: 90.0%
 Epoch 12
-Train  Loss: 0.07454
+Train  Loss: 0.07564
 Train  Accuracy: 100.0%
-Valid  Loss: 0.34489
+Valid  Loss: 0.36432
 Valid  Accuracy: 90.0%
 Epoch 13
-Train  Loss: 0.06694
+Train  Loss: 0.07691
 Train  Accuracy: 100.0%
-Valid  Loss: 0.33878
+Valid  Loss: 0.36904
 Valid  Accuracy: 90.0%
 Epoch 14
-Train  Loss: 0.05971
+Train  Loss: 0.06718
 Train  Accuracy: 100.0%
-Valid  Loss: 0.33128
+Valid  Loss: 0.35551
 Valid  Accuracy: 90.0%
 Epoch 15
-Train  Loss: 0.05269
+Train  Loss: 0.05421
 Train  Accuracy: 100.0%
-Valid  Loss: 0.32202
+Valid  Loss: 0.33592
 Valid  Accuracy: 90.0%
 Epoch 16
-Train  Loss: 0.04354
+Train  Loss: 0.04269
 Train  Accuracy: 100.0%
-Valid  Loss: 0.31063
+Valid  Loss: 0.31994
 Valid  Accuracy: 90.0%
 Epoch 17
-Train  Loss: 0.03759
+Train  Loss: 0.03827
 Train  Accuracy: 100.0%
-Valid  Loss: 0.30314
+Valid  Loss: 0.31341
 Valid  Accuracy: 90.0%
 Epoch 18
-Train  Loss: 0.03401
+Train  Loss: 0.03477
 Train  Accuracy: 100.0%
-Valid  Loss: 0.29997
-Valid  Accuracy: 90.0%
+Valid  Loss: 0.30831
+Valid  Accuracy: 86.7%
 Epoch 19
-Train  Loss: 0.03145
+Train  Loss: 0.03244
 Train  Accuracy: 100.0%
-Valid  Loss: 0.29764
+Valid  Loss: 0.30248
 Valid  Accuracy: 90.0%
 </pre></div></div>
 </div>
@@ -799,8 +799,8 @@ print(&quot;Test Accuracy: {:.1f}%&quot;.format(accuracy * 100))
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test Loss: 0.42105
-Test Accuracy: 85.0%
+Test Loss: 0.42250
+Test Accuracy: 90.0%
 </pre></div></div>
 </div>
 </div>
@@ -861,7 +861,7 @@ Test Accuracy: 85.0%
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.4.8',
+            VERSION:'0.4.85',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
