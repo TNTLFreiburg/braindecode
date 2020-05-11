@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Braindecode &mdash; Braindecode 0.4.85 documentation</title>
+  <title>Installation [outdated, see above] &mdash; Braindecode 0.4.85 documentation</title>
   
 
   
@@ -17,41 +17,38 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Braindecode 0.4.85 documentation" href="#"/>
-        <link rel="next" title="Trialwise Decoding" href="notebooks/Trialwise_Decoding.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Trialwise Decoding" href="notebooks/Trialwise_Decoding.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -97,12 +94,12 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/visualization/Perturbation.html">Amplitude Perturbation Visualization</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="source/braindecode.datautil.html">braindecode.datautil package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/braindecode.experiments.html">braindecode.experiments package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/braindecode.mne_ext.html">braindecode.mne_ext package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/braindecode.models.html">braindecode.models package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/braindecode.torch_ext.html">braindecode.torch_ext package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/braindecode.visualization.html">braindecode.visualization package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/braindecode.datautil.html">braindecode.datautil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/braindecode.experiments.html">braindecode.experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/braindecode.mne_ext.html">braindecode.mne_ext</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/braindecode.models.html">braindecode.models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/braindecode.torch_ext.html">braindecode.torch_ext</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/braindecode.visualization.html">braindecode.visualization</a></li>
 </ul>
 
             
@@ -114,7 +111,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">Braindecode</a>
@@ -122,9 +119,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -147,7 +145,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Welcome to Braindecode</li>
+      <li>Installation [outdated, see above]</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -171,13 +169,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -190,26 +188,23 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="welcome-to-braindecode">
-<h1>Welcome to Braindecode<a class="headerlink" href="#welcome-to-braindecode" title="Permalink to this headline">¶</a></h1>
-<p>A deep learning toolbox to decode raw time-domain EEG.</p>
-<p>For EEG researchers that want to work with deep learning and
-deep learning researchers that want to work with EEG data.
-For now focussed on convolutional networks.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This version is outdated, please use the new braindecode at <a class="reference external" href="https://braindecode.org/">https://braindecode.org/</a></p>
 </div>
-<div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation-outdated-see-above">
+<h1>Installation [outdated, see above]<a class="headerlink" href="#installation-outdated-see-above" title="Permalink to this headline">¶</a></h1>
 <ol class="arabic simple">
-<li>Install pytorch from <a class="reference external" href="http://pytorch.org/">http://pytorch.org/</a> (you don’t need to install torchvision).</li>
-<li>Install numpy (necessary for resamply installation to work), e.g.:</li>
+<li><p>Install pytorch from <a class="reference external" href="http://pytorch.org/">http://pytorch.org/</a> (you don’t need to install torchvision).</p></li>
+<li><p>Install numpy (necessary for resamply installation to work), e.g.:</p></li>
 </ol>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install numpy
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install numpy
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
-<li>Install braindecode via pip:</li>
+<li><p>Install braindecode via pip:</p></li>
 </ol>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install braindecode
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install https://github.com/TNTLFreiburg/braindecode/archive/master.zip
 </pre></div>
 </div>
 </div>
@@ -227,33 +222,33 @@ For now focussed on convolutional networks.</p>
 </div>
 <div class="section" id="troubleshooting">
 <h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
-<p>Please report any issues on github: <a class="reference external" href="https://github.com/robintibor/braindecode">https://github.com/robintibor/braindecode</a></p>
+<p>Please report any issues on github: <a class="reference external" href="https://github.com/TNTLFreiburg/braindecode">https://github.com/TNTLFreiburg/braindecode</a></p>
 </div>
 <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="source/braindecode.datautil.html#module-braindecode.datautil" title="braindecode.datautil"><code class="xref py py-obj docutils literal"><span class="pre">braindecode.datautil</span></code></a></td>
-<td>Utilities for data manipulation.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="source/braindecode.datautil.html#module-braindecode.datautil" title="braindecode.datautil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">braindecode.datautil</span></code></a></p></td>
+<td><p>Utilities for data manipulation.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="source/braindecode.experiments.html#module-braindecode.experiments" title="braindecode.experiments"><code class="xref py py-obj docutils literal"><span class="pre">braindecode.experiments</span></code></a></td>
-<td>Convenience classes for experiments, including monitoring and stop criteria.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="source/braindecode.experiments.html#module-braindecode.experiments" title="braindecode.experiments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">braindecode.experiments</span></code></a></p></td>
+<td><p>Convenience classes for experiments, including monitoring and stop criteria.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="source/braindecode.mne_ext.html#module-braindecode.mne_ext" title="braindecode.mne_ext"><code class="xref py py-obj docutils literal"><span class="pre">braindecode.mne_ext</span></code></a></td>
-<td>Extensions for the MNE library.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="source/braindecode.mne_ext.html#module-braindecode.mne_ext" title="braindecode.mne_ext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">braindecode.mne_ext</span></code></a></p></td>
+<td><p>Extensions for the MNE library.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="source/braindecode.models.html#module-braindecode.models" title="braindecode.models"><code class="xref py py-obj docutils literal"><span class="pre">braindecode.models</span></code></a></td>
-<td>Some predefined network architectures for EEG decoding.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="source/braindecode.models.html#module-braindecode.models" title="braindecode.models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">braindecode.models</span></code></a></p></td>
+<td><p>Some predefined network architectures for EEG decoding.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="source/braindecode.torch_ext.html#module-braindecode.torch_ext" title="braindecode.torch_ext"><code class="xref py py-obj docutils literal"><span class="pre">braindecode.torch_ext</span></code></a></td>
-<td>Torch extensions, for example new functions or modules.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="source/braindecode.torch_ext.html#module-braindecode.torch_ext" title="braindecode.torch_ext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">braindecode.torch_ext</span></code></a></p></td>
+<td><p>Torch extensions, for example new functions or modules.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="source/braindecode.visualization.html#module-braindecode.visualization" title="braindecode.visualization"><code class="xref py py-obj docutils literal"><span class="pre">braindecode.visualization</span></code></a></td>
-<td>Functions for visualisations, especially of the ConvNets.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="source/braindecode.visualization.html#module-braindecode.visualization" title="braindecode.visualization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">braindecode.visualization</span></code></a></p></td>
+<td><p>Functions for visualisations, especially of the ConvNets.</p></td>
 </tr>
 </tbody>
 </table>
@@ -261,7 +256,7 @@ For now focussed on convolutional networks.</p>
 <div class="section" id="citing">
 <h1>Citing<a class="headerlink" href="#citing" title="Permalink to this headline">¶</a></h1>
 <p>If you use this code in a scientific publication, please cite us as:</p>
-<div class="highlight-bibtex"><div class="highlight"><pre><span></span><span class="nc">@article</span> <span class="p">{</span><span class="nl">HBM:HBM23730</span><span class="p">,</span>
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@article</span> <span class="p">{</span><span class="nl">HBM:HBM23730</span><span class="p">,</span>
 <span class="na">author</span> <span class="p">=</span> <span class="s">{Schirrmeister, Robin Tibor and Springenberg, Jost Tobias and Fiederer,</span>
 <span class="s">  Lukas Dominique Josef and Glasstetter, Martin and Eggensperger, Katharina and Tangermann, Michael and</span>
 <span class="s">  Hutter, Frank and Burgard, Wolfram and Ball, Tonio}</span><span class="p">,</span>
@@ -281,17 +276,15 @@ For now focussed on convolutional networks.</p>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -307,11 +300,11 @@ For now focussed on convolutional networks.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Robin Tibor Schirrmeister.
+        &copy; Copyright 2018, Robin Tibor Schirrmeister
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -324,37 +317,15 @@ For now focussed on convolutional networks.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.4.85',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
